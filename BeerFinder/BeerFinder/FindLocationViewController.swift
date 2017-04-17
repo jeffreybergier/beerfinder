@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreLocation
 import MapKit
 
 class FindLocationViewController: UIViewController {
@@ -15,68 +14,96 @@ class FindLocationViewController: UIViewController {
     @IBOutlet private weak var buttonView: UIView?
     @IBOutlet private weak var labelView: UIView?
     @IBOutlet private weak var button: UIButton?
-    @IBOutlet fileprivate weak var map: MKMapView?
+    @IBOutlet private weak var map: MKMapView?
     
     private var buttonViewConstraint: NSLayoutConstraint?
     private var labelViewConstraint: NSLayoutConstraint?
     
-    private let locationManager = CLLocationManager()
-    fileprivate var locationError: Error?
-    
     private let viewShowConstant: CGFloat = -87
     private let viewHideConstant: CGFloat = 20
+    
+    private let locator = UserLocator()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.buttonViewConstraint = self.buttonView?.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: self.viewShowConstant)
         self.labelViewConstraint = self.labelView?.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: self.viewHideConstant)
-        
         self.buttonViewConstraint?.isActive = true
         self.labelViewConstraint?.isActive = true
-        
         self.updateButtonText()
     }
     
-    fileprivate func updateButtonText() {
-        switch CLLocationManager.authorizationStatus() {
-        case .authorizedAlways, .authorizedWhenInUse, .notDetermined:
-            self.button?.setTitle("Find Location", for: .normal)
-        case .denied, .restricted:
-            self.button?.setTitle("Location Error", for: .normal)
+    private func updateButtonText(with message: String? = nil) {
+        if let message = message {
+            self.button?.setTitle(message, for: .normal)
+        } else {
+            switch self.locator.permission {
+            case .authorizedAlways, .authorizedWhenInUse, .notDetermined:
+                self.button?.setTitle("Find Location", for: .normal)
+            case .denied, .restricted:
+                self.button?.setTitle("Location Error", for: .normal)
+            }
         }
     }
     
     @IBAction private func findLocationTapped(_ sender: NSObject?) {
-        switch CLLocationManager.authorizationStatus() {
+        switch self.locator.permission {
         case .notDetermined:
-            self.locationManager.requestWhenInUseAuthorization()
+            self.showRequestPermission()
         case .authorizedAlways, .authorizedWhenInUse:
-            self.show(.neither, preAction: {
-                self.locationManager.delegate = self
-                self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-                self.locationManager.requestLocation()
-            }, postAction: {
-                self.show(.label, preAction: nil, postAction: nil)
-            })
+            self.showRequestLocation()
         case .denied:
-            self.show(.neither, preAction: nil) {
-                let vc = self.newDeniedAlert()
-                self.present(vc, animated: true, completion: nil)
-            }
+            self.showDeniedError()
         case .restricted:
-            self.show(.neither, preAction: nil) {
-                let vc = self.newRestrictedAlert()
-                self.present(vc, animated: true, completion: nil)
+            self.showRestrictedError()
+        }
+    }
+    
+    private func showRequestPermission() {
+        self.show(.neither) {
+            self.locator.requestPermission() { [weak self] _ in
+                self?.findLocationTapped(nil)
             }
         }
     }
     
-    fileprivate enum Show {
+    private func showRequestLocation() {
+        self.show(.neither) {
+            self.locator.requestLocation() { [weak self] result in
+                self?.show(.label)
+                switch result {
+                case .success(let location):
+                    let coordinate = location.coordinate
+                    let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                    let region = MKCoordinateRegion(center: coordinate, span: span)
+                    self?.map?.setRegion(region, animated: true)
+                case .error(let error):
+                    self?.show(.button, preAction: { self?.updateButtonText(with: error.localizedDescription) })
+                }
+            }
+        }
+    }
+    
+    private func showDeniedError() {
+        self.show(.neither) {
+            let vc = self.newDeniedAlert()
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    private func showRestrictedError() {
+        self.show(.neither) {
+            let vc = self.newRestrictedAlert()
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    private enum Show {
         case button, label, neither
     }
     
-    fileprivate func show(_ show: Show, preAction: (() -> Void)?, postAction: (() -> Void)?) {
+    private func show(_ show: Show, preAction: (() -> Void)? = nil, postAction: (() -> Void)? = nil) {
         preAction?()
         UIView.animate(withDuration: 0.3, animations: {
             switch show {
@@ -119,20 +146,5 @@ class FindLocationViewController: UIViewController {
         }
         alertVC.addAction(cancel)
         return alertVC
-    }
-}
-
-extension FindLocationViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let coordinate = locations.first!.coordinate
-        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-        let region = MKCoordinateRegion(center: coordinate, span: span)
-        self.map?.setRegion(region, animated: true)
-    }
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        self.show(.button, preAction: {
-            self.updateButtonText()
-            self.locationError = error
-        }, postAction: nil)
     }
 }

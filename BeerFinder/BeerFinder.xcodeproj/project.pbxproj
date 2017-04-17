@@ -8,13 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		50868CD61EA452CF0068E292 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50868CD51EA452CF0068E292 /* AppDelegate.swift */; };
-		50868CDB1EA452CF0068E292 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50868CD91EA452CF0068E292 /* Main.storyboard */; };
+		50868CDB1EA452CF0068E292 /* FindLocation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50868CD91EA452CF0068E292 /* FindLocation.storyboard */; };
 		50868CDD1EA452CF0068E292 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50868CDC1EA452CF0068E292 /* Assets.xcassets */; };
 		50868CE01EA452CF0068E292 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50868CDE1EA452CF0068E292 /* LaunchScreen.storyboard */; };
 		50868CEB1EA452D00068E292 /* BeerFinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50868CEA1EA452D00068E292 /* BeerFinderTests.swift */; };
 		50868CF61EA452D00068E292 /* BeerFinderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50868CF51EA452D00068E292 /* BeerFinderUITests.swift */; };
 		50868D051EA4539B0068E292 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50868D041EA4539B0068E292 /* MapKit.framework */; };
 		50868D071EA454EE0068E292 /* FindLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50868D061EA454EE0068E292 /* FindLocationViewController.swift */; };
+		50A301FA1EA55C2A008876D5 /* UserLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A301F91EA55C2A008876D5 /* UserLocator.swift */; };
+		50A301FC1EA562F9008876D5 /* ListPlaces.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50A301FB1EA562F9008876D5 /* ListPlaces.storyboard */; };
+		50A301FE1EA56363008876D5 /* ListPlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A301FD1EA56363008876D5 /* ListPlacesViewController.swift */; };
+		50A302001EA5671E008876D5 /* PlaceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A301FF1EA5671E008876D5 /* PlaceLocator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +41,7 @@
 /* Begin PBXFileReference section */
 		50868CD21EA452CF0068E292 /* BeerFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeerFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50868CD51EA452CF0068E292 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		50868CDA1EA452CF0068E292 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		50868CDA1EA452CF0068E292 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FindLocation.storyboard; sourceTree = "<group>"; };
 		50868CDC1EA452CF0068E292 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		50868CDF1EA452CF0068E292 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		50868CE11EA452CF0068E292 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +53,10 @@
 		50868CF71EA452D00068E292 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50868D041EA4539B0068E292 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		50868D061EA454EE0068E292 /* FindLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindLocationViewController.swift; sourceTree = "<group>"; };
+		50A301F91EA55C2A008876D5 /* UserLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLocator.swift; sourceTree = "<group>"; };
+		50A301FB1EA562F9008876D5 /* ListPlaces.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ListPlaces.storyboard; sourceTree = "<group>"; };
+		50A301FD1EA56363008876D5 /* ListPlacesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListPlacesViewController.swift; sourceTree = "<group>"; };
+		50A301FF1EA5671E008876D5 /* PlaceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceLocator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +111,11 @@
 			children = (
 				50868CD51EA452CF0068E292 /* AppDelegate.swift */,
 				50868D061EA454EE0068E292 /* FindLocationViewController.swift */,
-				50868CD91EA452CF0068E292 /* Main.storyboard */,
+				50A301FD1EA56363008876D5 /* ListPlacesViewController.swift */,
+				50A301F91EA55C2A008876D5 /* UserLocator.swift */,
+				50A301FF1EA5671E008876D5 /* PlaceLocator.swift */,
+				50868CD91EA452CF0068E292 /* FindLocation.storyboard */,
+				50A301FB1EA562F9008876D5 /* ListPlaces.storyboard */,
 				50868CDC1EA452CF0068E292 /* Assets.xcassets */,
 				50868CDE1EA452CF0068E292 /* LaunchScreen.storyboard */,
 				50868CE11EA452CF0068E292 /* Info.plist */,
@@ -247,9 +259,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50A301FC1EA562F9008876D5 /* ListPlaces.storyboard in Resources */,
 				50868CE01EA452CF0068E292 /* LaunchScreen.storyboard in Resources */,
 				50868CDD1EA452CF0068E292 /* Assets.xcassets in Resources */,
-				50868CDB1EA452CF0068E292 /* Main.storyboard in Resources */,
+				50868CDB1EA452CF0068E292 /* FindLocation.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +289,9 @@
 			files = (
 				50868D071EA454EE0068E292 /* FindLocationViewController.swift in Sources */,
 				50868CD61EA452CF0068E292 /* AppDelegate.swift in Sources */,
+				50A302001EA5671E008876D5 /* PlaceLocator.swift in Sources */,
+				50A301FE1EA56363008876D5 /* ListPlacesViewController.swift in Sources */,
+				50A301FA1EA55C2A008876D5 /* UserLocator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,12 +327,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		50868CD91EA452CF0068E292 /* Main.storyboard */ = {
+		50868CD91EA452CF0068E292 /* FindLocation.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				50868CDA1EA452CF0068E292 /* Base */,
 			);
-			name = Main.storyboard;
+			name = FindLocation.storyboard;
 			sourceTree = "<group>";
 		};
 		50868CDE1EA452CF0068E292 /* LaunchScreen.storyboard */ = {
@@ -530,6 +546,7 @@
 				50868CFC1EA452D00068E292 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		50868CFD1EA452D00068E292 /* Build configuration list for PBXNativeTarget "BeerFinderTests" */ = {
 			isa = XCConfigurationList;
@@ -538,6 +555,7 @@
 				50868CFF1EA452D00068E292 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		50868D001EA452D00068E292 /* Build configuration list for PBXNativeTarget "BeerFinderUITests" */ = {
 			isa = XCConfigurationList;
@@ -546,6 +564,7 @@
 				50868D021EA452D00068E292 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
