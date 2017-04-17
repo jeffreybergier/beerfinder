@@ -22,7 +22,8 @@ class FindLocationViewController: UIViewController {
     private let viewShowConstant: CGFloat = -87
     private let viewHideConstant: CGFloat = 20
     
-    private let locator = UserLocator()
+    private let userLocator = UserLocator()
+    private let placeLocator = PlaceLocator()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +39,7 @@ class FindLocationViewController: UIViewController {
         if let message = message {
             self.button?.setTitle(message, for: .normal)
         } else {
-            switch self.locator.permission {
+            switch self.userLocator.permission {
             case .authorizedAlways, .authorizedWhenInUse, .notDetermined:
                 self.button?.setTitle("Find Location", for: .normal)
             case .denied, .restricted:
@@ -48,7 +49,7 @@ class FindLocationViewController: UIViewController {
     }
     
     @IBAction private func findLocationTapped(_ sender: NSObject?) {
-        switch self.locator.permission {
+        switch self.userLocator.permission {
         case .notDetermined:
             self.showRequestPermission()
         case .authorizedAlways, .authorizedWhenInUse:
@@ -62,7 +63,7 @@ class FindLocationViewController: UIViewController {
     
     private func showRequestPermission() {
         self.show(.neither) {
-            self.locator.requestPermission() { [weak self] _ in
+            self.userLocator.requestPermission() { [weak self] _ in
                 self?.findLocationTapped(nil)
             }
         }
@@ -70,7 +71,7 @@ class FindLocationViewController: UIViewController {
     
     private func showRequestLocation() {
         self.show(.neither) {
-            self.locator.requestLocation() { [weak self] result in
+            self.userLocator.requestLocation() { [weak self] result in
                 self?.show(.label)
                 switch result {
                 case .success(let location):
