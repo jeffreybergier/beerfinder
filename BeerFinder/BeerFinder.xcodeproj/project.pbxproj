@@ -13,6 +13,8 @@
 		50868CE01EA452CF0068E292 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50868CDE1EA452CF0068E292 /* LaunchScreen.storyboard */; };
 		50868CEB1EA452D00068E292 /* BeerFinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50868CEA1EA452D00068E292 /* BeerFinderTests.swift */; };
 		50868CF61EA452D00068E292 /* BeerFinderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50868CF51EA452D00068E292 /* BeerFinderUITests.swift */; };
+		50868D051EA4539B0068E292 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50868D041EA4539B0068E292 /* MapKit.framework */; };
+		50868D071EA454EE0068E292 /* FindLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50868D061EA454EE0068E292 /* FindLocationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		50868CF11EA452D00068E292 /* BeerFinderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeerFinderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50868CF51EA452D00068E292 /* BeerFinderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerFinderUITests.swift; sourceTree = "<group>"; };
 		50868CF71EA452D00068E292 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50868D041EA4539B0068E292 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		50868D061EA454EE0068E292 /* FindLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindLocationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50868D051EA4539B0068E292 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +84,7 @@
 				50868CE91EA452D00068E292 /* BeerFinderTests */,
 				50868CF41EA452D00068E292 /* BeerFinderUITests */,
 				50868CD31EA452CF0068E292 /* Products */,
+				50868D031EA4539B0068E292 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				50868CD51EA452CF0068E292 /* AppDelegate.swift */,
+				50868D061EA454EE0068E292 /* FindLocationViewController.swift */,
 				50868CD91EA452CF0068E292 /* Main.storyboard */,
 				50868CDC1EA452CF0068E292 /* Assets.xcassets */,
 				50868CDE1EA452CF0068E292 /* LaunchScreen.storyboard */,
@@ -120,6 +127,14 @@
 				50868CF71EA452D00068E292 /* Info.plist */,
 			);
 			path = BeerFinderUITests;
+			sourceTree = "<group>";
+		};
+		50868D031EA4539B0068E292 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				50868D041EA4539B0068E292 /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,6 +274,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50868D071EA454EE0068E292 /* FindLocationViewController.swift in Sources */,
 				50868CD61EA452CF0068E292 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
