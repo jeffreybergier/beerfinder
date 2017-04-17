@@ -147,8 +147,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="button" destination="j3W-yO-yAD" id="2VG-DV-c24"/>
                         <outlet property="buttonView" destination="hNj-73-TVg" id="99E-AN-CDa"/>
                         <outlet property="labelView" destination="GON-3l-KxJ" id="kBZ-Il-JwX"/>
+                        <outlet property="map" destination="xIM-mG-cfR" id="QR4-Ex-70u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rIt-nm-kTQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
