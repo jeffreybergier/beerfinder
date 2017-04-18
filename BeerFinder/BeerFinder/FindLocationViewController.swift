@@ -9,8 +9,8 @@
 import UIKit
 import MapKit
 
-class FindLocationViewController: UIViewController {
-    
+class FindLocationViewController: UIViewController, UserLocatableConsumer, LocationPermittableConsumer, PlaceLocatableConsumer {
+
     @IBOutlet private weak var buttonView: UIView?
     @IBOutlet private weak var labelView: UIView?
     @IBOutlet private weak var button: UIButton?
@@ -22,8 +22,16 @@ class FindLocationViewController: UIViewController {
     private let viewShowConstant: CGFloat = -87
     private let viewHideConstant: CGFloat = 20
     
-    private let userLocator = UserLocator()
-    private let placeLocator = PlaceLocator()
+    var locationPermitter: LocationPermittable = LocationPermitter()
+    var userLocator: UserLocatable = UserLocator()
+    var placeLocator: PlaceLocatable = PlaceLocator()
+    
+    private var places: [PlaceLocator.MapItem]? {
+        didSet {
+            self.map?.removeAnnotations(oldValue ?? [])
+            self.map?.addAnnotations(self.places ?? [])
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,9 +47,9 @@ class FindLocationViewController: UIViewController {
         if let message = message {
             self.button?.setTitle(message, for: .normal)
         } else {
-            switch self.userLocator.permission {
+            switch self.locationPermitter.permission {
             case .authorizedAlways, .authorizedWhenInUse, .notDetermined:
-                self.button?.setTitle("Find Location", for: .normal)
+                self.button?.setTitle("Find Beer", for: .normal)
             case .denied, .restricted:
                 self.button?.setTitle("Location Error", for: .normal)
             }
@@ -49,27 +57,33 @@ class FindLocationViewController: UIViewController {
     }
     
     @IBAction private func findLocationTapped(_ sender: NSObject?) {
-        switch self.userLocator.permission {
-        case .notDetermined:
-            self.showRequestPermission()
-        case .authorizedAlways, .authorizedWhenInUse:
-            self.showRequestLocation()
-        case .denied:
-            self.showDeniedError()
-        case .restricted:
-            self.showRestrictedError()
+        if let places = places, places.isEmpty == false {
+            print("ready to go to new screen")
+        } else {
+            switch self.locationPermitter.permission {
+            case .notDetermined:
+                self.showRequestPermission()
+            case .authorizedAlways, .authorizedWhenInUse:
+                self.showRequestLocation()
+            case .denied:
+                self.showDeniedError()
+            case .restricted:
+                self.showRestrictedError()
+            }
         }
     }
     
     private func showRequestPermission() {
         self.show(.neither) {
-            self.userLocator.requestPermission() { [weak self] _ in
+            self.locationPermitter.requestPermission() { [weak self] _ in
                 self?.findLocationTapped(nil)
             }
         }
     }
     
+    // this is turning into a pyramid of doom :(
     private func showRequestLocation() {
+        self.places = nil
         self.show(.neither) {
             self.userLocator.requestLocation() { [weak self] result in
                 self?.show(.label)
@@ -79,6 +93,21 @@ class FindLocationViewController: UIViewController {
                     let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
                     let region = MKCoordinateRegion(center: coordinate, span: span)
                     self?.map?.setRegion(region, animated: true)
+                    self?.placeLocator.locateBeer(at: region) { result in
+                        switch result {
+                        case .success(let places):
+                            if places.isEmpty == false {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                    self?.places = places
+                                    self?.show(.button, preAction: { self?.updateButtonText(with: "Next") })
+                                }
+                            } else {
+                                self?.show(.button, preAction: { self?.updateButtonText(with: "No Beer Found") })
+                            }
+                        case .error(let error):
+                            self?.show(.button, preAction: { self?.updateButtonText(with: error.localizedDescription) })
+                        }
+                    }
                 case .error(let error):
                     self?.show(.button, preAction: { self?.updateButtonText(with: error.localizedDescription) })
                 }

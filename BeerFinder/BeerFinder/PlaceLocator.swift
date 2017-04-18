@@ -8,14 +8,51 @@
 
 import MapKit
 
-class PlaceLocator {
+protocol PlaceLocatable {
+    func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<[PlaceLocator.MapItem]>) -> Void)?)
+}
+
+protocol PlaceLocatableConsumer {
+    var placeLocator: PlaceLocatable { get set }
+}
+
+extension PlaceLocatableConsumer {
+    mutating func configure(with locatable: PlaceLocatable) {
+        self.placeLocator = locatable
+    }
+}
+
+class PlaceLocator: PlaceLocatable {
     
-    func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Any) -> Void)?) {
+    class MapItem: NSObject, MKAnnotation {
+        let name: String
+        let placemark: MKPlacemark
+        init(name: String, placemark: MKPlacemark) {
+            self.name = name
+            self.placemark = placemark
+            super.init()
+        }
+        let subtitle: String? = nil
+        var coordinate: CLLocationCoordinate2D {
+            return self.placemark.coordinate
+        }
+    }
+    
+    func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<[MapItem]>) -> Void)?) {
         let request = MKLocalSearchRequest()
+        request.region = region
         request.naturalLanguageQuery = "beer"
         let search = MKLocalSearch(request: request)
         search.start { response, error in
-            //
+            if let response = response {
+                let places = response.mapItems.flatMap { mapKitItem -> MapItem? in
+                    guard let name = mapKitItem.name else { return nil }
+                    return MapItem(name: name, placemark: mapKitItem.placemark)
+                }
+                completionHandler?(.success(places))
+            } else {
+                completionHandler?(.error(error!))
+            }
         }
     }
     

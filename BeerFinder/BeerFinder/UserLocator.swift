@@ -8,14 +8,23 @@
 
 import CoreLocation
 
-enum Result<T> {
-    case success(T), error(Error)
+protocol UserLocatable {
+    func requestLocation(_: ((Result<CLLocation>) -> Void)?)
 }
 
-class UserLocator: NSObject, CLLocationManagerDelegate {
+protocol UserLocatableConsumer {
+    var userLocator: UserLocatable { get set }
+}
+
+extension UserLocatableConsumer {
+    mutating func configure(with locater: UserLocatable) {
+        self.userLocator = locater
+    }
+}
+
+class UserLocator: NSObject, CLLocationManagerDelegate, UserLocatable {
     
     private var locateHandler: ((Result<CLLocation>) -> Void)?
-    private var permissionHandler: ((CLAuthorizationStatus) -> Void)?
     private let manager = CLLocationManager()
     
     override init() {
@@ -24,18 +33,9 @@ class UserLocator: NSObject, CLLocationManagerDelegate {
         self.manager.delegate = self
     }
     
-    var permission: CLAuthorizationStatus {
-        return CLLocationManager.authorizationStatus()
-    }
-    
     func requestLocation(_ completionHandler: ((Result<CLLocation>) -> Void)?) {
         self.locateHandler = completionHandler
         self.manager.requestLocation()
-    }
-    
-    func requestPermission(_ completionHandler: ((CLAuthorizationStatus) -> Void)?) {
-        self.manager.requestWhenInUseAuthorization()
-        self.permissionHandler = completionHandler
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -47,10 +47,4 @@ class UserLocator: NSObject, CLLocationManagerDelegate {
         self.locateHandler?(Result.error(error))
         self.locateHandler = nil
     }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        self.permissionHandler?(status)
-        self.permissionHandler = nil
-    }
-    
 }
