@@ -89,30 +89,45 @@ class FindLocationViewController: UIViewController, UserLocatableConsumer, Locat
                 self?.show(.label)
                 switch result {
                 case .success(let location):
-                    let coordinate = location.coordinate
-                    let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                    let region = MKCoordinateRegion(center: coordinate, span: span)
-                    self?.map?.setRegion(region, animated: true)
-                    self?.placeLocator.locateBeer(at: region) { result in
-                        switch result {
-                        case .success(let places):
-                            if places.isEmpty == false {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                                    self?.places = places
-                                    self?.show(.button, preAction: { self?.updateButtonText(with: "Next") })
-                                }
-                            } else {
-                                self?.show(.button, preAction: { self?.updateButtonText(with: "No Beer Found") })
-                            }
-                        case .error(let error):
-                            self?.show(.button, preAction: { self?.updateButtonText(with: error.localizedDescription) })
-                        }
-                    }
+                    self?.configureUI(with: location)
                 case .error(let error):
-                    self?.show(.button, preAction: { self?.updateButtonText(with: error.localizedDescription) })
+                    self?.configureUI(with: error)
                 }
             }
         }
+    }
+    
+    private func configureUI(with location: CLLocation) {
+        let coordinate = location.coordinate
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        self.map?.setRegion(region, animated: true)
+        self.placeLocator.locateBeer(at: region) { result in
+            switch result {
+            case .success(let places):
+                self.configureUI(with: places)
+            case .error(let error):
+                self.configureUI(with: error)
+            }
+        }
+    }
+    
+    private func configureUI(with places: [PlaceLocator.MapItem]) {
+        guard places.isEmpty == false else {
+            self.updateButtonText(with: "No Beer Found")
+            self.show(.button)
+            return
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.places = places
+            self.updateButtonText(with: "Next")
+            self.show(.button)
+        }
+    }
+    
+    private func configureUI(with error: Error) {
+        self.updateButtonText(with: error.localizedDescription)
+        self.show(.button)
     }
     
     private func showDeniedError() {
@@ -133,8 +148,7 @@ class FindLocationViewController: UIViewController, UserLocatableConsumer, Locat
         case button, label, neither
     }
     
-    private func show(_ show: Show, preAction: (() -> Void)? = nil, postAction: (() -> Void)? = nil) {
-        preAction?()
+    private func show(_ show: Show, completion: (() -> Void)? = nil) {
         UIView.animate(withDuration: 0.3, animations: {
             switch show {
             case .button:
@@ -148,21 +162,21 @@ class FindLocationViewController: UIViewController, UserLocatableConsumer, Locat
                 self.labelViewConstraint?.constant = self.viewHideConstant
             }
             self.view.layoutIfNeeded()
-        }, completion: { _ in postAction?() })
+        }, completion: { _ in completion?() })
     }
     
     private func newDeniedAlert() -> UIAlertController {
         let alertVC = UIAlertController(title: "Location Denied", message: "Location permissions has been denied. Please open settings to grant location permissions to this app.", preferredStyle: .alert)
         let settings = UIAlertAction(title: "Settings", style: .default) { action in
-            self.show(.button, preAction: {
-                self.updateButtonText()
-            }, postAction: {
+            self.updateButtonText()
+            self.show(.button) {
                 let appSettings = URL(string: UIApplicationOpenSettingsURLString)!
                 UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
-            })
+            }
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
-            self.show(.button, preAction: { self.updateButtonText() }, postAction: nil)
+            self.updateButtonText()
+            self.show(.button)
         }
         alertVC.addAction(settings)
         alertVC.addAction(cancel)
@@ -172,7 +186,8 @@ class FindLocationViewController: UIViewController, UserLocatableConsumer, Locat
     private func newRestrictedAlert() -> UIAlertController {
         let alertVC = UIAlertController(title: "Location Restricted", message: "Contact your device administrator to continue using this app.", preferredStyle: .alert)
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
-            self.show(.button, preAction: { self.updateButtonText() }, postAction: nil)
+            self.updateButtonText()
+            self.show(.button)
         }
         alertVC.addAction(cancel)
         return alertVC
