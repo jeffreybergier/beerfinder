@@ -27,7 +27,7 @@ class FindLocationViewController: UIViewController, UserLocatableConsumer, Locat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.buttonVC = self.childViewControllers.first(of: LoaderAndButtonShowingViewController.self)!
+        self.buttonVC = self.childViewControllers.firstWithInferredType()
         self.updateButtonText()
         self.buttonVC?.buttonTapped = { [weak self] in
             self?.nextStep()

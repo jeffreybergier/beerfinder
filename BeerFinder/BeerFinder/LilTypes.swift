@@ -8,12 +8,12 @@
 
 import UIKit
 
-enum Result<T> {
+internal enum Result<T> {
     case success(T), error(Error)
 }
 
-extension Sequence {
-    func first<T>(of _: T.Type) -> T? {
-        return first(where: { $0 is T }) as? T
+internal extension Sequence {
+    internal func firstWithInferredType<T>() -> T? {
+        return self.first(where: { $0 is T }) as? T
     }
 }
