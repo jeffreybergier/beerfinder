@@ -6,8 +6,14 @@
 //  Copyright © 2017 Jeffrey Bergier. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum Result<T> {
     case success(T), error(Error)
+}
+
+extension Sequence {
+    func first<T>(of _: T.Type) -> T? {
+        return first(where: { $0 is T }) as? T
+    }
 }
