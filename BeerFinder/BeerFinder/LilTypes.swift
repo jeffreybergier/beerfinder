@@ -19,9 +19,11 @@ internal extension Sequence {
 }
 
 internal extension UIApplication {
-    internal func openSettings() {
+    @discardableResult
+    internal func openSettings() -> URL {
         let appSettings = URL(string: UIApplicationOpenSettingsURLString)!
         self.open(appSettings, options: [:], completionHandler: nil)
+        return appSettings
     }
 }
 
