@@ -64,8 +64,11 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
     
     private func nextStep() {
         if let places = places, places.isEmpty == false {
-            let placesVC = ListPlacesViewController.newVC()
-            self.present(placesVC, animated: true, completion: nil)
+            self.buttonVC?.updateUI(.neither) {
+                let placesVC = ListPlacesViewController.newVC()
+                placesVC.places = places
+                self.present(placesVC, animated: true, completion: nil)
+            }
         } else {
             switch self.locationPermitter.permission {
             case .notDetermined:
@@ -141,14 +144,25 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
     
     private func errorStep_showLocationDeniedAlert() {
         self.buttonVC?.updateUI(.neither) {
-            let vc = self.newDeniedAlert()
+            let vc = UIAlertController.locationDenied(settingsHandler: { _ in
+                self.updateButtonText()
+                self.buttonVC?.updateUI(.button) {
+                    UIApplication.shared.openSettings()
+                }
+            }, cancelHandler: { _ in
+                self.updateButtonText()
+                self.buttonVC?.updateUI(.button)
+            })
             self.present(vc, animated: true, completion: nil)
         }
     }
     
     private func errorStep_showLocationRestrictedAlert() {
         self.buttonVC?.updateUI(.neither) {
-            let vc = self.newRestrictedAlert()
+            let vc = UIAlertController.locationRestricted(cancelHandler: { _ in
+                self.updateButtonText()
+                self.buttonVC?.updateUI(.button)
+            })
             self.present(vc, animated: true, completion: nil)
         }
     }
@@ -164,33 +178,5 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
                 self.buttonVC?.setButton(text: "Location Error")
             }
         }
-    }
-    
-    private func newDeniedAlert() -> UIAlertController {
-        let alertVC = UIAlertController(title: "Location Denied", message: "Location permissions has been denied. Please open settings to grant location permissions to this app.", preferredStyle: .alert)
-        let settings = UIAlertAction(title: "Settings", style: .default) { action in
-            self.updateButtonText()
-            self.buttonVC?.updateUI(.button) {
-                let appSettings = URL(string: UIApplicationOpenSettingsURLString)!
-                UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
-            }
-        }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
-            self.updateButtonText()
-            self.buttonVC?.updateUI(.button)
-        }
-        alertVC.addAction(settings)
-        alertVC.addAction(cancel)
-        return alertVC
-    }
-    
-    private func newRestrictedAlert() -> UIAlertController {
-        let alertVC = UIAlertController(title: "Location Restricted", message: "Contact your device administrator to continue using this app.", preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
-            self.updateButtonText()
-            self.buttonVC?.updateUI(.button)
-        }
-        alertVC.addAction(cancel)
-        return alertVC
     }
 }
