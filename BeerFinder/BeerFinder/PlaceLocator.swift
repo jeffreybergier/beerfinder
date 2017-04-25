@@ -8,23 +8,23 @@
 
 import MapKit
 
-protocol PlaceLocatable {
+internal protocol PlaceLocatable {
     func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<[PlaceLocator.MapItem]>) -> Void)?)
 }
 
-protocol PlaceLocatableConsumer {
+internal protocol HasPlaceLocatable {
     var placeLocator: PlaceLocatable { get set }
 }
 
-extension PlaceLocatableConsumer {
-    mutating func configure(with locatable: PlaceLocatable) {
+internal extension HasPlaceLocatable {
+    internal mutating func configure(with locatable: PlaceLocatable) {
         self.placeLocator = locatable
     }
 }
 
-class PlaceLocator: PlaceLocatable {
+internal class PlaceLocator: PlaceLocatable {
     
-    class MapItem: NSObject, MKAnnotation {
+    internal class MapItem: NSObject, MKAnnotation {
         let name: String
         let placemark: MKPlacemark
         init(name: String, placemark: MKPlacemark) {
@@ -38,7 +38,7 @@ class PlaceLocator: PlaceLocatable {
         }
     }
     
-    func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<[MapItem]>) -> Void)?) {
+    internal func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<[MapItem]>) -> Void)?) {
         let request = MKLocalSearchRequest()
         request.region = region
         request.naturalLanguageQuery = "beer"

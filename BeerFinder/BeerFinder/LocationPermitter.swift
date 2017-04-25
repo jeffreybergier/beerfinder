@@ -8,42 +8,42 @@
 
 import CoreLocation
 
-protocol LocationPermittable {
+internal protocol LocationPermittable {
     var permission: CLAuthorizationStatus { get }
     func requestPermission(_ completionHandler: ((CLAuthorizationStatus) -> Void)?)
 }
 
-protocol LocationPermittableConsumer {
+internal protocol HasLocationPermittable {
     var locationPermitter: LocationPermittable { get set }
 }
 
-extension LocationPermittableConsumer {
-    mutating func configure(with permitter: LocationPermittable) {
+internal extension HasLocationPermittable {
+    internal mutating func configure(with permitter: LocationPermittable) {
         self.locationPermitter = permitter
     }
 }
 
-class LocationPermitter: NSObject, CLLocationManagerDelegate, LocationPermittable {
+internal class LocationPermitter: NSObject, CLLocationManagerDelegate, LocationPermittable {
     
     private var permissionHandler: ((CLAuthorizationStatus) -> Void)?
     private let manager = CLLocationManager()
     
-    var permission: CLAuthorizationStatus {
+    internal var permission: CLAuthorizationStatus {
         return CLLocationManager.authorizationStatus()
     }
     
-    override init() {
+    internal override init() {
         super.init()
         self.manager.desiredAccuracy = kCLLocationAccuracyBest
         self.manager.delegate = self
     }
     
-    func requestPermission(_ completionHandler: ((CLAuthorizationStatus) -> Void)?) {
+    @objc internal func requestPermission(_ completionHandler: ((CLAuthorizationStatus) -> Void)?) {
         self.manager.requestWhenInUseAuthorization()
         self.permissionHandler = completionHandler
     }
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    @objc internal func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         self.permissionHandler?(status)
         self.permissionHandler = nil
     }

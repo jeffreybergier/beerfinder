@@ -9,14 +9,37 @@
 import UIKit
 import MapKit
 
-class FindLocationViewController: UIViewController, UserLocatableConsumer, LocationPermittableConsumer, PlaceLocatableConsumer {
+internal class FindLocationViewController: UIViewController, HasLocatable, HasLocationPermittable, HasPlaceLocatable, HasMapAnimatable {
 
     @IBOutlet private weak var map: MKMapView?
     @IBOutlet private weak var buttonVC: LoaderAndButtonShowingViewController?
     
-    var locationPermitter: LocationPermittable = LocationPermitter()
-    var userLocator: UserLocatable = UserLocator()
-    var placeLocator: PlaceLocatable = PlaceLocator()
+    internal var locationPermitter: LocationPermittable = LocationPermitter()
+    internal var userLocator: UserLocatable = UserLocator()
+    internal var placeLocator: PlaceLocatable = PlaceLocator()
+    internal var mapAnimator: MapAnimatable = MapAnimator()
+    
+    internal class func newVC(locationPermitter: LocationPermittable? = nil,
+                            userLocator: UserLocatable? = nil,
+                            placeLocator: PlaceLocatable? = nil,
+                            mapAnimator: MapAnimatable? = nil) -> FindLocationViewController
+    {
+        let storyboard = UIStoryboard(name: "FindLocation", bundle: Bundle(for: self))
+        let vc = storyboard.instantiateInitialViewController() as! FindLocationViewController
+        if let locationPermitter = locationPermitter {
+            vc.locationPermitter = locationPermitter
+        }
+        if let userLocator = userLocator {
+            vc.userLocator = userLocator
+        }
+        if let placeLocator = placeLocator {
+            vc.placeLocator = placeLocator
+        }
+        if let mapAnimator = mapAnimator {
+            vc.mapAnimator = mapAnimator
+        }
+        return vc
+    }
     
     private var places: [PlaceLocator.MapItem]? {
         didSet {
@@ -25,7 +48,7 @@ class FindLocationViewController: UIViewController, UserLocatableConsumer, Locat
         }
     }
     
-    override func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
         self.buttonVC = self.childViewControllers.firstWithInferredType()
         self.updateButtonText()
@@ -34,14 +57,15 @@ class FindLocationViewController: UIViewController, UserLocatableConsumer, Locat
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    internal override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.buttonVC?.updateUI(.button)
     }
     
     private func nextStep() {
         if let places = places, places.isEmpty == false {
-            print("ready to go to new screen")
+            let placesVC = ListPlacesViewController.newVC()
+            self.present(placesVC, animated: true, completion: nil)
         } else {
             switch self.locationPermitter.permission {
             case .notDetermined:
@@ -58,8 +82,8 @@ class FindLocationViewController: UIViewController, UserLocatableConsumer, Locat
     
     private func step1_showRequestLocationPermission() {
         self.buttonVC?.updateUI(.neither) {
-            self.locationPermitter.requestPermission() { [weak self] _ in
-                self?.nextStep()
+            self.locationPermitter.requestPermission() { _ in
+                self.nextStep()
             }
         }
     }
@@ -67,13 +91,13 @@ class FindLocationViewController: UIViewController, UserLocatableConsumer, Locat
     private func step2_findUserLocation() {
         self.places = nil
         self.buttonVC?.updateUI(.neither) {
-            self.userLocator.requestLocation() { [weak self] result in
-                self?.buttonVC?.updateUI(.loader)
+            self.userLocator.requestLocation() { result in
+                self.buttonVC?.updateUI(.loader)
                 switch result {
                 case .success(let location):
-                    self?.step3_updateUI(with: location)
+                    self.step3_updateUI(with: location)
                 case .error(let error):
-                    self?.errorStep_updateUI(with: error)
+                    self.errorStep_updateUI(with: error)
                 }
             }
         }
@@ -83,28 +107,31 @@ class FindLocationViewController: UIViewController, UserLocatableConsumer, Locat
         let coordinate = location.coordinate
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: coordinate, span: span)
-        self.map?.setRegion(region, animated: true)
-        self.placeLocator.locateBeer(at: region) { [weak self] result in
+        self.mapAnimator.setRegion(region, onMap: self.map) {
+            self.step4_findPlaces(within: region)
+        }
+    }
+    
+    private func step4_findPlaces(within region: MKCoordinateRegion) {
+        self.placeLocator.locateBeer(at: region) { result in
             switch result {
             case .success(let places):
-                self?.step4_updateUI(with: places)
+                self.step5_updateUI(with: places)
             case .error(let error):
-                self?.errorStep_updateUI(with: error)
+                self.errorStep_updateUI(with: error)
             }
         }
     }
     
-    private func step4_updateUI(with places: [PlaceLocator.MapItem]) {
+    private func step5_updateUI(with places: [PlaceLocator.MapItem]) {
         guard places.isEmpty == false else {
             self.updateButtonText(with: "No Beer Found")
             self.buttonVC?.updateUI(.button)
             return
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.places = places
-            self.updateButtonText(with: "Next")
-            self.buttonVC?.updateUI(.button)
-        }
+        self.places = places
+        self.updateButtonText(with: "Next")
+        self.buttonVC?.updateUI(.button)
     }
     
     private func errorStep_updateUI(with error: Error) {

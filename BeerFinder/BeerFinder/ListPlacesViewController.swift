@@ -9,9 +9,15 @@
 import UIKit
 import MapKit
 
-class ListPlacesViewController: UIViewController {
+internal class ListPlacesViewController: UIViewController {
     
     @IBOutlet private weak var map: MKMapView?
-    var places: [Any]?
+    internal var places: [Any]?
+    
+    internal class func newVC() -> ListPlacesViewController {
+        let storyboard = UIStoryboard(name: "ListPlaces", bundle: Bundle(for: self))
+        let vc = storyboard.instantiateInitialViewController() as! ListPlacesViewController
+        return vc
+    }
     
 }

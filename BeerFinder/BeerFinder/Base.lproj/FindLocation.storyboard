@@ -76,30 +76,27 @@
                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="NUz-8E-Yhk">
                                                 <rect key="frame" x="0.0" y="0.0" width="351" height="84"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j3W-yO-yAD">
-                                                        <rect key="frame" x="20" y="19" width="311" height="46"/>
-                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
-                                                        <state key="normal" title="Find Location"/>
-                                                        <connections>
-                                                            <action selector="buttonTapped:" destination="CAw-ta-1mY" eventType="touchUpInside" id="jZE-jG-0Rk"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="j3W-yO-yAD" secondAttribute="trailing" constant="20" symbolic="YES" id="97A-tu-HKn"/>
-                                                    <constraint firstItem="j3W-yO-yAD" firstAttribute="centerY" secondItem="NUz-8E-Yhk" secondAttribute="centerY" id="UyA-fh-nXZ"/>
-                                                    <constraint firstItem="j3W-yO-yAD" firstAttribute="leading" secondItem="NUz-8E-Yhk" secondAttribute="leading" constant="20" symbolic="YES" id="tmP-h3-p3P"/>
-                                                </constraints>
                                             </view>
                                             <vibrancyEffect>
                                                 <blurEffect style="extraLight"/>
                                             </vibrancyEffect>
                                         </visualEffectView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g1q-bj-6TD">
+                                            <rect key="frame" x="89.5" y="18.5" width="172" height="46"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
+                                            <state key="normal" title="Find Location">
+                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="buttonTapped:" destination="CAw-ta-1mY" eventType="touchUpInside" id="9He-tL-lD6"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="vCP-l1-TIY" firstAttribute="top" secondItem="AzK-LM-Qu6" secondAttribute="top" id="4pc-8q-Ryr"/>
                                         <constraint firstAttribute="bottom" secondItem="vCP-l1-TIY" secondAttribute="bottom" id="6PX-Bc-Ckf"/>
+                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="centerY" secondItem="AzK-LM-Qu6" secondAttribute="centerY" id="Fwq-cx-m6b"/>
+                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="centerX" secondItem="AzK-LM-Qu6" secondAttribute="centerX" id="HtJ-bZ-0JQ"/>
                                         <constraint firstItem="vCP-l1-TIY" firstAttribute="leading" secondItem="AzK-LM-Qu6" secondAttribute="leading" id="Yz4-uh-Rkr"/>
                                         <constraint firstAttribute="trailing" secondItem="vCP-l1-TIY" secondAttribute="trailing" id="kPs-IQ-azs"/>
                                     </constraints>
@@ -122,36 +119,31 @@
                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="wIO-L4-DJO">
                                                 <rect key="frame" x="0.0" y="0.0" width="351" height="84"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Gxx-gV-uYy">
-                                                        <rect key="frame" x="47.5" y="23.5" width="257" height="37"/>
-                                                        <subviews>
-                                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="doX-AE-LSA">
-                                                                <rect key="frame" x="0.0" y="0.0" width="37" height="37"/>
-                                                            </activityIndicatorView>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finding Location..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kF2-dj-65d">
-                                                                <rect key="frame" x="45" y="0.0" width="212" height="37"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Gxx-gV-uYy" secondAttribute="trailing" constant="20" symbolic="YES" id="93W-qq-oKx"/>
-                                                    <constraint firstItem="Gxx-gV-uYy" firstAttribute="centerX" secondItem="wIO-L4-DJO" secondAttribute="centerX" id="PMc-mm-lob"/>
-                                                    <constraint firstItem="Gxx-gV-uYy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wIO-L4-DJO" secondAttribute="leading" constant="20" symbolic="YES" id="ddQ-WU-xKN"/>
-                                                    <constraint firstItem="Gxx-gV-uYy" firstAttribute="centerY" secondItem="wIO-L4-DJO" secondAttribute="centerY" id="i01-Tv-JO6"/>
-                                                </constraints>
                                             </view>
                                             <vibrancyEffect>
                                                 <blurEffect style="extraLight"/>
                                             </vibrancyEffect>
                                         </visualEffectView>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="oab-dP-3wn">
+                                            <rect key="frame" x="79.5" y="30" width="193" height="24"/>
+                                            <subviews>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="cWf-n0-pTI">
+                                                    <rect key="frame" x="0.0" y="2" width="20" height="20"/>
+                                                    <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                </activityIndicatorView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finding Location..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XWu-20-07J">
+                                                    <rect key="frame" x="28" y="0.0" width="165" height="24"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="GFJ-Rd-8IQ" secondAttribute="bottom" id="0ac-00-SbM"/>
+                                        <constraint firstItem="oab-dP-3wn" firstAttribute="centerX" secondItem="gT5-Gf-mhy" secondAttribute="centerX" id="1ll-65-8oM"/>
+                                        <constraint firstItem="oab-dP-3wn" firstAttribute="centerY" secondItem="gT5-Gf-mhy" secondAttribute="centerY" id="3q4-2T-8q3"/>
                                         <constraint firstItem="GFJ-Rd-8IQ" firstAttribute="leading" secondItem="gT5-Gf-mhy" secondAttribute="leading" id="lz3-30-WUv"/>
                                         <constraint firstAttribute="trailing" secondItem="GFJ-Rd-8IQ" secondAttribute="trailing" id="uo4-bj-ZGL"/>
                                         <constraint firstItem="GFJ-Rd-8IQ" firstAttribute="top" secondItem="gT5-Gf-mhy" secondAttribute="top" id="wB4-kX-NFK"/>
@@ -178,7 +170,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="button" destination="j3W-yO-yAD" id="gdQ-pE-y1e"/>
+                        <outlet property="button" destination="g1q-bj-6TD" id="2As-64-blV"/>
                         <outlet property="buttonView" destination="hNj-73-TVg" id="Yfh-y2-yIU"/>
                         <outlet property="loadingView" destination="GON-3l-KxJ" id="mD1-MD-D0p"/>
                     </connections>

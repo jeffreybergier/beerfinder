@@ -8,42 +8,42 @@
 
 import CoreLocation
 
-protocol UserLocatable {
+internal protocol UserLocatable {
     func requestLocation(_: ((Result<CLLocation>) -> Void)?)
 }
 
-protocol UserLocatableConsumer {
+internal protocol HasLocatable {
     var userLocator: UserLocatable { get set }
 }
 
-extension UserLocatableConsumer {
-    mutating func configure(with locater: UserLocatable) {
+internal extension HasLocatable {
+    internal mutating func configure(with locater: UserLocatable) {
         self.userLocator = locater
     }
 }
 
-class UserLocator: NSObject, CLLocationManagerDelegate, UserLocatable {
+internal class UserLocator: NSObject, CLLocationManagerDelegate, UserLocatable {
     
     private var locateHandler: ((Result<CLLocation>) -> Void)?
     private let manager = CLLocationManager()
     
-    override init() {
+    internal override init() {
         super.init()
         self.manager.desiredAccuracy = kCLLocationAccuracyBest
         self.manager.delegate = self
     }
     
-    func requestLocation(_ completionHandler: ((Result<CLLocation>) -> Void)?) {
+    internal func requestLocation(_ completionHandler: ((Result<CLLocation>) -> Void)?) {
         self.locateHandler = completionHandler
         self.manager.requestLocation()
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    @objc internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         self.locateHandler?(Result.success(locations.first!))
         self.locateHandler = nil
     }
 
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    @objc internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         self.locateHandler?(Result.error(error))
         self.locateHandler = nil
     }

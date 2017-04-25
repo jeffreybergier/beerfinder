@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoaderAndButtonShowingViewController: UIViewController {
+internal class LoaderAndButtonShowingViewController: UIViewController {
     
     @IBOutlet private weak var buttonView: UIView?
     @IBOutlet private weak var loadingView: UIView?
@@ -20,7 +20,7 @@ class LoaderAndButtonShowingViewController: UIViewController {
     private let viewShowConstant: CGFloat = -84
     private let viewHideConstant: CGFloat = 12
     
-    override func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
     
         self.buttonViewConstraint = self.buttonView?.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: self.viewHideConstant)
