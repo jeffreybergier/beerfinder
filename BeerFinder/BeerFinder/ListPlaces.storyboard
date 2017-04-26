@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="8Cq-jN-BpN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="8Cq-jN-BpN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -75,7 +76,10 @@
                                             <rect key="frame" x="20" y="19" width="311" height="46"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kT4-Gy-TXb">
-                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="46"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="46" height="46"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="kT4-Gy-TXb" secondAttribute="height" multiplier="1:1" id="Hf3-vh-BnP"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                     <state key="normal" title="&lt;">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -90,9 +94,15 @@
                                                     <state key="normal" title="Start">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="placeChosen:" destination="8Cq-jN-BpN" eventType="touchUpInside" id="0rp-PY-Z17"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UA7-OA-79p">
-                                                    <rect key="frame" x="281" y="0.0" width="30" height="46"/>
+                                                    <rect key="frame" x="265" y="0.0" width="46" height="46"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="UA7-OA-79p" secondAttribute="height" multiplier="1:1" id="45N-o1-DdT"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                     <state key="normal" title="&gt;">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

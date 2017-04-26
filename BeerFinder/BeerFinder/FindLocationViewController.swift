@@ -12,7 +12,7 @@ import MapKit
 internal class FindLocationViewController: UIViewController, HasLocatable, HasLocationPermittable, HasPlaceLocatable, HasMapAnimatable {
 
     @IBOutlet private weak var map: MKMapView?
-    @IBOutlet private weak var buttonVC: LoaderAndButtonShowingViewController?
+    /*@IBOutlet*/ private weak var buttonVC: LoaderAndButtonShowingViewController?
     
     internal var locationPermitter: LocationPermittable = LocationPermitter()
     internal var userLocator: UserLocatable = UserLocator()
@@ -50,7 +50,7 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
     
     internal override func viewDidLoad() {
         super.viewDidLoad()
-        self.buttonVC = self.childViewControllers.firstWithInferredType()
+        self.buttonVC = self.childViewControllers.first()
         self.updateButtonText()
         self.buttonVC?.buttonTapped = { [weak self] in
             self?.nextStep()
@@ -67,6 +67,9 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
             self.buttonVC?.updateUI(.neither) {
                 let placesVC = ListPlacesViewController.newVC()
                 placesVC.places = places
+                placesVC.placeSelection = { selectedPlace in
+                    print("Selected: \(selectedPlace.name)")
+                }
                 self.present(placesVC, animated: true, completion: nil)
             }
         } else {

@@ -17,6 +17,7 @@ internal class ListPlacesViewController: UIViewController {
     @IBOutlet private weak var distanceLabel: UILabel?
 
     internal var places: [PlaceLocator.MapItem] = []
+    internal var placeSelection: ((PlaceLocator.MapItem) -> Void)?
     private var currentIndex = 0
     
     internal class func newVC() -> ListPlacesViewController {
@@ -30,16 +31,40 @@ internal class ListPlacesViewController: UIViewController {
         self.updateUIWithData()
     }
     
+    @IBAction private func placeChosen(_ sender: NSObject?) {
+        self.dismiss(animated: true) {
+            let place = self.places[self.currentIndex]
+            self.placeSelection?(place)
+        }
+    }
+    
+    
     private func updateUIWithData() {
+        let place = self.places[self.currentIndex]
         
+        self.titleLabel?.text = place.name
+        self.distanceLabel?.text = "\(place.placemark.coordinate.latitude)"
+        
+        if self.currentIndex >= self.places.count - 1 {
+            self.nextButton?.disable()
+        } else {
+            self.nextButton?.enable()
+        }
+        if self.currentIndex <= 0 {
+            self.previousButton?.disable()
+        } else {
+            self.previousButton?.enable()
+        }
     }
     
     @IBAction private func next(_ sender: NSObject?) {
         self.currentIndex += 1
+        self.updateUIWithData()
     }
     
     @IBAction private func previous(_ sender: NSObject?) {
         self.currentIndex -= 1
+        self.updateUIWithData()
     }
     
 }

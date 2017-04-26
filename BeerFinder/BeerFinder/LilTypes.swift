@@ -13,8 +13,19 @@ internal enum Result<T> {
 }
 
 internal extension Sequence {
-    internal func firstWithInferredType<T>() -> T? {
+    internal func first<T>(of type: T.Type? = nil) -> T? {
         return self.first(where: { $0 is T }) as? T
+    }
+}
+
+extension UIButton {
+    func disable() {
+        self.isEnabled = false
+        self.alpha = 0.4
+    }
+    func enable() {
+        self.isEnabled = true
+        self.alpha = 1.0
     }
 }
 
