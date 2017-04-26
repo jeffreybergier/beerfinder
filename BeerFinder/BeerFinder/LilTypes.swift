@@ -6,6 +6,7 @@
 //  Copyright © 2017 Jeffrey Bergier. All rights reserved.
 //
 
+import CoreLocation
 import UIKit
 
 internal enum Result<T> {
@@ -18,14 +19,22 @@ internal extension Sequence {
     }
 }
 
-extension UIButton {
-    func disable() {
+internal extension UIButton {
+    internal func disable() {
         self.isEnabled = false
         self.alpha = 0.4
     }
-    func enable() {
+    internal func enable() {
         self.isEnabled = true
         self.alpha = 1.0
+    }
+}
+
+internal extension CLLocation {
+    internal func distance(from placeLocation: CLLocationCoordinate2D) -> CLLocationDistance {
+        let placeCoordinate = CLLocation(latitude: placeLocation.latitude, longitude: placeLocation.longitude)
+        let distance = self.distance(from: placeCoordinate)
+        return distance
     }
 }
 

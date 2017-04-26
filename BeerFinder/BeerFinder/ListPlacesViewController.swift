@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLocatable {
+internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLocatable, HasDistanceCalculatable {
     
     @IBOutlet private weak var previousButton: UIButton?
     @IBOutlet private weak var nextButton: UIButton?
@@ -18,6 +18,7 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
 
     internal var locations: MultiPlaceUserLocatable?
     internal var selectionMade: ((SinglePlaceUserLocatable) -> Void)?
+    internal var distanceCalculator: DistanceCalculatable = DistanceCalculator()
     
     private var currentIndex = 0
     
@@ -51,9 +52,11 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
         
         let places = locations.places
         let place = places[self.currentIndex]
-        
+    
         self.titleLabel?.text = place.name
-        self.distanceLabel?.text = "\(place.placemark.coordinate.latitude)"
+        
+        let distance = locations.userLocation.distance(from: place.coordinate)
+        self.distanceLabel?.text = self.distanceCalculator.localizedDistance(from: distance)
         
         if self.currentIndex >= places.count - 1 {
             self.nextButton?.disable()

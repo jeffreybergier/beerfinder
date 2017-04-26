@@ -64,14 +64,7 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
     
     private func nextStep() {
         if let locations = self.locations, locations.places.isEmpty == false {
-            self.buttonVC?.updateUI(.neither) {
-                var placesVC = ListPlacesViewController.newVC()
-                placesVC.configure(with: locations)
-                placesVC.selectionMade = { location in
-                    print("Selected: \(location.place.name)")
-                }
-                self.present(placesVC, animated: true, completion: nil)
-            }
+            self.step6_showChooserVC(for: locations)
         } else {
             switch self.locationPermitter.permission {
             case .notDetermined:
@@ -139,6 +132,22 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
         self.locations = locations
         self.updateButtonText(with: "Next")
         self.buttonVC?.updateUI(.button)
+    }
+    
+    private func step6_showChooserVC(for locations: MultiPlaceUserLocatable) {
+        precondition(locations.places.isEmpty == false, "Places to Choose from Must be Greater than 0")
+        self.buttonVC?.updateUI(.neither) {
+            var placesVC = ListPlacesViewController.newVC()
+            placesVC.configure(with: locations)
+            placesVC.selectionMade = { location in
+                self.step7_showSearchVC(for: location)
+            }
+            self.present(placesVC, animated: true, completion: nil)
+        }
+    }
+    
+    private func step7_showSearchVC(for location: SinglePlaceUserLocatable) {
+        print("show vc for: \(location.place.name)")
     }
     
     private func errorStep_updateUI(with error: Error) {
