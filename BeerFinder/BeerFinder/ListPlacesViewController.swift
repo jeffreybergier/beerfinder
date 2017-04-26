@@ -22,9 +22,13 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
     
     private var currentIndex = 0
     
-    internal class func newVC() -> ListPlacesViewController {
+    internal class func newVC(locations: MultiPlaceUserLocatable? = nil,
+                              distanceCalculator: DistanceCalculatable? = nil) -> ListPlacesViewController
+    {
         let storyboard = UIStoryboard(name: "ListPlaces", bundle: Bundle(for: self))
-        let vc = storyboard.instantiateInitialViewController() as! ListPlacesViewController
+        var vc = storyboard.instantiateInitialViewController() as! ListPlacesViewController
+        vc.configure(with: locations)
+        vc.configure(with: distanceCalculator)
         return vc
     }
     

@@ -17,7 +17,8 @@ internal protocol HasDistanceCalculatable {
 }
 
 internal extension HasDistanceCalculatable {
-    internal mutating func configure(with distanceCalculator: DistanceCalculatable) {
+    internal mutating func configure(with distanceCalculator: DistanceCalculatable?) {
+        guard let distanceCalculator = distanceCalculator else { return }
         self.distanceCalculator = distanceCalculator
     }
 }

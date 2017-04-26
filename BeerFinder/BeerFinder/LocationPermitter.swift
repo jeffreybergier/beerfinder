@@ -18,7 +18,8 @@ internal protocol HasLocationPermittable {
 }
 
 internal extension HasLocationPermittable {
-    internal mutating func configure(with permitter: LocationPermittable) {
+    internal mutating func configure(with permitter: LocationPermittable?) {
+        guard let permitter = permitter else { return }
         self.locationPermitter = permitter
     }
 }

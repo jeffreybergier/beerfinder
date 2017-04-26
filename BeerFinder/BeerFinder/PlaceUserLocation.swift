@@ -18,7 +18,8 @@ internal protocol HasMultiPlaceUserLocatable {
 }
 
 internal extension HasMultiPlaceUserLocatable {
-    internal mutating func configure(with locations: MultiPlaceUserLocatable) {
+    internal mutating func configure(with locations: MultiPlaceUserLocatable?) {
+        guard let locations = locations else { return }
         self.locations = locations
     }
 }
@@ -38,8 +39,9 @@ internal protocol HasSinglePlaceUserLocatable {
 }
 
 internal extension HasSinglePlaceUserLocatable {
-    internal mutating func configure(with locations: SinglePlaceUserLocatable) {
-        self.locations = locations
+    internal mutating func configure(with location: SinglePlaceUserLocatable?) {
+        guard let location = location else { return }
+        self.locations = location
     }
 }
 

@@ -12,12 +12,13 @@ internal protocol UserLocatable {
     func requestLocation(_: ((Result<CLLocation>) -> Void)?)
 }
 
-internal protocol HasLocatable {
+internal protocol HasUserLocatable {
     var userLocator: UserLocatable { get set }
 }
 
-internal extension HasLocatable {
-    internal mutating func configure(with locater: UserLocatable) {
+internal extension HasUserLocatable {
+    internal mutating func configure(with locater: UserLocatable?) {
+        guard let locater = locater else { return }
         self.userLocator = locater
     }
 }

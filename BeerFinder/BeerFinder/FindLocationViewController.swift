@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-internal class FindLocationViewController: UIViewController, HasLocatable, HasLocationPermittable, HasPlaceLocatable, HasMapAnimatable, HasMultiPlaceUserLocatable {
+internal class FindLocationViewController: UIViewController, HasUserLocatable, HasLocationPermittable, HasPlaceLocatable, HasMapAnimatable, HasMultiPlaceUserLocatable {
 
     @IBOutlet private weak var map: MKMapView?
     /*@IBOutlet*/ private weak var buttonVC: LoaderAndButtonShowingViewController?
@@ -25,19 +25,11 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
                             mapAnimator: MapAnimatable? = nil) -> FindLocationViewController
     {
         let storyboard = UIStoryboard(name: "FindLocation", bundle: Bundle(for: self))
-        let vc = storyboard.instantiateInitialViewController() as! FindLocationViewController
-        if let locationPermitter = locationPermitter {
-            vc.locationPermitter = locationPermitter
-        }
-        if let userLocator = userLocator {
-            vc.userLocator = userLocator
-        }
-        if let placeLocator = placeLocator {
-            vc.placeLocator = placeLocator
-        }
-        if let mapAnimator = mapAnimator {
-            vc.mapAnimator = mapAnimator
-        }
+        var vc = storyboard.instantiateInitialViewController() as! FindLocationViewController
+        vc.configure(with: locationPermitter)
+        vc.configure(with: userLocator)
+        vc.configure(with: placeLocator)
+        vc.configure(with: mapAnimator)
         return vc
     }
     

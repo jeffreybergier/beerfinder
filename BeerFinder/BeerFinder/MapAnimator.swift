@@ -17,7 +17,8 @@ internal protocol HasMapAnimatable {
 }
 
 internal extension HasMapAnimatable {
-    internal mutating func configure(with mapAnimator: MapAnimatable) {
+    internal mutating func configure(with mapAnimator: MapAnimatable?) {
+        guard let mapAnimator = mapAnimator else { return }
         self.mapAnimator = mapAnimator
     }
 }

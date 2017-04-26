@@ -17,7 +17,8 @@ internal protocol HasPlaceLocatable {
 }
 
 internal extension HasPlaceLocatable {
-    internal mutating func configure(with locatable: PlaceLocatable) {
+    internal mutating func configure(with locatable: PlaceLocatable?) {
+        guard let locatable = locatable else { return }
         self.placeLocator = locatable
     }
 }
