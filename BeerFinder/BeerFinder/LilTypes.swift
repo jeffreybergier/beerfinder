@@ -6,6 +6,7 @@
 //  Copyright © 2017 Jeffrey Bergier. All rights reserved.
 //
 
+import MapKit
 import CoreLocation
 import UIKit
 
@@ -35,6 +36,14 @@ internal extension CLLocation {
         let placeCoordinate = CLLocation(latitude: placeLocation.latitude, longitude: placeLocation.longitude)
         let distance = self.distance(from: placeCoordinate)
         return distance
+    }
+}
+
+extension MKCoordinateRegion {
+    init(location: CLLocation) {
+        let coordinate = location.coordinate
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        self.init(center: coordinate, span: span)
     }
 }
 

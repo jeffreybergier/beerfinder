@@ -95,9 +95,7 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     }
     
     private func step3_updateUI(with location: CLLocation) {
-        let coordinate = location.coordinate
-        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-        let region = MKCoordinateRegion(center: coordinate, span: span)
+        let region = MKCoordinateRegion(location: location)
         self.mapAnimator.setRegion(region, onMap: self.map) {
             self.step4_findPlaces(within: region, userLocation: location)
         }
@@ -139,7 +137,9 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     }
     
     private func step7_showSearchVC(for location: SinglePlaceUserLocatable) {
-        print("show vc for: \(location.place.name)")
+        var vc = PlaceProximityViewController.newVC()
+        vc.configure(with: location)
+        self.present(vc, animated: true, completion: nil)
     }
     
     private func errorStep_updateUI(with error: Error) {

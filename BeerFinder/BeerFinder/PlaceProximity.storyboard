@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="KsU-9e-lqN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Place Proximity View Controller-->
         <scene sceneID="AGa-fp-fEY">
             <objects>
-                <viewController id="KsU-9e-lqN" sceneMemberID="viewController">
+                <viewController id="KsU-9e-lqN" customClass="PlaceProximityViewController" customModule="BeerFinder" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nqF-J4-gCZ"/>
                         <viewControllerLayoutGuide type="bottom" id="3oU-Ms-MIM"/>
@@ -21,9 +22,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OKB-NU-bbW">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKB-NU-bbW">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </mapView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OuQ-dD-3el">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="gFs-BH-dfD" kind="embed" id="Blg-Cb-TNN"/>
+                                </connections>
+                            </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="↑" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vN-xL-CXg">
                                 <rect key="frame" x="125.5" y="244" width="123.5" height="179.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="150"/>
@@ -33,18 +41,77 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="OuQ-dD-3el" firstAttribute="width" secondItem="OKB-NU-bbW" secondAttribute="width" id="8Z8-mY-l68"/>
                             <constraint firstItem="9vN-xL-CXg" firstAttribute="centerY" secondItem="nrh-d5-FUy" secondAttribute="centerY" id="9kY-ii-hEq"/>
                             <constraint firstItem="OKB-NU-bbW" firstAttribute="height" secondItem="nrh-d5-FUy" secondAttribute="height" id="HIx-ys-kbi"/>
                             <constraint firstItem="9vN-xL-CXg" firstAttribute="centerX" secondItem="nrh-d5-FUy" secondAttribute="centerX" id="JS0-O3-1wX"/>
                             <constraint firstItem="OKB-NU-bbW" firstAttribute="width" secondItem="nrh-d5-FUy" secondAttribute="width" id="Mc4-g0-6wA"/>
+                            <constraint firstItem="OuQ-dD-3el" firstAttribute="centerY" secondItem="OKB-NU-bbW" secondAttribute="centerY" id="NHk-WE-ddg"/>
+                            <constraint firstItem="OuQ-dD-3el" firstAttribute="height" secondItem="OKB-NU-bbW" secondAttribute="height" id="SXP-JE-vPH"/>
                             <constraint firstItem="OKB-NU-bbW" firstAttribute="centerX" secondItem="nrh-d5-FUy" secondAttribute="centerX" id="StL-4v-uAV"/>
                             <constraint firstItem="OKB-NU-bbW" firstAttribute="centerY" secondItem="nrh-d5-FUy" secondAttribute="centerY" id="WFe-Wg-4Yr"/>
+                            <constraint firstItem="OuQ-dD-3el" firstAttribute="centerX" secondItem="OKB-NU-bbW" secondAttribute="centerX" id="nNl-gP-e9X"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="map" destination="OKB-NU-bbW" id="f5W-ua-WbE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pgT-NJ-4zS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-134" y="186"/>
+        </scene>
+        <!--Hard Mode View Controller-->
+        <scene sceneID="cA1-px-R94">
+            <objects>
+                <viewController id="gFs-BH-dfD" customClass="HardModeViewController" customModule="BeerFinder" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sOw-Hn-6BI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9ap-by-EX0">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="F4n-M8-HTe">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="wR8-NF-qPe">
+                                <rect key="frame" x="28" y="616" width="142.5" height="31"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hard Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DPv-0g-wsd">
+                                        <rect key="frame" x="0.0" y="0.0" width="85.5" height="31"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="7ld-fb-FwH">
+                                        <rect key="frame" x="93.5" y="0.0" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="hardModeToggled:" destination="gFs-BH-dfD" eventType="valueChanged" id="rqo-Ve-nZF"/>
+                                        </connections>
+                                    </switch>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9ap-by-EX0" firstAttribute="height" secondItem="sOw-Hn-6BI" secondAttribute="height" id="2at-Qe-TJu"/>
+                            <constraint firstItem="9ap-by-EX0" firstAttribute="centerY" secondItem="sOw-Hn-6BI" secondAttribute="centerY" id="65C-Aw-E33"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="wR8-NF-qPe" secondAttribute="bottom" constant="20" id="DPw-FN-XPQ"/>
+                            <constraint firstItem="wR8-NF-qPe" firstAttribute="leading" secondItem="sOw-Hn-6BI" secondAttribute="leadingMargin" constant="12" id="GOv-DY-3hV"/>
+                            <constraint firstItem="9ap-by-EX0" firstAttribute="centerX" secondItem="sOw-Hn-6BI" secondAttribute="centerX" id="LDo-Kj-lRi"/>
+                            <constraint firstItem="9ap-by-EX0" firstAttribute="width" secondItem="sOw-Hn-6BI" secondAttribute="width" id="Seu-RD-avE"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="blurView" destination="9ap-by-EX0" id="awL-wh-gpb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KaP-9U-8M8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="734" y="186"/>
         </scene>
     </scenes>
 </document>
