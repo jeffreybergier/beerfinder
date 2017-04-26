@@ -73,6 +73,7 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     
     private func step1_showRequestLocationPermission() {
         self.buttonVC?.updateUI(.neither) {
+            self.buttonVC?.setLoader(text: "Finding Location")
             self.locationPermitter.requestPermission() { _ in
                 self.nextStep()
             }
@@ -82,13 +83,15 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     private func step2_findUserLocation() {
         self.locations = nil
         self.buttonVC?.updateUI(.neither) {
-            self.userLocator.requestLocation() { result in
-                self.buttonVC?.updateUI(.loader)
-                switch result {
-                case .success(let location):
-                    self.step3_updateUI(with: location)
-                case .error(let error):
-                    self.errorStep_updateUI(with: error)
+            self.buttonVC?.setLoader(text: "Finding Location")
+            self.buttonVC?.updateUI(.loader) {
+                self.userLocator.requestLocation() { result in
+                    switch result {
+                    case .success(let location):
+                        self.step3_updateUI(with: location)
+                    case .error(let error):
+                        self.errorStep_updateUI(with: error)
+                    }
                 }
             }
         }
@@ -96,32 +99,39 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     
     private func step3_updateUI(with location: CLLocation) {
         let region = MKCoordinateRegion(location: location)
-        self.mapAnimator.setRegion(region, onMap: self.map) {
-            self.step4_findPlaces(within: region, userLocation: location)
+            self.mapAnimator.setRegion(region, onMap: self.map) {
+                self.buttonVC?.updateUI(.neither) {
+                    self.step4_findPlaces(within: region, userLocation: location)
+            }
         }
     }
     
     private func step4_findPlaces(within region: MKCoordinateRegion, userLocation: CLLocation) {
-        self.placeLocator.locateBeer(at: region) { result in
-            switch result {
-            case .success(let places):
-                let locations = MultiPlaceUserLocation(userLocation: userLocation, places: places)
-                self.step5_updateUI(with: locations)
-            case .error(let error):
-                self.errorStep_updateUI(with: error)
+        self.buttonVC?.setLoader(text: "Finding Beer")
+        self.buttonVC?.updateUI(.loader) {
+            self.placeLocator.locateBeer(at: region) { result in
+                switch result {
+                case .success(let places):
+                    let locations = MultiPlaceUserLocation(userLocation: userLocation, places: places)
+                    self.step5_updateUI(with: locations)
+                case .error(let error):
+                    self.errorStep_updateUI(with: error)
+                }
             }
         }
     }
     
     private func step5_updateUI(with locations: MultiPlaceUserLocatable) {
-        guard locations.places.isEmpty == false else {
-            self.updateButtonText(with: "No Beer Found")
+        self.buttonVC?.updateUI(.neither) {
+            guard locations.places.isEmpty == false else {
+                self.updateButtonText(with: "No Beer Found")
+                self.buttonVC?.updateUI(.button)
+                return
+            }
+            self.locations = locations
+            self.updateButtonText(with: "Next")
             self.buttonVC?.updateUI(.button)
-            return
         }
-        self.locations = locations
-        self.updateButtonText(with: "Next")
-        self.buttonVC?.updateUI(.button)
     }
     
     private func step6_showChooserVC(for locations: MultiPlaceUserLocatable) {

@@ -144,6 +144,7 @@
                     <connections>
                         <outlet property="button" destination="g1q-bj-6TD" id="2As-64-blV"/>
                         <outlet property="buttonView" destination="hNj-73-TVg" id="Yfh-y2-yIU"/>
+                        <outlet property="label" destination="XWu-20-07J" id="hzG-k3-kPU"/>
                         <outlet property="loadingView" destination="GON-3l-KxJ" id="mD1-MD-D0p"/>
                     </connections>
                 </viewController>

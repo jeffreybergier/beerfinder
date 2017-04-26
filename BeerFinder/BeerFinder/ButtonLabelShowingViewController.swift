@@ -13,6 +13,7 @@ internal class LoaderAndButtonShowingViewController: UIViewController {
     @IBOutlet private weak var buttonView: UIView?
     @IBOutlet private weak var loadingView: UIView?
     @IBOutlet private weak var button: UIButton?
+    @IBOutlet private weak var label: UILabel?
     
     private var buttonViewConstraint: NSLayoutConstraint?
     private var loadingViewConstraint: NSLayoutConstraint?
@@ -27,6 +28,10 @@ internal class LoaderAndButtonShowingViewController: UIViewController {
         self.loadingViewConstraint = self.loadingView?.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: self.viewHideConstant)
         self.buttonViewConstraint?.isActive = true
         self.loadingViewConstraint?.isActive = true
+    }
+    
+    internal func setLoader(text: String) {
+        self.label?.text = text
     }
     
     internal func setButton(text: String) {
