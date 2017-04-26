@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5009BA941EAD7C6B00BC0EED /* ButtonLabelShowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5009BA931EAD7C6B00BC0EED /* ButtonLabelShowingViewController.swift */; };
+		507D25141EB048B2005C9144 /* PlaceUserLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507D25131EB048B2005C9144 /* PlaceUserLocation.swift */; };
 		50868CD61EA452CF0068E292 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50868CD51EA452CF0068E292 /* AppDelegate.swift */; };
 		50868CDB1EA452CF0068E292 /* FindLocation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50868CD91EA452CF0068E292 /* FindLocation.storyboard */; };
 		50868CDD1EA452CF0068E292 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50868CDC1EA452CF0068E292 /* Assets.xcassets */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		5009BA931EAD7C6B00BC0EED /* ButtonLabelShowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonLabelShowingViewController.swift; sourceTree = "<group>"; };
+		507D25131EB048B2005C9144 /* PlaceUserLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceUserLocation.swift; sourceTree = "<group>"; };
 		50868CD21EA452CF0068E292 /* BeerFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeerFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50868CD51EA452CF0068E292 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		50868CDA1EA452CF0068E292 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FindLocation.storyboard; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				50868D061EA454EE0068E292 /* FindLocationViewController.swift */,
 				5009BA931EAD7C6B00BC0EED /* ButtonLabelShowingViewController.swift */,
 				50A301FD1EA56363008876D5 /* ListPlacesViewController.swift */,
+				507D25131EB048B2005C9144 /* PlaceUserLocation.swift */,
 				50A301F91EA55C2A008876D5 /* UserLocator.swift */,
 				50A302031EA58837008876D5 /* LocationPermitter.swift */,
 				50FF444A1EAEF5FE0057FADF /* MapAnimator.swift */,
@@ -302,6 +305,7 @@
 				50868D071EA454EE0068E292 /* FindLocationViewController.swift in Sources */,
 				50868CD61EA452CF0068E292 /* AppDelegate.swift in Sources */,
 				50FF444B1EAEF5FE0057FADF /* MapAnimator.swift in Sources */,
+				507D25141EB048B2005C9144 /* PlaceUserLocation.swift in Sources */,
 				50A302001EA5671E008876D5 /* PlaceLocator.swift in Sources */,
 				5009BA941EAD7C6B00BC0EED /* ButtonLabelShowingViewController.swift in Sources */,
 				50A301FE1EA56363008876D5 /* ListPlacesViewController.swift in Sources */,

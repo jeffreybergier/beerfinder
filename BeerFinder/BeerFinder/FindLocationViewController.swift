@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-internal class FindLocationViewController: UIViewController, HasLocatable, HasLocationPermittable, HasPlaceLocatable, HasMapAnimatable {
+internal class FindLocationViewController: UIViewController, HasLocatable, HasLocationPermittable, HasPlaceLocatable, HasMapAnimatable, HasMultiPlaceUserLocatable {
 
     @IBOutlet private weak var map: MKMapView?
     /*@IBOutlet*/ private weak var buttonVC: LoaderAndButtonShowingViewController?
@@ -41,10 +41,10 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
         return vc
     }
     
-    private var places: [PlaceLocator.MapItem]? {
+    internal var locations: MultiPlaceUserLocatable? {
         didSet {
-            self.map?.removeAnnotations(oldValue ?? [])
-            self.map?.addAnnotations(self.places ?? [])
+            self.map?.removeAnnotations(oldValue?.places ?? [])
+            self.map?.addAnnotations(self.locations?.places ?? [])
         }
     }
     
@@ -63,12 +63,12 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
     }
     
     private func nextStep() {
-        if let places = places, places.isEmpty == false {
+        if let locations = self.locations, locations.places.isEmpty == false {
             self.buttonVC?.updateUI(.neither) {
-                let placesVC = ListPlacesViewController.newVC()
-                placesVC.places = places
-                placesVC.placeSelection = { selectedPlace in
-                    print("Selected: \(selectedPlace.name)")
+                var placesVC = ListPlacesViewController.newVC()
+                placesVC.configure(with: locations)
+                placesVC.selectionMade = { location in
+                    print("Selected: \(location.place.name)")
                 }
                 self.present(placesVC, animated: true, completion: nil)
             }
@@ -95,7 +95,7 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
     }
     
     private func step2_findUserLocation() {
-        self.places = nil
+        self.locations = nil
         self.buttonVC?.updateUI(.neither) {
             self.userLocator.requestLocation() { result in
                 self.buttonVC?.updateUI(.loader)
@@ -114,28 +114,29 @@ internal class FindLocationViewController: UIViewController, HasLocatable, HasLo
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: coordinate, span: span)
         self.mapAnimator.setRegion(region, onMap: self.map) {
-            self.step4_findPlaces(within: region)
+            self.step4_findPlaces(within: region, userLocation: location)
         }
     }
     
-    private func step4_findPlaces(within region: MKCoordinateRegion) {
+    private func step4_findPlaces(within region: MKCoordinateRegion, userLocation: CLLocation) {
         self.placeLocator.locateBeer(at: region) { result in
             switch result {
             case .success(let places):
-                self.step5_updateUI(with: places)
+                let locations = MultiPlaceUserLocation(userLocation: userLocation, places: places)
+                self.step5_updateUI(with: locations)
             case .error(let error):
                 self.errorStep_updateUI(with: error)
             }
         }
     }
     
-    private func step5_updateUI(with places: [PlaceLocator.MapItem]) {
-        guard places.isEmpty == false else {
+    private func step5_updateUI(with locations: MultiPlaceUserLocatable) {
+        guard locations.places.isEmpty == false else {
             self.updateButtonText(with: "No Beer Found")
             self.buttonVC?.updateUI(.button)
             return
         }
-        self.places = places
+        self.locations = locations
         self.updateButtonText(with: "Next")
         self.buttonVC?.updateUI(.button)
     }

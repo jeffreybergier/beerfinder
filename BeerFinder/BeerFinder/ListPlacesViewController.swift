@@ -9,15 +9,16 @@
 import UIKit
 import MapKit
 
-internal class ListPlacesViewController: UIViewController {
+internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLocatable {
     
     @IBOutlet private weak var previousButton: UIButton?
     @IBOutlet private weak var nextButton: UIButton?
     @IBOutlet private weak var titleLabel: UILabel?
     @IBOutlet private weak var distanceLabel: UILabel?
 
-    internal var places: [PlaceLocator.MapItem] = []
-    internal var placeSelection: ((PlaceLocator.MapItem) -> Void)?
+    internal var locations: MultiPlaceUserLocatable?
+    internal var selectionMade: ((SinglePlaceUserLocatable) -> Void)?
+    
     private var currentIndex = 0
     
     internal class func newVC() -> ListPlacesViewController {
@@ -32,20 +33,29 @@ internal class ListPlacesViewController: UIViewController {
     }
     
     @IBAction private func placeChosen(_ sender: NSObject?) {
+        guard let locations = self.locations, locations.places.isEmpty == false else { return }
         self.dismiss(animated: true) {
-            let place = self.places[self.currentIndex]
-            self.placeSelection?(place)
+            let place = locations.places[self.currentIndex]
+            let location = SinglePlaceUserLocation(userLocation: locations.userLocation, place: place)
+            self.selectionMade?(location)
         }
     }
     
-    
     private func updateUIWithData() {
-        let place = self.places[self.currentIndex]
+        guard let locations = self.locations, locations.places.isEmpty == false else {
+            self.titleLabel?.text = "No Beer Found"
+            self.distanceLabel?.text = "0.0"
+            self.currentIndex = 0
+            return
+        }
+        
+        let places = locations.places
+        let place = places[self.currentIndex]
         
         self.titleLabel?.text = place.name
         self.distanceLabel?.text = "\(place.placemark.coordinate.latitude)"
         
-        if self.currentIndex >= self.places.count - 1 {
+        if self.currentIndex >= places.count - 1 {
             self.nextButton?.disable()
         } else {
             self.nextButton?.enable()
