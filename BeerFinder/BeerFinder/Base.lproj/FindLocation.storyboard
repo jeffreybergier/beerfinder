@@ -100,41 +100,49 @@
                                     <rect key="frame" x="0.0" y="0.0" width="288" height="84"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lhj-OM-Bh5">
-                                            <rect key="frame" x="0.0" y="0.0" width="288" height="84"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Bz-l6-Q0i">
-                                                    <rect key="frame" x="0.0" y="0.0" width="42" height="84"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="9Bz-l6-Q0i" secondAttribute="height" multiplier="1:2" id="dbl-CY-p9u"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                                    <state key="normal" title="🙅">
-                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="reload" destination="Sdg-G7-KAi" eventType="touchUpInside" id="CHo-Rg-oWM"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g1q-bj-6TD">
-                                                    <rect key="frame" x="42" y="0.0" width="246" height="84"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
-                                                    <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
-                                                    <state key="normal" title="Find Location">
-                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="goForward" destination="Sdg-G7-KAi" eventType="touchUpInside" id="799-NZ-hWn"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                        </stackView>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="751" horizontalCompressionResistancePriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vBH-Zc-lf0">
+                                            <rect key="frame" x="245.5" y="-1" width="42.5" height="85"/>
+                                            <connections>
+                                                <action selector="goForward" destination="Sdg-G7-KAi" eventType="touchUpInside" id="kWF-Rk-8TE"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Bz-l6-Q0i">
+                                            <rect key="frame" x="0.0" y="-0.5" width="42.5" height="84.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="9Bz-l6-Q0i" secondAttribute="height" multiplier="1:2" id="dbl-CY-p9u"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                            <state key="normal" title="ⓧ">
+                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="reload" destination="Sdg-G7-KAi" eventType="touchUpInside" id="CHo-Rg-oWM"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g1q-bj-6TD">
+                                            <rect key="frame" x="42.5" y="-0.5" width="203" height="84.5"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
+                                            <state key="normal" title="Find Location">
+                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="goForward" destination="Sdg-G7-KAi" eventType="touchUpInside" id="799-NZ-hWn"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Lhj-OM-Bh5" firstAttribute="top" secondItem="AzK-LM-Qu6" secondAttribute="top" id="Aah-Qc-LcB"/>
-                                        <constraint firstAttribute="bottom" secondItem="Lhj-OM-Bh5" secondAttribute="bottom" id="Ka8-Rs-P07"/>
-                                        <constraint firstItem="Lhj-OM-Bh5" firstAttribute="leading" secondItem="AzK-LM-Qu6" secondAttribute="leading" id="LuC-SA-PvB"/>
-                                        <constraint firstAttribute="trailing" secondItem="Lhj-OM-Bh5" secondAttribute="trailing" id="WXn-p7-wBW"/>
+                                        <constraint firstAttribute="bottom" secondItem="9Bz-l6-Q0i" secondAttribute="bottom" id="0rw-i7-dsh"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="g1q-bj-6TD" secondAttribute="trailing" id="4nu-h1-uTE"/>
+                                        <constraint firstAttribute="bottom" secondItem="g1q-bj-6TD" secondAttribute="bottom" id="55x-8f-Nn1"/>
+                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="top" secondItem="AzK-LM-Qu6" secondAttribute="top" id="5Wz-fN-jWF"/>
+                                        <constraint firstItem="9Bz-l6-Q0i" firstAttribute="leading" secondItem="AzK-LM-Qu6" secondAttribute="leading" id="EVV-aX-l4v"/>
+                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="centerX" secondItem="AzK-LM-Qu6" secondAttribute="centerX" id="FOl-6m-ZFB"/>
+                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9Bz-l6-Q0i" secondAttribute="trailing" id="Lcp-bc-1C3"/>
+                                        <constraint firstItem="9Bz-l6-Q0i" firstAttribute="top" secondItem="AzK-LM-Qu6" secondAttribute="top" id="UKF-6k-Bt4"/>
+                                        <constraint firstItem="vBH-Zc-lf0" firstAttribute="centerY" secondItem="g1q-bj-6TD" secondAttribute="centerY" id="a7J-8A-sHw"/>
+                                        <constraint firstItem="vBH-Zc-lf0" firstAttribute="leading" secondItem="g1q-bj-6TD" secondAttribute="trailing" id="nsT-99-C6H"/>
+                                        <constraint firstAttribute="trailing" secondItem="vBH-Zc-lf0" secondAttribute="trailing" id="pB3-0o-zly"/>
+                                        <constraint firstItem="vBH-Zc-lf0" firstAttribute="height" secondItem="g1q-bj-6TD" secondAttribute="height" id="yaL-Ib-9QM"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="extraLight"/>
