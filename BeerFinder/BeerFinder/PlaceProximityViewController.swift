@@ -42,7 +42,6 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
         let userLocation = self.locations!.userLocation
         let region = MKCoordinateRegion(location: userLocation, zoom: .close)
         self.map?.setRegion(region, animated: false)
-        self.map?.userTrackingMode = .followWithHeading
         
         let place = self.locations!.place
         self.map?.addAnnotation(place)
@@ -50,13 +49,27 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     
         self.movementMonitor.headingUpdated = { [weak self] result in
             guard case .success(let heading) = result else { return }
-            self?.pointerView?.transform = CGAffineTransform(rotationAngle: heading.trueHeading.radians)
+            if let pointerView = self?.pointerView {
+                pointerView.transform = CGAffineTransform(rotationAngle: heading.trueHeading.radians)
+            }
+            if let map = self?.map {
+                let camera = map.camera
+                camera.heading = heading.trueHeading
+                map.setCamera(camera, animated: true)
+            }
         }
         
         self.movementMonitor.locationUpdated = { [weak self] result in
             guard case .success(let userLocation) = result else { return }
-            let distance = userLocation.distance(from: place.coordinate)
-            self?.distanceLabel?.text = self?.distanceFormatter.localizedDistance(from: distance)
+            if let distanceLabel = self?.distanceLabel {
+                let distance = userLocation.distance(from: place.coordinate)
+                distanceLabel.text = self?.distanceFormatter.localizedDistance(from: distance)
+            }
+            if let map = self?.map {
+                let camera = map.camera
+                camera.centerCoordinate = userLocation.coordinate
+                map.setCamera(camera, animated: true)
+            }
         }
     }
     
