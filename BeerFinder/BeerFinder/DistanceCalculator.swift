@@ -8,22 +8,22 @@
 
 import CoreLocation
 
-internal protocol DistanceCalculatable {
+internal protocol DistanceFormattable {
     func localizedDistance(from distance: CLLocationDistance) -> String
 }
 
-internal protocol HasDistanceCalculatable {
-    var distanceCalculator: DistanceCalculatable { get set }
+internal protocol HasDistanceFormattable {
+    var distanceFormatter: DistanceFormattable { get set }
 }
 
-internal extension HasDistanceCalculatable {
-    internal mutating func configure(with distanceCalculator: DistanceCalculatable?) {
-        guard let distanceCalculator = distanceCalculator else { return }
-        self.distanceCalculator = distanceCalculator
+internal extension HasDistanceFormattable {
+    internal mutating func configure(with distanceFormatter: DistanceFormattable?) {
+        guard let distanceFormatter = distanceFormatter else { return }
+        self.distanceFormatter = distanceFormatter
     }
 }
 
-internal class DistanceCalculator: DistanceCalculatable {
+internal class DistanceFormatter: DistanceFormattable {
     
     private let formatter: LengthFormatter = {
         let f = LengthFormatter()

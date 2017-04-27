@@ -6,11 +6,12 @@
 //  Copyright © 2017 Jeffrey Bergier. All rights reserved.
 //
 
-import UIKit
 import MapKit
+import UIKit
 
-internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLocatable, HasDistanceCalculatable {
+internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLocatable, HasDistanceFormattable {
     
+    @IBOutlet private weak var map: MKMapView?
     @IBOutlet private weak var previousButton: UIButton?
     @IBOutlet private weak var nextButton: UIButton?
     @IBOutlet private weak var titleLabel: UILabel?
@@ -18,22 +19,30 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
 
     internal var locations: MultiPlaceUserLocatable?
     internal var selectionMade: ((SinglePlaceUserLocatable) -> Void)?
-    internal var distanceCalculator: DistanceCalculatable = DistanceCalculator()
+    internal var distanceFormatter: DistanceFormattable = DistanceFormatter()
     
     private var currentIndex = 0
     
     internal class func newVC(locations: MultiPlaceUserLocatable? = nil,
-                              distanceCalculator: DistanceCalculatable? = nil) -> ListPlacesViewController
+                              distanceFormatter: DistanceFormattable? = nil) -> ListPlacesViewController
     {
         let storyboard = UIStoryboard(name: "ListPlaces", bundle: Bundle(for: self))
         var vc = storyboard.instantiateInitialViewController() as! ListPlacesViewController
         vc.configure(with: locations)
-        vc.configure(with: distanceCalculator)
+        vc.configure(with: distanceFormatter)
         return vc
     }
     
     internal override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let places = self.locations!.places
+        self.map?.addAnnotations(places)
+        
+        let firstPlace = places.first!
+        let region = MKCoordinateRegion(location: firstPlace.coordinate)
+        self.map?.setRegion(region, animated: false)
+        
         self.updateUIWithData()
     }
     
@@ -59,8 +68,11 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
     
         self.titleLabel?.text = place.name
         
+        let region = MKCoordinateRegion(location: place.coordinate)
+        self.map?.setRegion(region, animated: true)
+        
         let distance = locations.userLocation.distance(from: place.coordinate)
-        self.distanceLabel?.text = self.distanceCalculator.localizedDistance(from: distance)
+        self.distanceLabel?.text = self.distanceFormatter.localizedDistance(from: distance)
         
         if self.currentIndex >= places.count - 1 {
             self.nextButton?.disable()

@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -25,7 +26,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </mapView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jad-K1-iXS">
-                                <rect key="frame" x="12" y="571" width="351" height="84"/>
+                                <rect key="frame" x="16" y="563" width="343" height="84"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="84" id="w6L-OU-qqh"/>
                                 </constraints>
@@ -36,13 +37,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="xIM-mG-cfR" firstAttribute="bottom" secondItem="jad-K1-iXS" secondAttribute="bottom" constant="12" id="0l3-Q3-1yS"/>
+                            <constraint firstItem="gEe-11-QsL" firstAttribute="top" secondItem="jad-K1-iXS" secondAttribute="bottom" constant="20" id="Bb2-pJ-OIW"/>
                             <constraint firstItem="xIM-mG-cfR" firstAttribute="width" secondItem="fHw-9s-heX" secondAttribute="width" id="Cco-sa-SAl"/>
+                            <constraint firstItem="jad-K1-iXS" firstAttribute="leading" secondItem="fHw-9s-heX" secondAttribute="leadingMargin" id="FTP-1A-Khc"/>
                             <constraint firstItem="xIM-mG-cfR" firstAttribute="centerX" secondItem="fHw-9s-heX" secondAttribute="centerX" id="ekI-K2-UEY"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="jad-K1-iXS" secondAttribute="trailing" id="jAF-8g-kp5"/>
                             <constraint firstItem="xIM-mG-cfR" firstAttribute="centerY" secondItem="fHw-9s-heX" secondAttribute="centerY" id="k8A-sT-8Y3"/>
                             <constraint firstItem="xIM-mG-cfR" firstAttribute="height" secondItem="fHw-9s-heX" secondAttribute="height" id="nYF-ky-Ffz"/>
-                            <constraint firstItem="xIM-mG-cfR" firstAttribute="trailing" secondItem="jad-K1-iXS" secondAttribute="trailing" constant="12" id="oOk-wM-u9c"/>
-                            <constraint firstItem="jad-K1-iXS" firstAttribute="leading" secondItem="xIM-mG-cfR" secondAttribute="leading" constant="12" id="rMW-tQ-rAX"/>
                         </constraints>
                     </view>
                     <connections>
@@ -62,17 +63,17 @@
                         <viewControllerLayoutGuide type="bottom" id="BaR-Tb-FYh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Od9-FP-kDK">
-                        <rect key="frame" x="0.0" y="0.0" width="351" height="84"/>
+                        <rect key="frame" x="0.0" y="0.0" width="343" height="84"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hNj-73-TVg">
-                                <rect key="frame" x="0.0" y="0.5" width="351" height="84"/>
+                                <rect key="frame" x="0.0" y="0.5" width="343" height="84"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="AzK-LM-Qu6">
-                                    <rect key="frame" x="0.0" y="0.0" width="351" height="84"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="343" height="84"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g1q-bj-6TD">
-                                            <rect key="frame" x="89.5" y="18.5" width="172" height="46"/>
+                                            <rect key="frame" x="0.0" y="-0.5" width="343" height="84"/>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
                                             <state key="normal" title="Find Location">
                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -83,8 +84,10 @@
                                         </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="height" secondItem="AzK-LM-Qu6" secondAttribute="height" id="60s-v7-2VS"/>
                                         <constraint firstItem="g1q-bj-6TD" firstAttribute="centerY" secondItem="AzK-LM-Qu6" secondAttribute="centerY" id="Fwq-cx-m6b"/>
                                         <constraint firstItem="g1q-bj-6TD" firstAttribute="centerX" secondItem="AzK-LM-Qu6" secondAttribute="centerX" id="HtJ-bZ-0JQ"/>
+                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="width" secondItem="AzK-LM-Qu6" secondAttribute="width" id="nqa-9m-vGe"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="extraLight"/>
@@ -95,30 +98,23 @@
                                 </userDefinedRuntimeAttributes>
                             </visualEffectView>
                             <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GON-3l-KxJ">
-                                <rect key="frame" x="0.0" y="0.5" width="351" height="84"/>
+                                <rect key="frame" x="0.0" y="0.5" width="343" height="84"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gT5-Gf-mhy">
-                                    <rect key="frame" x="0.0" y="0.0" width="351" height="84"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="343" height="84"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="oab-dP-3wn">
-                                            <rect key="frame" x="52" y="23.5" width="249" height="37"/>
-                                            <subviews>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="cWf-n0-pTI">
-                                                    <rect key="frame" x="0.0" y="0.0" width="37" height="37"/>
-                                                    <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                </activityIndicatorView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finding Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XWu-20-07J">
-                                                    <rect key="frame" x="49" y="2" width="200" height="33.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </stackView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finding Location…" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XWu-20-07J">
+                                            <rect key="frame" x="-0.5" y="-1" width="343" height="84.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="oab-dP-3wn" firstAttribute="centerX" secondItem="gT5-Gf-mhy" secondAttribute="centerX" id="1ll-65-8oM"/>
-                                        <constraint firstItem="oab-dP-3wn" firstAttribute="centerY" secondItem="gT5-Gf-mhy" secondAttribute="centerY" id="3q4-2T-8q3"/>
+                                        <constraint firstItem="XWu-20-07J" firstAttribute="centerX" secondItem="gT5-Gf-mhy" secondAttribute="centerX" id="C6O-cZ-1RS"/>
+                                        <constraint firstItem="XWu-20-07J" firstAttribute="centerY" secondItem="gT5-Gf-mhy" secondAttribute="centerY" id="DKu-0t-0vd"/>
+                                        <constraint firstItem="XWu-20-07J" firstAttribute="height" secondItem="gT5-Gf-mhy" secondAttribute="height" id="Wyj-ic-cnz"/>
+                                        <constraint firstItem="XWu-20-07J" firstAttribute="width" secondItem="gT5-Gf-mhy" secondAttribute="width" id="tFs-Kz-tHq"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="extraLight"/>

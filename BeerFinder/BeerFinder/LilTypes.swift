@@ -45,6 +45,10 @@ extension MKCoordinateRegion {
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         self.init(center: coordinate, span: span)
     }
+    init(location: CLLocationCoordinate2D) {
+        let coordinate = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        self.init(location: coordinate)
+    }
 }
 
 internal extension UIApplication {

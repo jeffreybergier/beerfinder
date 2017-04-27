@@ -19,7 +19,7 @@ internal class LoaderAndButtonShowingViewController: UIViewController {
     private var loadingViewConstraint: NSLayoutConstraint?
     
     private let viewShowConstant: CGFloat = -84
-    private let viewHideConstant: CGFloat = 12
+    private let viewHideConstant: CGFloat = 20
     
     internal override func viewDidLoad() {
         super.viewDidLoad()
