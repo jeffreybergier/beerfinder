@@ -12,7 +12,7 @@ class HardModeViewController: UIViewController {
     
     @IBOutlet private weak var blurView: UIVisualEffectView?
     private let blurEffect = UIBlurEffect(style: .dark)
-    private(set) internal var isHardMode: Bool = false
+    private(set) var isHardMode: Bool = false
     
     internal override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,5 +33,13 @@ class HardModeViewController: UIViewController {
             }
         }
         self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if self.isHardMode == true {
+            return .lightContent
+        } else {
+            return .default
+        }
     }
 }

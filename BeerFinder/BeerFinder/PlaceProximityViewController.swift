@@ -40,7 +40,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
         self.hardModeVC = self.childViewControllers.first()!
         
         let userLocation = self.locations!.userLocation
-        let region = MKCoordinateRegion(location: userLocation)
+        let region = MKCoordinateRegion(location: userLocation, zoom: .close)
         self.map?.setRegion(region, animated: false)
         self.map?.userTrackingMode = .followWithHeading
         
@@ -71,10 +71,6 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if self.hardModeVC?.isHardMode == true {
-            return .lightContent
-        } else {
-            return .default
-        }
+        return self.hardModeVC?.preferredStatusBarStyle ?? .default
     }
 }
