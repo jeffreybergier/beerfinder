@@ -100,6 +100,7 @@
                         <outlet property="distanceLabel" destination="RJE-A5-o7y" id="dBa-eL-x3e"/>
                         <outlet property="map" destination="OKB-NU-bbW" id="f5W-ua-WbE"/>
                         <outlet property="nameLabel" destination="Ova-Pe-Bvf" id="ppF-Ft-PM7"/>
+                        <outlet property="pointerView" destination="9vN-xL-CXg" id="zVX-hU-Onv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pgT-NJ-4zS" userLabel="First Responder" sceneMemberID="firstResponder"/>

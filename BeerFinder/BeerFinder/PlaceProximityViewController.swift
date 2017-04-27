@@ -11,6 +11,7 @@ import UIKit
 
 internal class PlaceProximityViewController: UIViewController, HasContinuousUserMovementMonitorable, HasSinglePlaceUserLocatable, HasDistanceFormattable {
     
+    @IBOutlet private weak var pointerView: UIView?
     @IBOutlet private weak var distanceLabel: UILabel?
     @IBOutlet private weak var nameLabel: UILabel?
     @IBOutlet private weak var map: MKMapView? {
@@ -51,6 +52,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     
         self.movementMonitor.headingUpdated = { [weak self] result in
             guard case .success(let heading) = result else { return }
+            self?.pointerView?.transform = CGAffineTransform(rotationAngle: CGFloat(heading.trueHeading))
             print(heading.trueHeading)
         }
         
