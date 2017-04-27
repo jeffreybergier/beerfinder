@@ -11,9 +11,14 @@ import UIKit
 
 internal class PlaceProximityViewController: UIViewController, HasContinuousUserMovementMonitorable, HasSinglePlaceUserLocatable, HasDistanceFormattable {
     
-    @IBOutlet private weak var map: MKMapView?
     @IBOutlet private weak var distanceLabel: UILabel?
     @IBOutlet private weak var nameLabel: UILabel?
+    @IBOutlet private weak var map: MKMapView? {
+        didSet {
+            self.map?.userTrackingMode = .followWithHeading
+        }
+    }
+    /*@IBOutlet*/ private weak var hardModeVC: HardModeViewController?
     
     internal var movementMonitor: ContinuousUserMovementMonitorable = ContinuousUserMovementMonitor()
     internal var locations: SinglePlaceUserLocatable?
@@ -34,6 +39,8 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     internal override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.hardModeVC = self.childViewControllers.first()!
+        
         let userLocation = self.locations!.userLocation
         let region = MKCoordinateRegion(location: userLocation)
         self.map?.setRegion(region, animated: false)
@@ -41,16 +48,14 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
         let place = self.locations!.place
         self.map?.addAnnotation(place)
         self.nameLabel?.text = place.name
-        
+    
         self.movementMonitor.headingUpdated = { [weak self] result in
             guard case .success(let heading) = result else { return }
-            print("Heading: \(heading.trueHeading)")
+            print(heading.trueHeading)
         }
         
         self.movementMonitor.locationUpdated = { [weak self] result in
             guard case .success(let userLocation) = result else { return }
-            let camera = MKMapCamera(lookingAtCenter: place.coordinate, fromEyeCoordinate: userLocation.coordinate, eyeAltitude: 500)
-            self?.map?.setCamera(camera, animated: true)
             let distance = userLocation.distance(from: place.coordinate)
             self?.distanceLabel?.text = self?.distanceFormatter.localizedDistance(from: distance)
         }
@@ -66,5 +71,11 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
         self.movementMonitor.stop()
     }
 
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if self.hardModeVC?.isHardMode == true {
+            return .lightContent
+        } else {
+            return .default
+        }
+    }
 }

@@ -11,11 +11,13 @@ import UIKit
 class HardModeViewController: UIViewController {
     
     @IBOutlet private weak var blurView: UIVisualEffectView?
-    private let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+    private let blurEffect = UIBlurEffect(style: .dark)
+    private(set) internal var isHardMode: Bool = false
     
     internal override func viewDidLoad() {
         super.viewDidLoad()
         self.blurView?.effect = nil
+        self.isHardMode = false
     }
     
     @IBAction private func hardModeToggled(_ sender: NSObject?) {
@@ -24,10 +26,12 @@ class HardModeViewController: UIViewController {
             switch sender.isOn {
             case true:
                 self.blurView?.effect = self.blurEffect
+                self.isHardMode = true
             case false:
                 self.blurView?.effect = nil
+                self.isHardMode = false
             }
         }
+        self.setNeedsStatusBarAppearanceUpdate()
     }
-    
 }

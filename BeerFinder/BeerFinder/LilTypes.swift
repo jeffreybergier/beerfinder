@@ -40,14 +40,27 @@ internal extension CLLocation {
 }
 
 extension MKCoordinateRegion {
-    init(location: CLLocation) {
+    
+    enum Zoom {
+        case normal, close
+        var degrees: CLLocationDegrees {
+            switch self {
+            case .normal:
+                return 0.01
+            case .close:
+                return 0.0015
+            }
+        }
+    }
+    
+    init(location: CLLocation, zoom: Zoom = .normal) {
         let coordinate = location.coordinate
-        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let span = MKCoordinateSpan(latitudeDelta: zoom.degrees, longitudeDelta: zoom.degrees)
         self.init(center: coordinate, span: span)
     }
-    init(location: CLLocationCoordinate2D) {
-        let coordinate = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        self.init(location: coordinate)
+    init(coordinate: CLLocationCoordinate2D, zoom: Zoom = .normal) {
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        self.init(location: location, zoom: zoom)
     }
 }
 

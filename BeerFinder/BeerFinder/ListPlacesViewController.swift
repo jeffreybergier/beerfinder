@@ -18,7 +18,6 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
     @IBOutlet private weak var distanceLabel: UILabel?
 
     internal var locations: MultiPlaceUserLocatable?
-    internal var selectionMade: ((SinglePlaceUserLocatable) -> Void)?
     internal var distanceFormatter: DistanceFormattable = DistanceFormatter()
     
     private var currentIndex = 0
@@ -40,7 +39,7 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
         self.map?.addAnnotations(places)
         
         let firstPlace = places.first!
-        let region = MKCoordinateRegion(location: firstPlace.coordinate)
+        let region = MKCoordinateRegion(coordinate: firstPlace.coordinate, zoom: .close)
         self.map?.setRegion(region, animated: false)
         
         self.updateUIWithData()
@@ -48,11 +47,11 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
     
     @IBAction private func placeChosen(_ sender: NSObject?) {
         guard let locations = self.locations, locations.places.isEmpty == false else { return }
-        self.dismiss(animated: true) {
-            let place = locations.places[self.currentIndex]
-            let location = SinglePlaceUserLocation(userLocation: locations.userLocation, place: place)
-            self.selectionMade?(location)
-        }
+        let place = locations.places[self.currentIndex]
+        let location = SinglePlaceUserLocation(userLocation: locations.userLocation, place: place)
+        var vc = PlaceProximityViewController.newVC()
+        vc.configure(with: location)
+        self.present(vc, animated: true, completion: nil)
     }
     
     private func updateUIWithData() {
@@ -68,7 +67,7 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
     
         self.titleLabel?.text = place.name
         
-        let region = MKCoordinateRegion(location: place.coordinate)
+        let region = MKCoordinateRegion(coordinate: place.coordinate, zoom: .close)
         self.map?.setRegion(region, animated: true)
         
         let distance = locations.userLocation.distance(from: place.coordinate)

@@ -11,8 +11,8 @@ import MapKit
 
 internal class FindLocationViewController: UIViewController, HasUserLocatable, HasLocationPermittable, HasPlaceLocatable, HasMapAnimatable, HasMultiPlaceUserLocatable {
 
-    @IBOutlet private weak var map: MKMapView?
     /*@IBOutlet*/ private weak var buttonVC: LoaderAndButtonShowingViewController?
+    @IBOutlet private weak var map: MKMapView?
     
     internal var locationPermitter: LocationPermittable = LocationPermitter()
     internal var userLocator: UserLocatable = UserLocator()
@@ -72,6 +72,7 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     }
     
     private func step1_showRequestLocationPermission() {
+        self.map?.userTrackingMode = .none
         self.buttonVC?.updateUI(.neither) {
             self.buttonVC?.setLoader(text: "Finding Location…")
             self.locationPermitter.requestPermission() { _ in
@@ -81,6 +82,7 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     }
     
     private func step2_findUserLocation() {
+        self.map?.userTrackingMode = .none
         self.locations = nil
         self.buttonVC?.updateUI(.neither) {
             self.buttonVC?.setLoader(text: "Finding Location…")
@@ -99,9 +101,10 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     
     private func step3_updateUI(with location: CLLocation) {
         let region = MKCoordinateRegion(location: location)
-            self.mapAnimator.setRegion(region, onMap: self.map) {
-                self.buttonVC?.updateUI(.neither) {
-                    self.step4_findPlaces(within: region, userLocation: location)
+        self.mapAnimator.setRegion(region, onMap: self.map) {
+            self.map?.userTrackingMode = .follow
+            self.buttonVC?.updateUI(.neither) {
+                self.step4_findPlaces(within: region, userLocation: location)
             }
         }
     }
@@ -139,17 +142,8 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
         self.buttonVC?.updateUI(.neither) {
             var placesVC = ListPlacesViewController.newVC()
             placesVC.configure(with: locations)
-            placesVC.selectionMade = { location in
-                self.step7_showSearchVC(for: location)
-            }
             self.present(placesVC, animated: true, completion: nil)
         }
-    }
-    
-    private func step7_showSearchVC(for location: SinglePlaceUserLocatable) {
-        var vc = PlaceProximityViewController.newVC()
-        vc.configure(with: location)
-        self.present(vc, animated: true, completion: nil)
     }
     
     private func errorStep_updateUI(with error: Error) {
