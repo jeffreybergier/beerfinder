@@ -20,6 +20,12 @@ internal extension Sequence {
     }
 }
 
+private extension UIViewController {
+    @IBAction private func goBack() {
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+
 internal extension UIButton {
     internal func disable() {
         self.isEnabled = false

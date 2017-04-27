@@ -58,12 +58,5 @@ internal class LoaderAndButtonShowingViewController: UIViewController {
             self.view.layoutIfNeeded()
         }, completion: { _ in completion?() })
     }
-    
-    internal var buttonTapped: (() -> Void)?
-    
-    @IBAction private func buttonTapped(_ sender: NSObject?) {
-        self.buttonTapped?()
-    }
-    
 }
 

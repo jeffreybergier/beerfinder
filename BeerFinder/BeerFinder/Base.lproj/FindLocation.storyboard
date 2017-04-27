@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ozy-45-qjz">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,14 +20,14 @@
                         <viewControllerLayoutGuide type="bottom" id="gEe-11-QsL"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fHw-9s-heX">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xIM-mG-cfR">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsCompass="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xIM-mG-cfR">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="667"/>
                             </mapView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jad-K1-iXS">
-                                <rect key="frame" x="16" y="563" width="343" height="84"/>
+                                <rect key="frame" x="16" y="464" width="288" height="84"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="84" id="w6L-OU-qqh"/>
                                 </constraints>
@@ -63,48 +64,17 @@
                         <viewControllerLayoutGuide type="bottom" id="BaR-Tb-FYh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Od9-FP-kDK">
-                        <rect key="frame" x="0.0" y="0.0" width="343" height="84"/>
+                        <rect key="frame" x="0.0" y="0.0" width="288" height="84"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hNj-73-TVg">
-                                <rect key="frame" x="0.0" y="0.5" width="343" height="84"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="AzK-LM-Qu6">
-                                    <rect key="frame" x="0.0" y="0.0" width="343" height="84"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g1q-bj-6TD">
-                                            <rect key="frame" x="0.0" y="-0.5" width="343" height="84"/>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
-                                            <state key="normal" title="Find Location">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="buttonTapped:" destination="CAw-ta-1mY" eventType="touchUpInside" id="9He-tL-lD6"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="height" secondItem="AzK-LM-Qu6" secondAttribute="height" id="60s-v7-2VS"/>
-                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="centerY" secondItem="AzK-LM-Qu6" secondAttribute="centerY" id="Fwq-cx-m6b"/>
-                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="centerX" secondItem="AzK-LM-Qu6" secondAttribute="centerX" id="HtJ-bZ-0JQ"/>
-                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="width" secondItem="AzK-LM-Qu6" secondAttribute="width" id="nqa-9m-vGe"/>
-                                    </constraints>
-                                </view>
-                                <blurEffect style="extraLight"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </visualEffectView>
                             <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GON-3l-KxJ">
-                                <rect key="frame" x="0.0" y="0.5" width="343" height="84"/>
+                                <rect key="frame" x="0.0" y="0.0" width="288" height="84"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gT5-Gf-mhy">
-                                    <rect key="frame" x="0.0" y="0.0" width="343" height="84"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="288" height="84"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finding Location…" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XWu-20-07J">
-                                            <rect key="frame" x="-0.5" y="-1" width="343" height="84.5"/>
+                                            <rect key="frame" x="-0.5" y="-1" width="288" height="84.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -115,6 +85,56 @@
                                         <constraint firstItem="XWu-20-07J" firstAttribute="centerY" secondItem="gT5-Gf-mhy" secondAttribute="centerY" id="DKu-0t-0vd"/>
                                         <constraint firstItem="XWu-20-07J" firstAttribute="height" secondItem="gT5-Gf-mhy" secondAttribute="height" id="Wyj-ic-cnz"/>
                                         <constraint firstItem="XWu-20-07J" firstAttribute="width" secondItem="gT5-Gf-mhy" secondAttribute="width" id="tFs-Kz-tHq"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="extraLight"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </visualEffectView>
+                            <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hNj-73-TVg">
+                                <rect key="frame" x="0.0" y="0.5" width="288" height="84"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="AzK-LM-Qu6">
+                                    <rect key="frame" x="0.0" y="0.0" width="288" height="84"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lhj-OM-Bh5">
+                                            <rect key="frame" x="0.0" y="0.0" width="288" height="84"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Bz-l6-Q0i">
+                                                    <rect key="frame" x="0.0" y="0.0" width="42" height="84"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="9Bz-l6-Q0i" secondAttribute="height" multiplier="1:2" id="dbl-CY-p9u"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                    <state key="normal" title="🙅">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="reload" destination="Sdg-G7-KAi" eventType="touchUpInside" id="CHo-Rg-oWM"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g1q-bj-6TD">
+                                                    <rect key="frame" x="42" y="0.0" width="246" height="84"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
+                                                    <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
+                                                    <state key="normal" title="Find Location">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="goForward" destination="Sdg-G7-KAi" eventType="touchUpInside" id="799-NZ-hWn"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Lhj-OM-Bh5" firstAttribute="top" secondItem="AzK-LM-Qu6" secondAttribute="top" id="Aah-Qc-LcB"/>
+                                        <constraint firstAttribute="bottom" secondItem="Lhj-OM-Bh5" secondAttribute="bottom" id="Ka8-Rs-P07"/>
+                                        <constraint firstItem="Lhj-OM-Bh5" firstAttribute="leading" secondItem="AzK-LM-Qu6" secondAttribute="leading" id="LuC-SA-PvB"/>
+                                        <constraint firstAttribute="trailing" secondItem="Lhj-OM-Bh5" secondAttribute="trailing" id="WXn-p7-wBW"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="extraLight"/>

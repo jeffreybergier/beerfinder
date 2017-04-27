@@ -45,15 +45,6 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
         self.updateUIWithData()
     }
     
-    @IBAction private func placeChosen(_ sender: NSObject?) {
-        guard let locations = self.locations, locations.places.isEmpty == false else { return }
-        let place = locations.places[self.currentIndex]
-        let location = SinglePlaceUserLocation(userLocation: locations.userLocation, place: place)
-        var vc = PlaceProximityViewController.newVC()
-        vc.configure(with: location)
-        self.present(vc, animated: true, completion: nil)
-    }
-    
     private func updateUIWithData() {
         guard let locations = self.locations, locations.places.isEmpty == false else {
             self.titleLabel?.text = "No Beer Found"
@@ -83,6 +74,15 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
         } else {
             self.previousButton?.enable()
         }
+    }
+    
+    @IBAction private func placeChosen(_ sender: NSObject?) {
+        guard let locations = self.locations, locations.places.isEmpty == false else { return }
+        let place = locations.places[self.currentIndex]
+        let location = SinglePlaceUserLocation(userLocation: locations.userLocation, place: place)
+        var vc = PlaceProximityViewController.newVC()
+        vc.configure(with: location)
+        self.present(vc, animated: true, completion: nil)
     }
     
     @IBAction private func next(_ sender: NSObject?) {

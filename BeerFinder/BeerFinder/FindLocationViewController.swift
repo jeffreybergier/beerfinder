@@ -36,6 +36,7 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     internal var locations: MultiPlaceUserLocatable? {
         didSet {
             self.map?.removeAnnotations(oldValue?.places ?? [])
+            self.map?.removeAnnotations(self.map?.annotations ?? [])
             self.map?.addAnnotations(self.locations?.places ?? [])
         }
     }
@@ -44,9 +45,6 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
         super.viewDidLoad()
         self.buttonVC = self.childViewControllers.first()
         self.updateButtonText()
-        self.buttonVC?.buttonTapped = { [weak self] in
-            self?.nextStep()
-        }
     }
     
     internal override func viewDidAppear(_ animated: Bool) {
@@ -71,8 +69,19 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
         }
     }
     
+    private func updateMapToShowUser(_ show: Bool) {
+        switch show {
+        case true:
+            self.map?.showsUserLocation = true
+            self.map?.userTrackingMode = .follow
+        case false:
+            self.map?.showsUserLocation = false
+            self.map?.userTrackingMode = .none
+        }
+    }
+    
     private func step1_showRequestLocationPermission() {
-        self.map?.userTrackingMode = .none
+        self.updateMapToShowUser(false)
         self.buttonVC?.updateUI(.neither) {
             self.buttonVC?.setLoader(text: "Finding Location…")
             self.locationPermitter.requestPermission() { _ in
@@ -82,7 +91,7 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     }
     
     private func step2_findUserLocation() {
-        self.map?.userTrackingMode = .none
+        self.updateMapToShowUser(false)
         self.locations = nil
         self.buttonVC?.updateUI(.neither) {
             self.buttonVC?.setLoader(text: "Finding Location…")
@@ -102,7 +111,7 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     private func step3_updateUI(with location: CLLocation) {
         let region = MKCoordinateRegion(location: location)
         self.mapAnimator.setRegion(region, onMap: self.map) {
-            self.map?.userTrackingMode = .follow
+            self.updateMapToShowUser(true)
             self.buttonVC?.updateUI(.neither) {
                 self.step4_findPlaces(within: region, userLocation: location)
             }
@@ -144,6 +153,18 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
             placesVC.configure(with: locations)
             self.present(placesVC, animated: true, completion: nil)
         }
+    }
+    
+    @IBAction private func reload() {
+        self.locations = nil
+        self.buttonVC?.updateUI(.neither) {
+            self.updateButtonText()
+            self.buttonVC?.updateUI(.button)
+        }
+    }
+    
+    @IBAction private func goForward() {
+        self.nextStep()
     }
     
     private func errorStep_updateUI(with error: Error) {
