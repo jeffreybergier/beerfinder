@@ -14,11 +14,8 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     @IBOutlet private weak var pointerView: UIView?
     @IBOutlet private weak var distanceLabel: UILabel?
     @IBOutlet private weak var nameLabel: UILabel?
-    @IBOutlet private weak var map: MKMapView? {
-        didSet {
-            self.map?.userTrackingMode = .followWithHeading
-        }
-    }
+    @IBOutlet private weak var map: MKMapView?
+    
     /*@IBOutlet*/ private weak var hardModeVC: HardModeViewController?
     
     internal var movementMonitor: ContinuousUserMovementMonitorable = ContinuousUserMovementMonitor()
@@ -45,6 +42,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
         let userLocation = self.locations!.userLocation
         let region = MKCoordinateRegion(location: userLocation)
         self.map?.setRegion(region, animated: false)
+        self.map?.userTrackingMode = .followWithHeading
         
         let place = self.locations!.place
         self.map?.addAnnotation(place)
@@ -52,8 +50,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     
         self.movementMonitor.headingUpdated = { [weak self] result in
             guard case .success(let heading) = result else { return }
-            self?.pointerView?.transform = CGAffineTransform(rotationAngle: CGFloat(heading.trueHeading))
-            print(heading.trueHeading)
+            self?.pointerView?.transform = CGAffineTransform(rotationAngle: heading.trueHeading.radians)
         }
         
         self.movementMonitor.locationUpdated = { [weak self] result in

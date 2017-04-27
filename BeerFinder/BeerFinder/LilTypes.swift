@@ -39,6 +39,12 @@ internal extension CLLocation {
     }
 }
 
+extension CLLocationDirection {
+    var radians: CGFloat {
+        return CGFloat(self) * CGFloat.pi / 180.0
+    }
+}
+
 extension MKCoordinateRegion {
     
     enum Zoom {
