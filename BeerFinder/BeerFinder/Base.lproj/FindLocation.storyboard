@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -73,49 +72,38 @@
                                     <rect key="frame" x="0.0" y="0.0" width="288" height="84"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="751" horizontalCompressionResistancePriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vBH-Zc-lf0">
-                                            <rect key="frame" x="245.5" y="-1" width="42.5" height="85"/>
-                                            <connections>
-                                                <action selector="goForward" destination="Sdg-G7-KAi" eventType="touchUpInside" id="kWF-Rk-8TE"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Bz-l6-Q0i">
-                                            <rect key="frame" x="0.0" y="-0.5" width="42.5" height="84.5"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="9Bz-l6-Q0i" secondAttribute="height" multiplier="1:2" id="dbl-CY-p9u"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                            <state key="normal" title="ⓧ">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="reload" destination="Sdg-G7-KAi" eventType="touchUpInside" id="CHo-Rg-oWM"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g1q-bj-6TD">
-                                            <rect key="frame" x="42.5" y="-0.5" width="203" height="84.5"/>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
-                                            <state key="normal" title="Find Location">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="goForward" destination="Sdg-G7-KAi" eventType="touchUpInside" id="799-NZ-hWn"/>
-                                            </connections>
-                                        </button>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="JSy-te-G0g">
+                                            <rect key="frame" x="0.0" y="-0.5" width="288" height="84"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g1q-bj-6TD">
+                                                    <rect key="frame" x="0.0" y="0.0" width="288" height="51"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
+                                                    <state key="normal" title="Find Location">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="goForward" destination="Sdg-G7-KAi" eventType="touchUpInside" id="799-NZ-hWn"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Bz-l6-Q0i">
+                                                    <rect key="frame" x="0.0" y="51" width="288" height="33"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <inset key="titleEdgeInsets" minX="0.0" minY="3" maxX="0.0" maxY="0.0"/>
+                                                    <state key="normal" title="Reset">
+                                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="reload" destination="Sdg-G7-KAi" eventType="touchUpInside" id="CHo-Rg-oWM"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="9Bz-l6-Q0i" secondAttribute="bottom" id="0rw-i7-dsh"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="g1q-bj-6TD" secondAttribute="trailing" id="4nu-h1-uTE"/>
-                                        <constraint firstAttribute="bottom" secondItem="g1q-bj-6TD" secondAttribute="bottom" id="55x-8f-Nn1"/>
-                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="top" secondItem="AzK-LM-Qu6" secondAttribute="top" id="5Wz-fN-jWF"/>
-                                        <constraint firstItem="9Bz-l6-Q0i" firstAttribute="leading" secondItem="AzK-LM-Qu6" secondAttribute="leading" id="EVV-aX-l4v"/>
-                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="centerX" secondItem="AzK-LM-Qu6" secondAttribute="centerX" id="FOl-6m-ZFB"/>
-                                        <constraint firstItem="g1q-bj-6TD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9Bz-l6-Q0i" secondAttribute="trailing" id="Lcp-bc-1C3"/>
-                                        <constraint firstItem="9Bz-l6-Q0i" firstAttribute="top" secondItem="AzK-LM-Qu6" secondAttribute="top" id="UKF-6k-Bt4"/>
-                                        <constraint firstItem="vBH-Zc-lf0" firstAttribute="centerY" secondItem="g1q-bj-6TD" secondAttribute="centerY" id="a7J-8A-sHw"/>
-                                        <constraint firstItem="vBH-Zc-lf0" firstAttribute="leading" secondItem="g1q-bj-6TD" secondAttribute="trailing" id="nsT-99-C6H"/>
-                                        <constraint firstAttribute="trailing" secondItem="vBH-Zc-lf0" secondAttribute="trailing" id="pB3-0o-zly"/>
-                                        <constraint firstItem="vBH-Zc-lf0" firstAttribute="height" secondItem="g1q-bj-6TD" secondAttribute="height" id="yaL-Ib-9QM"/>
+                                        <constraint firstItem="JSy-te-G0g" firstAttribute="centerY" secondItem="AzK-LM-Qu6" secondAttribute="centerY" id="6UY-4p-ksL"/>
+                                        <constraint firstItem="JSy-te-G0g" firstAttribute="centerX" secondItem="AzK-LM-Qu6" secondAttribute="centerX" id="Whc-zt-H2h"/>
+                                        <constraint firstItem="JSy-te-G0g" firstAttribute="width" secondItem="AzK-LM-Qu6" secondAttribute="width" id="vNZ-2r-rXh"/>
+                                        <constraint firstItem="JSy-te-G0g" firstAttribute="height" secondItem="AzK-LM-Qu6" secondAttribute="height" id="xDY-Tc-kAT"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="extraLight"/>
@@ -131,38 +119,35 @@
                                     <rect key="frame" x="0.0" y="0.0" width="288" height="84"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7KV-5R-NGz">
-                                            <rect key="frame" x="20" y="0.0" width="43" height="84"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="LKS-Fg-qA2">
+                                            <rect key="frame" x="23" y="0.0" width="242.5" height="84"/>
                                             <subviews>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="bVd-fz-uXq">
-                                                    <rect key="frame" x="3" y="32" width="20" height="20"/>
+                                                    <rect key="frame" x="0.0" y="32" width="20" height="20"/>
                                                     <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </activityIndicatorView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finding Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XWu-20-07J">
+                                                    <rect key="frame" x="40" y="29" width="162.5" height="26.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="tFG-IM-5et">
+                                                    <rect key="frame" x="222.5" y="0.0" width="20" height="84"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstItem="bVd-fz-uXq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7KV-5R-NGz" secondAttribute="leading" id="AuM-JR-Tpu"/>
-                                                <constraint firstItem="bVd-fz-uXq" firstAttribute="centerY" secondItem="7KV-5R-NGz" secondAttribute="centerY" id="kay-M0-uqk"/>
-                                                <constraint firstAttribute="trailing" secondItem="bVd-fz-uXq" secondAttribute="trailing" constant="20" symbolic="YES" id="p9L-WG-lb4"/>
+                                                <constraint firstItem="tFG-IM-5et" firstAttribute="width" secondItem="bVd-fz-uXq" secondAttribute="width" id="qkJ-N8-SiQ"/>
                                             </constraints>
-                                        </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finding Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XWu-20-07J">
-                                            <rect key="frame" x="63" y="0.0" width="162.5" height="84"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="7KV-5R-NGz" firstAttribute="top" secondItem="gT5-Gf-mhy" secondAttribute="top" id="4P1-6m-Nny"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="XWu-20-07J" secondAttribute="trailing" id="5Xz-1A-Q5O"/>
-                                        <constraint firstItem="XWu-20-07J" firstAttribute="centerY" secondItem="gT5-Gf-mhy" secondAttribute="centerY" id="Gd3-u0-Oa9"/>
-                                        <constraint firstItem="XWu-20-07J" firstAttribute="leading" secondItem="7KV-5R-NGz" secondAttribute="trailing" id="Kaa-pv-xAg"/>
-                                        <constraint firstAttribute="bottom" secondItem="7KV-5R-NGz" secondAttribute="bottom" id="Sre-fy-sCA"/>
-                                        <constraint firstItem="XWu-20-07J" firstAttribute="top" secondItem="gT5-Gf-mhy" secondAttribute="top" id="UFC-MQ-fAp"/>
-                                        <constraint firstAttribute="bottom" secondItem="XWu-20-07J" secondAttribute="bottom" id="htu-ib-g0y"/>
-                                        <constraint firstItem="XWu-20-07J" firstAttribute="centerX" secondItem="gT5-Gf-mhy" secondAttribute="centerX" id="oae-K0-ED6"/>
-                                        <constraint firstItem="7KV-5R-NGz" firstAttribute="leading" secondItem="gT5-Gf-mhy" secondAttribute="leading" constant="20" symbolic="YES" id="qW0-D9-Uk0"/>
+                                        <constraint firstItem="LKS-Fg-qA2" firstAttribute="top" secondItem="gT5-Gf-mhy" secondAttribute="top" id="8S8-3E-I7r"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LKS-Fg-qA2" secondAttribute="trailing" constant="20" symbolic="YES" id="8de-9M-MbY"/>
+                                        <constraint firstItem="LKS-Fg-qA2" firstAttribute="centerX" secondItem="gT5-Gf-mhy" secondAttribute="centerX" id="Dmc-dd-q1O"/>
+                                        <constraint firstAttribute="bottom" secondItem="LKS-Fg-qA2" secondAttribute="bottom" id="P8P-YD-BfP"/>
+                                        <constraint firstItem="LKS-Fg-qA2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gT5-Gf-mhy" secondAttribute="leading" constant="20" symbolic="YES" id="oYD-JC-NT4"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="extraLight"/>
