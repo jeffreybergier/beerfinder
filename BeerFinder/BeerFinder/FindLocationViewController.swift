@@ -139,7 +139,7 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
                     }
                     
                 }
-                self.movementMonitor.start(maxUpdateFrequency: 0.1)
+                self.movementMonitor.start(maxUpdateFrequency: kLocationUpdateInterval)
             }
         }
     }

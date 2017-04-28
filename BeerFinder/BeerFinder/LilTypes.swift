@@ -14,6 +14,8 @@ internal enum Result<T> {
     case success(T), error(Error)
 }
 
+internal let kLocationUpdateInterval: TimeInterval = 0.5
+
 internal extension Sequence {
     internal func first<T>(of type: T.Type? = nil) -> T? {
         return self.first(where: { $0 is T }) as? T
