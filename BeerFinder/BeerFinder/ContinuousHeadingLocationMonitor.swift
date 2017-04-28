@@ -48,10 +48,10 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     internal func start(maxUpdateFrequency interval: TimeInterval) {
         self.timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.timerFired(_:)), userInfo: nil, repeats: true)
         if self.locationUpdated != nil {
-            self.manager.startUpdatingHeading()
+            self.manager.startUpdatingLocation()
         }
         if self.headingUpdated != nil {
-            self.manager.startUpdatingLocation()
+            self.manager.startUpdatingHeading()
         }
     }
     

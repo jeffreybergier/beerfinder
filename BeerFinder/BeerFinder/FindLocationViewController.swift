@@ -9,35 +9,48 @@
 import UIKit
 import MapKit
 
-internal class FindLocationViewController: UIViewController, HasUserLocatable, HasLocationPermittable, HasPlaceLocatable, HasMapAnimatable, HasMultiPlaceUserLocatable {
+internal class FindLocationViewController: UIViewController, HasContinuousUserMovementMonitorable, HasLocationPermittable, HasPlaceLocatable, HasMapAnimatable, HasMultiPlaceUserLocatable {
 
     /*@IBOutlet*/ private weak var buttonVC: LoaderAndButtonShowingViewController?
     @IBOutlet private weak var map: MKMapView?
     
     internal var locationPermitter: LocationPermittable = LocationPermitter()
-    internal var userLocator: UserLocatable = UserLocator()
+    internal var movementMonitor: ContinuousUserMovementMonitorable = ContinuousUserMovementMonitor()
     internal var placeLocator: PlaceLocatable = PlaceLocator()
     internal var mapAnimator: MapAnimatable = MapAnimator()
     
     internal class func newVC(locationPermitter: LocationPermittable? = nil,
-                            userLocator: UserLocatable? = nil,
+                            movementMonitor: ContinuousUserMovementMonitorable? = nil,
                             placeLocator: PlaceLocatable? = nil,
                             mapAnimator: MapAnimatable? = nil) -> FindLocationViewController
     {
         let storyboard = UIStoryboard(name: "FindLocation", bundle: Bundle(for: self))
         var vc = storyboard.instantiateInitialViewController() as! FindLocationViewController
         vc.configure(with: locationPermitter)
-        vc.configure(with: userLocator)
+        vc.configure(with: movementMonitor)
         vc.configure(with: placeLocator)
         vc.configure(with: mapAnimator)
         return vc
     }
     
+    // Used to determine if the user can move to the next stage or not
     internal var locations: MultiPlaceUserLocatable? {
         didSet {
             self.map?.removeAnnotations(oldValue?.places ?? [])
             self.map?.removeAnnotations(self.map?.annotations ?? [])
             self.map?.addAnnotations(self.locations?.places ?? [])
+        }
+    }
+    
+    // Used so that we can get a location quickly, but then keep the most recent location
+    // This gives increasing accuracy and keeps the location up to date
+    // Since the system gets updates far quicker than the user can move through the UI
+    private var safeToContinuallyUpdateMap = false
+    private var latestLocation: CLLocation? {
+        didSet {
+            guard self.safeToContinuallyUpdateMap == true, let location = self.latestLocation else { return }
+            let region = MKCoordinateRegion(location: location, zoom: .normal)
+            self.map?.setRegion(region, animated: true)
         }
     }
     
@@ -73,10 +86,10 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
         switch show {
         case true:
             self.map?.showsUserLocation = true
-            self.map?.userTrackingMode = .follow
+            self.safeToContinuallyUpdateMap = true
         case false:
             self.map?.showsUserLocation = false
-            self.map?.userTrackingMode = .none
+            self.safeToContinuallyUpdateMap = false
         }
     }
     
@@ -96,24 +109,34 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
         self.buttonVC?.updateUI(.neither) {
             self.buttonVC?.setLoader(text: "Finding Location")
             self.buttonVC?.updateUI(.loader) {
-                self.userLocator.requestLocation() { result in
+                self.movementMonitor.locationUpdated = { [weak self] result in
                     switch result {
                     case .success(let location):
-                        self.step3_updateUI(with: location)
+                        // if the global variable is NIl then we can progress to the next step
+                        if self?.latestLocation == nil {
+                            self?.step3_updateUI(with: location)
+                        }
+                        // otherwise, just keep the IVAR up to date
+                        self?.latestLocation = location
                     case .error(let error):
-                        self.errorStep_updateUI(with: error)
+                        // if we get an error, shut everything down and display the error UI
+                        self?.movementMonitor.stop()
+                        self?.errorStep_updateUI(with: error)
                     }
+                    
                 }
+                self.movementMonitor.start(maxUpdateFrequency: 0.1)
             }
         }
     }
     
     private func step3_updateUI(with location: CLLocation) {
-        let region = MKCoordinateRegion(location: location)
+        let region = MKCoordinateRegion(location: self.latestLocation ?? location)
         self.mapAnimator.setRegion(region, onMap: self.map) {
             self.updateMapToShowUser(true)
             self.buttonVC?.updateUI(.neither) {
-                self.step4_findPlaces(within: region, userLocation: location)
+                let newerRegion = MKCoordinateRegion(location: self.latestLocation ?? location)
+                self.step4_findPlaces(within: newerRegion, userLocation: location)
             }
         }
     }
@@ -124,7 +147,7 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
             self.placeLocator.locateBeer(at: region) { result in
                 switch result {
                 case .success(let places):
-                    let locations = MultiPlaceUserLocation(userLocation: userLocation, places: places)
+                    let locations = MultiPlaceUserLocation(userLocation: self.latestLocation ?? userLocation, places: places)
                     self.step5_updateUI(with: locations)
                 case .error(let error):
                     self.errorStep_updateUI(with: error)
@@ -157,6 +180,11 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     
     @IBAction private func reload() {
         self.locations = nil
+        self.latestLocation = nil
+        self.movementMonitor.stop()
+        self.movementMonitor.locationUpdated = nil
+        self.movementMonitor.headingUpdated = nil
+        self.updateMapToShowUser(false)
         self.buttonVC?.updateUI(.neither) {
             self.updateButtonText()
             self.buttonVC?.updateUI(.button)
