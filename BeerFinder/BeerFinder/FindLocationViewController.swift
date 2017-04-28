@@ -83,7 +83,7 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     private func step1_showRequestLocationPermission() {
         self.updateMapToShowUser(false)
         self.buttonVC?.updateUI(.neither) {
-            self.buttonVC?.setLoader(text: "Finding Location…")
+            self.buttonVC?.setLoader(text: "Finding Location")
             self.locationPermitter.requestPermission() { _ in
                 self.nextStep()
             }
@@ -94,7 +94,7 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
         self.updateMapToShowUser(false)
         self.locations = nil
         self.buttonVC?.updateUI(.neither) {
-            self.buttonVC?.setLoader(text: "Finding Location…")
+            self.buttonVC?.setLoader(text: "Finding Location")
             self.buttonVC?.updateUI(.loader) {
                 self.userLocator.requestLocation() { result in
                     switch result {
@@ -119,7 +119,7 @@ internal class FindLocationViewController: UIViewController, HasUserLocatable, H
     }
     
     private func step4_findPlaces(within region: MKCoordinateRegion, userLocation: CLLocation) {
-        self.buttonVC?.setLoader(text: "Finding Beer…")
+        self.buttonVC?.setLoader(text: "Finding Beer")
         self.buttonVC?.updateUI(.loader) {
             self.placeLocator.locateBeer(at: region) { result in
                 switch result {
