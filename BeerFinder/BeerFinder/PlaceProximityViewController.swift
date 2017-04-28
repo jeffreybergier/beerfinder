@@ -22,6 +22,8 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     internal var locations: SinglePlaceUserLocatable?
     internal var distanceFormatter: DistanceFormattable = DistanceFormatter()
     
+    private static let updateInterval: TimeInterval = 0.1
+    
     internal class func newVC(movementMonitor: ContinuousUserMovementMonitorable? = nil,
                               locations: SinglePlaceUserLocatable? = nil,
                               distanceFormatter: DistanceFormattable? = nil) -> PlaceProximityViewController
@@ -48,16 +50,18 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
         self.nameLabel?.text = place.name
     
         self.movementMonitor.headingUpdated = { [weak self] result in
-            guard case .success(let direction) = result else { return }
+            guard case .success(let userHeading) = result else { return }
             if let map = self?.map {
-                let camera = map.camera
-                camera.heading = direction
+                let camera = map.camera.copy() as! MKMapCamera // map doesn't animate unless we give it a new object
+                camera.heading = userHeading
                 map.setCamera(camera, animated: true)
             }
             if let pointerView = self?.pointerView {
-                let rawBearing = userLocation.heading(to: place.coordinate)
-                let adjustedBearing = CGFloat(rawBearing) + (-1 * direction.radians)
-                pointerView.transform = CGAffineTransform(rotationAngle: adjustedBearing )
+                let course = CGFloat(userLocation.course(to: place.coordinate))
+                let adjustedCourse = course - userHeading.radians
+                UIView.animate(withDuration: PlaceProximityViewController.updateInterval) {
+                    pointerView.transform = CGAffineTransform(rotationAngle: adjustedCourse)
+                }
             }
         }
         
@@ -69,7 +73,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
                 distanceLabel.text = self?.distanceFormatter.localizedDistance(from: distance)
             }
             if let map = self?.map {
-                let camera = map.camera
+                let camera = map.camera.copy() as! MKMapCamera // map doesn't animate unless we give it a new object
                 camera.centerCoordinate = userLocation.coordinate
                 map.setCamera(camera, animated: true)
             }
@@ -78,7 +82,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     
     internal override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.movementMonitor.start()
+        self.movementMonitor.start(maxUpdateFrequency: PlaceProximityViewController.updateInterval)
     }
     
     internal override func viewDidDisappear(_ animated: Bool) {
