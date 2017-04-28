@@ -58,6 +58,15 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
         super.viewDidLoad()
         self.buttonVC = self.childViewControllers.first()
         self.updateButtonText()
+        self.movementMonitor.headingUpdated = { [weak self] result in
+            guard
+                self?.safeToContinuallyUpdateMap == true,
+                case .success(let heading) = result,
+                let newCam = self?.map?.camera.copy() as? MKMapCamera
+            else { return }
+            newCam.heading = heading
+            self?.map?.setCamera(newCam, animated: true)
+        }
     }
     
     internal override func viewDidAppear(_ animated: Bool) {
@@ -83,6 +92,7 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     }
     
     private func updateMapToShowUser(_ show: Bool) {
+        guard self.safeToContinuallyUpdateMap != show else { return }
         switch show {
         case true:
             self.map?.showsUserLocation = true
@@ -90,6 +100,10 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
         case false:
             self.map?.showsUserLocation = false
             self.safeToContinuallyUpdateMap = false
+            let cam = MKMapCamera()
+            cam.centerCoordinate = self.map!.camera.centerCoordinate
+            cam.altitude = 40000000
+            self.map?.setCamera(cam, animated: true)
         }
     }
     
@@ -183,7 +197,6 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
         self.latestLocation = nil
         self.movementMonitor.stop()
         self.movementMonitor.locationUpdated = nil
-        self.movementMonitor.headingUpdated = nil
         self.updateMapToShowUser(false)
         self.buttonVC?.updateUI(.neither) {
             self.updateButtonText()
