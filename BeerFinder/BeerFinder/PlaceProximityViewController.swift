@@ -39,7 +39,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
         
         self.hardModeVC = self.childViewControllers.first()!
         
-        let userLocation = self.locations!.userLocation
+        var userLocation = self.locations!.userLocation
         let region = MKCoordinateRegion(location: userLocation, zoom: .close)
         self.map?.setRegion(region, animated: false)
         
@@ -49,38 +49,21 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     
         self.movementMonitor.headingUpdated = { [weak self] result in
             guard case .success(let direction) = result else { return }
-//            if let pointerView = self?.pointerView {
-//                pointerView.transform = CGAffineTransform(rotationAngle: direction.radians)
-//            }
-//            if let map = self?.map {
-//                let camera = map.camera
-//                camera.heading = direction
-//                map.setCamera(camera, animated: true)
-//            }
+            if let map = self?.map {
+                let camera = map.camera
+                camera.heading = direction
+                map.setCamera(camera, animated: true)
+            }
+            if let pointerView = self?.pointerView {
+                let rawBearing = userLocation.heading(to: place.coordinate)
+                let adjustedBearing = CGFloat(rawBearing) + (-1 * direction.radians)
+                pointerView.transform = CGAffineTransform(rotationAngle: adjustedBearing )
+            }
         }
         
         self.movementMonitor.locationUpdated = { [weak self] result in
-            guard case .success(let userLocation) = result else { return }
-            if let pointerView = self?.pointerView {
-                let lat1 = userLocation.coordinate.latitude.radians
-                let lon1 = userLocation.coordinate.longitude.radians
-                
-                let lat2 = place.coordinate.latitude.radians
-                let lon2 = place.coordinate.longitude.radians
-                
-                let dLon = lon2 - lon1
-                
-                let y = sin(dLon) * cos(lat2)
-                let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
-                
-                var radiansBearing = atan2(y, x)
-                
-                if radiansBearing < 0.0 {
-                    radiansBearing += 2 * CGFloat.pi
-                }
-                print(radiansBearing)
-                pointerView.transform = CGAffineTransform(rotationAngle: radiansBearing)
-            }
+            guard case .success(let newLoc) = result else { return }
+            userLocation = newLoc
             if let distanceLabel = self?.distanceLabel {
                 let distance = userLocation.distance(from: place.coordinate)
                 distanceLabel.text = self?.distanceFormatter.localizedDistance(from: distance)

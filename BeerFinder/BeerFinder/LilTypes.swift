@@ -43,11 +43,31 @@ internal extension CLLocation {
         let distance = self.distance(from: placeCoordinate)
         return distance
     }
+    internal func heading(to toLoc: CLLocationCoordinate2D) -> CLLocationDirection {
+        let lat1 = self.coordinate.latitude.radians
+        let lon1 = self.coordinate.longitude.radians
+        
+        let lat2 = toLoc.latitude.radians
+        let lon2 = toLoc.longitude.radians
+        
+        let dLon = lon2 - lon1
+        
+        let y = sin(dLon) * cos(lat2)
+        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
+        
+        var radiansBearing = atan2(y, x)
+        
+        if radiansBearing < 0.0 {
+            radiansBearing += 2 * CGFloat.pi
+        }
+        
+        return CLLocationDirection(radiansBearing)
+    }
 }
 
-extension CLLocationDirection {
-    var radians: CGFloat {
-        let radians = CGFloat(self * M_PI / 180.0)
+internal extension Double {
+    internal var radians: CGFloat {
+        let radians = CGFloat(self * Double.pi / 180.0)
         return radians
     }
 }
