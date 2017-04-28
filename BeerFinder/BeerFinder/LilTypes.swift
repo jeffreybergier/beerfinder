@@ -47,7 +47,8 @@ internal extension CLLocation {
 
 extension CLLocationDirection {
     var radians: CGFloat {
-        return CGFloat(self) * CGFloat.pi / 180.0
+        let radians = CGFloat(self * M_PI / 180.0)
+        return radians
     }
 }
 

@@ -11,7 +11,7 @@ import CoreLocation
 internal protocol ContinuousUserMovementMonitorable {
     func start()
     func stop()
-    var headingUpdated: ((Result<CLHeading>) -> Void)? { get set }
+    var headingUpdated: ((Result<CLLocationDirection>) -> Void)? { get set }
     var locationUpdated: ((Result<CLLocation>) -> Void)? { get set }
 }
 
@@ -30,7 +30,7 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     
     private let manager = CLLocationManager()
     
-    var headingUpdated: ((Result<CLHeading>) -> Void)?
+    var headingUpdated: ((Result<CLLocationDirection>) -> Void)?
     var locationUpdated: ((Result<CLLocation>) -> Void)?
     
     internal override init() {
@@ -55,7 +55,7 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     }
     
     @objc internal func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        self.headingUpdated?(.success(newHeading))
+        self.headingUpdated?(.success(newHeading.trueHeading))
     }
     
     @objc internal func locationManagerShouldDisplayHeadingCalibration(_ manager: CLLocationManager) -> Bool {

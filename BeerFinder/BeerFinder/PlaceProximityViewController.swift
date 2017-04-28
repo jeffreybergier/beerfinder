@@ -48,19 +48,39 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
         self.nameLabel?.text = place.name
     
         self.movementMonitor.headingUpdated = { [weak self] result in
-            guard case .success(let heading) = result else { return }
-            if let pointerView = self?.pointerView {
-                pointerView.transform = CGAffineTransform(rotationAngle: heading.trueHeading.radians)
-            }
-            if let map = self?.map {
-                let camera = map.camera
-                camera.heading = heading.trueHeading
-                map.setCamera(camera, animated: true)
-            }
+            guard case .success(let direction) = result else { return }
+//            if let pointerView = self?.pointerView {
+//                pointerView.transform = CGAffineTransform(rotationAngle: direction.radians)
+//            }
+//            if let map = self?.map {
+//                let camera = map.camera
+//                camera.heading = direction
+//                map.setCamera(camera, animated: true)
+//            }
         }
         
         self.movementMonitor.locationUpdated = { [weak self] result in
             guard case .success(let userLocation) = result else { return }
+            if let pointerView = self?.pointerView {
+                let lat1 = userLocation.coordinate.latitude.radians
+                let lon1 = userLocation.coordinate.longitude.radians
+                
+                let lat2 = place.coordinate.latitude.radians
+                let lon2 = place.coordinate.longitude.radians
+                
+                let dLon = lon2 - lon1
+                
+                let y = sin(dLon) * cos(lat2)
+                let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
+                
+                var radiansBearing = atan2(y, x)
+                
+                if radiansBearing < 0.0 {
+                    radiansBearing += 2 * CGFloat.pi
+                }
+                print(radiansBearing)
+                pointerView.transform = CGAffineTransform(rotationAngle: radiansBearing)
+            }
             if let distanceLabel = self?.distanceLabel {
                 let distance = userLocation.distance(from: place.coordinate)
                 distanceLabel.text = self?.distanceFormatter.localizedDistance(from: distance)
