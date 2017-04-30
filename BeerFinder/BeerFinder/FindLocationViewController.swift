@@ -42,27 +42,10 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
         }
     }
     
-    // Used so that we can get a location quickly, but then keep the most recent location
-    // This gives increasing accuracy and keeps the location up to date
-    // Since the system gets updates far quicker than the user can move through the UI
-    private var safeToContinuallyUpdateMap = false
-    
     internal override func viewDidLoad() {
         super.viewDidLoad()
         self.buttonVC = self.childViewControllers.first()
         self.updateButtonText()
-        self.movementMonitor.updated = { [weak self] result in
-            guard
-                self?.safeToContinuallyUpdateMap == true,
-                case .success(let location, let heading) = result,
-                let map = self?.map
-            else { return }
-            
-            let newCam = map.camera.copy() as! MKMapCamera
-            newCam.heading = heading
-            newCam.centerCoordinate = location.coordinate
-            map.setCamera(newCam, animated: true)
-        }
     }
     
     internal override func viewDidAppear(_ animated: Bool) {
@@ -88,18 +71,11 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     }
     
     private func updateMapToShowUser(_ show: Bool) {
-        guard self.safeToContinuallyUpdateMap != show else { return }
         switch show {
         case true:
             self.map?.showsUserLocation = true
-            self.safeToContinuallyUpdateMap = true
         case false:
             self.map?.showsUserLocation = false
-            self.safeToContinuallyUpdateMap = false
-            let cam = MKMapCamera()
-            cam.centerCoordinate = self.map!.camera.centerCoordinate
-            cam.altitude = 40000000
-            self.map?.setCamera(cam, animated: true)
         }
     }
     
@@ -149,9 +125,11 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
         self.buttonVC?.updateUI(.loader) {
             self.placeLocator.locateBeer(at: region) { result in
                 switch result {
-                case .success(let places):
-                    let locations = MultiPlaceUserLocation(userLocation: self.movementMonitor.latestLocation ?? userLocation, places: places)
-                    self.step5_updateUI(with: locations)
+                case .success(let places, let boundingRegion):
+                    self.mapAnimator.setRegion(boundingRegion, onMap: self.map) {
+                        let locations = MultiPlaceUserLocation(userLocation: self.movementMonitor.latestLocation ?? userLocation, places: places)
+                        self.step5_updateUI(with: locations)
+                    }
                 case .error(let error):
                     self.errorStep_updateUI(with: error)
                 }
@@ -182,9 +160,22 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     }
     
     @IBAction private func reload() {
-        self.locations = nil
-        self.movementMonitor.stop()
+        // reset map
         self.updateMapToShowUser(false)
+        if let map = self.map {
+            let cam = MKMapCamera()
+            cam.centerCoordinate = map.camera.centerCoordinate
+            cam.altitude = 40000000
+            map.setCamera(cam, animated: true)
+        }
+        
+        // reset saved state
+        self.locations = nil
+        
+        // stop location services
+        self.movementMonitor.stop()
+        
+        // reset buttons
         self.buttonVC?.updateUI(.neither) {
             self.updateButtonText()
             self.buttonVC?.updateUI(.button)

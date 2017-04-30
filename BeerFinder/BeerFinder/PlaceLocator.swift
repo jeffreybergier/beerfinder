@@ -9,7 +9,7 @@
 import MapKit
 
 internal protocol PlaceLocatable {
-    func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<[PlaceLocator.MapItem]>) -> Void)?)
+    func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<([PlaceLocator.MapItem], MKCoordinateRegion)>) -> Void)?)
 }
 
 internal protocol HasPlaceLocatable {
@@ -39,10 +39,10 @@ internal class PlaceLocator: PlaceLocatable {
         }
     }
     
-    internal func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<[MapItem]>) -> Void)?) {
+    internal func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<([PlaceLocator.MapItem], MKCoordinateRegion)>) -> Void)?) {
         let request = MKLocalSearchRequest()
         request.region = region
-        request.naturalLanguageQuery = "beer"
+        request.naturalLanguageQuery = "bar"
         let search = MKLocalSearch(request: request)
         search.start { response, error in
             if let response = response {
@@ -50,7 +50,7 @@ internal class PlaceLocator: PlaceLocatable {
                     guard let name = mapKitItem.name else { return nil }
                     return MapItem(name: name, placemark: mapKitItem.placemark)
                 }
-                completionHandler?(.success(places))
+                completionHandler?(.success(places, response.boundingRegion))
             } else {
                 completionHandler?(.error(error!))
             }

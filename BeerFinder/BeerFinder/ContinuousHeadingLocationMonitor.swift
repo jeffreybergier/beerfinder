@@ -32,13 +32,7 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     
     private let manager = CLLocationManager()
     
-    var updated: ((Result<(CLLocation, CLLocationDirection)>) -> Void)? {
-        didSet {
-            if self.updated == nil {
-                self.stop()
-            }
-        }
-    }
+    var updated: ((Result<(CLLocation, CLLocationDirection)>) -> Void)?
     
     private(set) var latestLocation: CLLocation?
     private(set) var latestHeading: CLLocationDirection?
@@ -53,7 +47,6 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     }
     
     internal func start(maxUpdateFrequency interval: TimeInterval) {
-        guard self.updated != nil else { return }
         self.timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.timerFired(_:)), userInfo: nil, repeats: true)
         self.manager.startUpdatingHeading()
         self.manager.startUpdatingLocation()
@@ -62,8 +55,8 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     internal func stop() {
         self.timer?.invalidate()
         self.timer = nil
-        self.manager.startUpdatingHeading()
-        self.manager.startUpdatingLocation()
+        self.manager.stopUpdatingHeading()
+        self.manager.stopUpdatingLocation()
     }
     
     private var nextLocation: ((Result<CLLocation>) -> Void)?
@@ -79,31 +72,43 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     }
     
     @objc private func timerFired(_ timer: Timer?) {
+        guard let completion = self.updated else { return }
+        
         let _location = self.latestLocation
         let _heading = self.latestHeading
         let _error = self.latestError
         
         if let error = _error {
+            // clear the error here so its not permanent between updates
             self.latestError = nil
-            self.updated?(.error(error))
+            completion(.error(error))
             return
         }
         
         if let location = _location, let heading = _heading {
-            self.updated?(.success(location, heading))
+            completion(.success(location, heading))
         }
     }
     
     @objc internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
+        // clear any errors that may have happened, clearly things are working now
         self.latestError = nil
+        // store the next location for the timer
         self.latestLocation = location
-        self.nextLocation?(.success(location))
+        
+        // if the next location function was called and we have a completion handler for that, do this
+        guard let nextLocation = self.nextLocation else { return }
+        // clear out the completion handler IVAR
         self.nextLocation = nil
+        // call the closure
+        nextLocation(.success(location))
     }
     
     @objc internal func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        // clear any errors that may have happened, clearly things are working now
         self.latestError = nil
+        // store the next location for the timer
         self.latestHeading = newHeading.trueHeading
     }
     
@@ -112,9 +117,15 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     }
     
     @objc internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        // store the error for the timer
         self.latestError = error
-        self.nextLocation?(.error(error))
+        
+        // if the next location function was called and we have a completion handler for that, do this
+        guard let nextLocation = self.nextLocation else { return }
+        // clear out the completion handler IVAR
         self.nextLocation = nil
+        // call the closure
+        nextLocation(.error(error))
     }
     
 }
