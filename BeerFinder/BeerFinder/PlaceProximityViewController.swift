@@ -54,16 +54,19 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
                 let distance = location.distance(from: place.coordinate)
                 distanceLabel.text = self?.distanceFormatter.localizedDistance(from: distance)
             }
-            if let map = self?.map {
+            if let map = self?.map, let pointerView = self?.pointerView {
+                // configure the camera
                 let camera = map.camera.copy() as! MKMapCamera // map doesn't animate unless we give it a new object
                 camera.heading = heading
                 camera.centerCoordinate = location.coordinate
-                map.setCamera(camera, animated: true)
-            }
-            if let pointerView = self?.pointerView {
+                
+                // configure the finger
                 let course = CGFloat(location.course(to: place.coordinate))
-                let adjustedCourse = course - heading.radians
+                let adjustedCourse = course.courseByAdjusting(for: heading.radians)
+                
+                // animate those things together
                 UIView.animate(withDuration: kLocationUpdateInterval) {
+                    map.camera = camera
                     pointerView.transform = CGAffineTransform(rotationAngle: adjustedCourse)
                 }
             }

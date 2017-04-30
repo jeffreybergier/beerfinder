@@ -74,6 +74,17 @@ internal extension Double {
     }
 }
 
+internal extension CGFloat {
+    internal func courseByAdjusting(for heading: CGFloat) -> CGFloat {
+        var copy = self
+        copy.adjust(for: heading)
+        return copy
+    }
+    internal mutating func adjust(for heading: CGFloat) {
+        self = self - heading
+    }
+}
+
 extension MKCoordinateRegion {
     
     enum Zoom {
