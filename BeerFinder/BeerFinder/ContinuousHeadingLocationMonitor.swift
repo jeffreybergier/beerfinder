@@ -9,10 +9,12 @@
 import CoreLocation
 
 internal protocol ContinuousUserMovementMonitorable {
+    var updated: ((Result<(CLLocation, CLLocationDirection)>) -> Void)? { get set }
+    var latestLocation: CLLocation? { get }
+    var latestHeading: CLLocationDirection? { get }
     func start(maxUpdateFrequency: TimeInterval)
     func stop()
-    var headingUpdated: ((Result<CLLocationDirection>) -> Void)? { get set }
-    var locationUpdated: ((Result<CLLocation>) -> Void)? { get set }
+    func next(location: ((Result<CLLocation>) -> Void)?)
 }
 
 internal protocol HasContinuousUserMovementMonitorable {
@@ -30,11 +32,16 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     
     private let manager = CLLocationManager()
     
-    var headingUpdated: ((Result<CLLocationDirection>) -> Void)?
-    var locationUpdated: ((Result<CLLocation>) -> Void)?
+    var updated: ((Result<(CLLocation, CLLocationDirection)>) -> Void)? {
+        didSet {
+            if self.updated == nil {
+                self.stop()
+            }
+        }
+    }
     
-    private var latestLocation: CLLocation?
-    private var latestHeading: CLLocationDirection?
+    private(set) var latestLocation: CLLocation?
+    private(set) var latestHeading: CLLocationDirection?
     private var latestError: Error?
     
     private var timer: Timer?
@@ -46,13 +53,10 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     }
     
     internal func start(maxUpdateFrequency interval: TimeInterval) {
+        guard self.updated != nil else { return }
         self.timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.timerFired(_:)), userInfo: nil, repeats: true)
-        if self.locationUpdated != nil {
-            self.manager.startUpdatingLocation()
-        }
-        if self.headingUpdated != nil {
-            self.manager.startUpdatingHeading()
-        }
+        self.manager.startUpdatingHeading()
+        self.manager.startUpdatingLocation()
     }
     
     internal func stop() {
@@ -62,36 +66,44 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
         self.manager.startUpdatingLocation()
     }
     
+    private var nextLocation: ((Result<CLLocation>) -> Void)?
+    
+    internal func next(location completion: ((Result<CLLocation>) -> Void)?) {
+        if let location = self.latestLocation {
+            completion?(.success(location))
+        } else if let error = self.latestError {
+            completion?(.error(error))
+        } else {
+            self.nextLocation = completion
+        }
+    }
+    
     @objc private func timerFired(_ timer: Timer?) {
         let _location = self.latestLocation
         let _heading = self.latestHeading
         let _error = self.latestError
         
-        self.latestLocation = nil
-        self.latestHeading = nil
-        self.latestError = nil
-        
         if let error = _error {
-            self.locationUpdated?(.error(error))
-            self.headingUpdated?(.error(error))
+            self.latestError = nil
+            self.updated?(.error(error))
             return
         }
         
-        if let location = _location {
-            self.locationUpdated?(.success(location))
-        }
-        
-        if let heading = _heading {
-            self.headingUpdated?(.success(heading))
+        if let location = _location, let heading = _heading {
+            self.updated?(.success(location, heading))
         }
     }
     
     @objc internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
+        self.latestError = nil
         self.latestLocation = location
+        self.nextLocation?(.success(location))
+        self.nextLocation = nil
     }
     
     @objc internal func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        self.latestError = nil
         self.latestHeading = newHeading.trueHeading
     }
     
@@ -101,6 +113,8 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     
     @objc internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         self.latestError = error
+        self.nextLocation?(.error(error))
+        self.nextLocation = nil
     }
     
 }

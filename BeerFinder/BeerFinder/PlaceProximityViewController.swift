@@ -37,39 +37,35 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     internal override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.hardModeVC = self.childViewControllers.first()!
+        self.hardModeVC = self.childViewControllers.first()
         
-        var userLocation = self.locations!.userLocation
-        let region = MKCoordinateRegion(location: userLocation, zoom: .close)
+        guard let locations = self.locations else { fatalError("This view controller must have a SinglePlaceUserLocatable before being loaded") }
+        
+        let region = MKCoordinateRegion(location: locations.userLocation, zoom: .close)
         self.map?.setRegion(region, animated: false)
         
-        let place = self.locations!.place
+        let place = locations.place
         self.map?.addAnnotation(place)
         self.nameLabel?.text = place.name
-    
-        self.movementMonitor.headingUpdated = { [weak self] result in
-            guard case .success(let userHeading) = result else { return }
+        
+        self.movementMonitor.updated = { [weak self] result in
+            guard case .success(let location, let heading) = result else { return }
+            if let distanceLabel = self?.distanceLabel {
+                let distance = location.distance(from: place.coordinate)
+                distanceLabel.text = self?.distanceFormatter.localizedDistance(from: distance)
+            }
             if let map = self?.map {
                 let camera = map.camera.copy() as! MKMapCamera // map doesn't animate unless we give it a new object
-                camera.heading = userHeading
-                camera.centerCoordinate = userLocation.coordinate
+                camera.heading = heading
+                camera.centerCoordinate = location.coordinate
                 map.setCamera(camera, animated: true)
             }
             if let pointerView = self?.pointerView {
-                let course = CGFloat(userLocation.course(to: place.coordinate))
-                let adjustedCourse = course - userHeading.radians
+                let course = CGFloat(location.course(to: place.coordinate))
+                let adjustedCourse = course - heading.radians
                 UIView.animate(withDuration: kLocationUpdateInterval) {
                     pointerView.transform = CGAffineTransform(rotationAngle: adjustedCourse)
                 }
-            }
-        }
-        
-        self.movementMonitor.locationUpdated = { [weak self] result in
-            guard case .success(let newLoc) = result else { return }
-            userLocation = newLoc
-            if let distanceLabel = self?.distanceLabel {
-                let distance = userLocation.distance(from: place.coordinate)
-                distanceLabel.text = self?.distanceFormatter.localizedDistance(from: distance)
             }
         }
     }

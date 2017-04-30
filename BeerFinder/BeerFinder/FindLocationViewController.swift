@@ -46,26 +46,22 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     // This gives increasing accuracy and keeps the location up to date
     // Since the system gets updates far quicker than the user can move through the UI
     private var safeToContinuallyUpdateMap = false
-    private var latestLocation: CLLocation? {
-        didSet {
-            guard self.safeToContinuallyUpdateMap == true, let location = self.latestLocation else { return }
-            let region = MKCoordinateRegion(location: location, zoom: .normal)
-            self.map?.setRegion(region, animated: true)
-        }
-    }
     
     internal override func viewDidLoad() {
         super.viewDidLoad()
         self.buttonVC = self.childViewControllers.first()
         self.updateButtonText()
-        self.movementMonitor.headingUpdated = { [weak self] result in
+        self.movementMonitor.updated = { [weak self] result in
             guard
                 self?.safeToContinuallyUpdateMap == true,
-                case .success(let heading) = result,
-                let newCam = self?.map?.camera.copy() as? MKMapCamera
+                case .success(let location, let heading) = result,
+                let map = self?.map
             else { return }
+            
+            let newCam = map.camera.copy() as! MKMapCamera
             newCam.heading = heading
-            self?.map?.setCamera(newCam, animated: true)
+            newCam.centerCoordinate = location.coordinate
+            map.setCamera(newCam, animated: true)
         }
     }
     
@@ -123,21 +119,14 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
         self.buttonVC?.updateUI(.neither) {
             self.buttonVC?.setLoader(text: "Finding Location")
             self.buttonVC?.updateUI(.loader) {
-                self.movementMonitor.locationUpdated = { [weak self] result in
+                self.movementMonitor.next { result in
                     switch result {
                     case .success(let location):
-                        // if the global variable is NIl then we can progress to the next step
-                        if self?.latestLocation == nil {
-                            self?.step3_updateUI(with: location)
-                        }
-                        // otherwise, just keep the IVAR up to date
-                        self?.latestLocation = location
+                        self.step3_updateUI(with: location)
                     case .error(let error):
-                        // if we get an error, shut everything down and display the error UI
-                        self?.movementMonitor.stop()
-                        self?.errorStep_updateUI(with: error)
+                        self.movementMonitor.stop()
+                        self.errorStep_updateUI(with: error)
                     }
-                    
                 }
                 self.movementMonitor.start(maxUpdateFrequency: kLocationUpdateInterval)
             }
@@ -145,11 +134,11 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     }
     
     private func step3_updateUI(with location: CLLocation) {
-        let region = MKCoordinateRegion(location: self.latestLocation ?? location)
+        let region = MKCoordinateRegion(location: self.movementMonitor.latestLocation ?? location)
         self.mapAnimator.setRegion(region, onMap: self.map) {
             self.updateMapToShowUser(true)
             self.buttonVC?.updateUI(.neither) {
-                let newerRegion = MKCoordinateRegion(location: self.latestLocation ?? location)
+                let newerRegion = MKCoordinateRegion(location: self.movementMonitor.latestLocation ?? location)
                 self.step4_findPlaces(within: newerRegion, userLocation: location)
             }
         }
@@ -161,7 +150,7 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
             self.placeLocator.locateBeer(at: region) { result in
                 switch result {
                 case .success(let places):
-                    let locations = MultiPlaceUserLocation(userLocation: self.latestLocation ?? userLocation, places: places)
+                    let locations = MultiPlaceUserLocation(userLocation: self.movementMonitor.latestLocation ?? userLocation, places: places)
                     self.step5_updateUI(with: locations)
                 case .error(let error):
                     self.errorStep_updateUI(with: error)
@@ -194,9 +183,7 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     
     @IBAction private func reload() {
         self.locations = nil
-        self.latestLocation = nil
         self.movementMonitor.stop()
-        self.movementMonitor.locationUpdated = nil
         self.updateMapToShowUser(false)
         self.buttonVC?.updateUI(.neither) {
             self.updateButtonText()
