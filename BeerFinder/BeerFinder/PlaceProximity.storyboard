@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -135,12 +134,12 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhd-dI-bSB">
-                                            <rect key="frame" x="8" y="0.0" width="55" height="55"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="70" height="55"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" secondItem="vhd-dI-bSB" secondAttribute="height" multiplier="1:1" id="7d5-ho-gwg"/>
+                                                <constraint firstAttribute="width" constant="70" id="Vyp-fD-9gM"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <state key="normal" title="Back">
+                                            <state key="normal" title="🔙">
                                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
@@ -169,7 +168,7 @@
                                         <constraint firstAttribute="bottom" secondItem="vhd-dI-bSB" secondAttribute="bottom" id="5gh-Xg-sYN"/>
                                         <constraint firstItem="wR8-NF-qPe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vhd-dI-bSB" secondAttribute="trailing" constant="8" symbolic="YES" id="BUy-6v-7WC"/>
                                         <constraint firstItem="vhd-dI-bSB" firstAttribute="top" secondItem="pLj-pg-KMy" secondAttribute="top" id="J45-SR-tvO"/>
-                                        <constraint firstItem="vhd-dI-bSB" firstAttribute="leading" secondItem="pLj-pg-KMy" secondAttribute="leading" constant="8" id="Tjk-Z9-s0j"/>
+                                        <constraint firstItem="vhd-dI-bSB" firstAttribute="leading" secondItem="pLj-pg-KMy" secondAttribute="leading" id="Tjk-Z9-s0j"/>
                                         <constraint firstAttribute="trailing" secondItem="wR8-NF-qPe" secondAttribute="trailing" constant="20" symbolic="YES" id="m6H-mf-Oli"/>
                                         <constraint firstAttribute="bottom" secondItem="wR8-NF-qPe" secondAttribute="bottom" constant="12" id="phQ-Gb-mM3"/>
                                         <constraint firstItem="wR8-NF-qPe" firstAttribute="top" secondItem="pLj-pg-KMy" secondAttribute="top" constant="12" id="w3b-yR-7h2"/>
