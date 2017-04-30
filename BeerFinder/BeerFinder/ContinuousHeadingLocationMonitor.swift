@@ -8,12 +8,11 @@
 
 import CoreLocation
 
-internal protocol ContinuousUserMovementMonitorable {
+internal protocol ContinuousUserMovementMonitorable: Resettable {
     var updated: ((Result<(CLLocation, CLLocationDirection)>) -> Void)? { get set }
     var latestLocation: CLLocation? { get }
     var latestHeading: CLLocationDirection? { get }
     func start(maxUpdateFrequency: TimeInterval)
-    func stop()
     func next(location: ((Result<CLLocation>) -> Void)?)
 }
 
@@ -52,11 +51,16 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
         self.manager.startUpdatingLocation()
     }
     
-    internal func stop() {
-        self.timer?.invalidate()
-        self.timer = nil
+    internal func reset() {
         self.manager.stopUpdatingHeading()
         self.manager.stopUpdatingLocation()
+        self.timer?.invalidate()
+        self.timer = nil
+        self.latestError = nil
+        self.latestLocation = nil
+        self.latestHeading = nil
+        self.updated = nil
+        self.nextLocation = nil
     }
     
     private var nextLocation: ((Result<CLLocation>) -> Void)?

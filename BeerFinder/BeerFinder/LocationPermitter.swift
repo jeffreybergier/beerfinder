@@ -8,7 +8,7 @@
 
 import CoreLocation
 
-internal protocol LocationPermittable {
+internal protocol LocationPermittable: Resettable {
     var permission: CLAuthorizationStatus { get }
     func requestPermission(_ completionHandler: ((CLAuthorizationStatus) -> Void)?)
 }
@@ -39,6 +39,10 @@ internal class LocationPermitter: NSObject, CLLocationManagerDelegate, LocationP
         self.manager.delegate = self
     }
     
+    internal func reset() {
+        self.permissionHandler = nil
+    }
+    
     @objc internal func requestPermission(_ completionHandler: ((CLAuthorizationStatus) -> Void)?) {
         self.manager.requestWhenInUseAuthorization()
         self.permissionHandler = completionHandler
@@ -46,6 +50,6 @@ internal class LocationPermitter: NSObject, CLLocationManagerDelegate, LocationP
     
     @objc internal func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         self.permissionHandler?(status)
-        self.permissionHandler = nil
+        self.reset()
     }
 }

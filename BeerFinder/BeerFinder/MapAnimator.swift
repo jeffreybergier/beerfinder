@@ -8,7 +8,7 @@
 
 import MapKit
 
-internal protocol MapAnimatable {
+internal protocol MapAnimatable: Resettable {
     func setRegion(_: MKCoordinateRegion, onMap: MKMapView?, completion: (() -> Void)?)
 }
 
@@ -25,21 +25,29 @@ internal extension HasMapAnimatable {
 
 internal class MapAnimator: NSObject, MapAnimatable, MKMapViewDelegate {
     
+    private var map: MKMapView?
     private var oldDelegate: MKMapViewDelegate?
     private var animationCompletion: (() -> Void)?
+    
+    internal func reset() {
+        self.map?.delegate = self.oldDelegate
+        self.map = nil
+        self.oldDelegate = nil
+        self.animationCompletion = nil
+    }
     
     internal func setRegion(_ region: MKCoordinateRegion, onMap map: MKMapView?, completion: (() -> Void)?) {
         guard let map = map else { completion?(); return; }
         self.animationCompletion = completion
         self.oldDelegate = map.delegate
+        self.map = map
         map.delegate = self
         map.setRegion(region, animated: true)
     }
     
     @objc internal func mapView(_ map: MKMapView, regionDidChangeAnimated animated: Bool) {
-        map.delegate = self.oldDelegate
         animationCompletion?()
-        self.animationCompletion = nil
+        self.reset()
     }
     
 }

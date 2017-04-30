@@ -10,6 +10,10 @@ import MapKit
 import CoreLocation
 import UIKit
 
+internal protocol Resettable {
+    func reset()
+}
+
 internal enum Result<T> {
     case success(T), error(Error)
 }

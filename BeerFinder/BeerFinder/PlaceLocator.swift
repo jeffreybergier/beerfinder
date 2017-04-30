@@ -8,7 +8,7 @@
 
 import MapKit
 
-internal protocol PlaceLocatable {
+internal protocol PlaceLocatable: Resettable {
     func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<([PlaceLocator.MapItem], MKCoordinateRegion)>) -> Void)?)
 }
 
@@ -39,11 +39,20 @@ internal class PlaceLocator: PlaceLocatable {
         }
     }
     
+    private var searchInProgress: MKLocalSearch?
+    
+    internal func reset() {
+        self.searchInProgress?.cancel()
+        self.searchInProgress = nil
+    }
+    
     internal func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<([PlaceLocator.MapItem], MKCoordinateRegion)>) -> Void)?) {
+        self.reset()
         let request = MKLocalSearchRequest()
         request.region = region
         request.naturalLanguageQuery = "bar"
         let search = MKLocalSearch(request: request)
+        self.searchInProgress = search
         search.start { response, error in
             if let response = response {
                 let places = response.mapItems.flatMap { mapKitItem -> MapItem? in

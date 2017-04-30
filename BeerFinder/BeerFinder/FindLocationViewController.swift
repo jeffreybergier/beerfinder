@@ -100,7 +100,7 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
                     case .success(let location):
                         self.step3_updateUI(with: location)
                     case .error(let error):
-                        self.movementMonitor.stop()
+                        self.movementMonitor.reset()
                         self.errorStep_updateUI(with: error)
                     }
                 }
@@ -172,8 +172,11 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
         // reset saved state
         self.locations = nil
         
-        // stop location services
-        self.movementMonitor.stop()
+        // stop any thing in progress
+        self.movementMonitor.reset()
+        self.mapAnimator.reset()
+        self.locationPermitter.reset()
+        self.placeLocator.reset()
         
         // reset buttons
         self.buttonVC?.updateUI(.neither) {

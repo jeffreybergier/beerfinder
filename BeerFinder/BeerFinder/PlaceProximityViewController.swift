@@ -80,7 +80,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     
     internal override func viewDidDisappear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.movementMonitor.stop()
+        self.movementMonitor.reset()
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
