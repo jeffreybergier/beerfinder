@@ -145,7 +145,7 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
                 return
             }
             self.locations = locations
-            self.updateButtonText(with: "Next")
+            self.updateButtonText(with: "Choose Bar")
             self.buttonVC?.updateUI(.button)
         }
     }
@@ -160,15 +160,6 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     }
     
     @IBAction private func reload() {
-        // reset map
-        self.updateMapToShowUser(false)
-        if let map = self.map {
-            let cam = MKMapCamera()
-            cam.centerCoordinate = map.camera.centerCoordinate
-            cam.altitude = 40000000
-            map.setCamera(cam, animated: true)
-        }
-        
         // reset saved state
         self.locations = nil
         
@@ -177,6 +168,15 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
         self.mapAnimator.reset()
         self.locationPermitter.reset()
         self.placeLocator.reset()
+        
+        // reset map
+        self.updateMapToShowUser(false)
+        if let map = self.map {
+            let cam = MKMapCamera()
+            cam.centerCoordinate = map.camera.centerCoordinate
+            cam.altitude = 40000000
+            map.setCamera(cam, animated: true)
+        }
         
         // reset buttons
         self.buttonVC?.updateUI(.neither) {

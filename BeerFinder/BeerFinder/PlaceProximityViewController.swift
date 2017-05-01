@@ -41,13 +41,24 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
         
         guard let locations = self.locations else { fatalError("This view controller must have a SinglePlaceUserLocatable before being loaded") }
         
-        let region = MKCoordinateRegion(location: locations.userLocation, zoom: .close)
+        let place = locations.place
+        let userLocation = locations.userLocation
+        
+        // configure the map
+        let region = MKCoordinateRegion(location: userLocation, zoom: .close)
+        self.map?.addAnnotation(place)
         self.map?.setRegion(region, animated: false)
         
-        let place = locations.place
-        self.map?.addAnnotation(place)
+        // configure your textfields
         self.nameLabel?.text = place.name
+        let distance = userLocation.distance(from: place.coordinate)
+        self.distanceLabel?.text = self.distanceFormatter.localizedDistance(from: distance)
         
+        // begin
+        self.beginGuidingUser(to: place)
+    }
+    
+    private func beginGuidingUser(to place: PlaceLocator.MapItem) {
         self.movementMonitor.updated = { [weak self] result in
             guard case .success(let location, let heading) = result else { return }
             if let distanceLabel = self?.distanceLabel {
@@ -71,16 +82,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
                 }
             }
         }
-    }
-    
-    internal override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         self.movementMonitor.start(maxUpdateFrequency: kLocationUpdateInterval)
-    }
-    
-    internal override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.movementMonitor.reset()
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
