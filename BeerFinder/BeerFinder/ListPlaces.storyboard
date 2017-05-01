@@ -68,13 +68,13 @@
                                 </userDefinedRuntimeAttributes>
                             </visualEffectView>
                             <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TnK-NL-CBQ">
-                                <rect key="frame" x="16" y="435" width="144" height="35"/>
+                                <rect key="frame" x="16" y="435" width="140" height="35"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Jef-mg-Mwr">
-                                    <rect key="frame" x="0.0" y="0.0" width="144" height="35"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="140" height="35"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HwV-J2-PeH">
-                                            <rect key="frame" x="0.0" y="0.0" width="144" height="35"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="140" height="35"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                             <state key="normal" title="🔙">
                                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -89,6 +89,37 @@
                                         <constraint firstItem="HwV-J2-PeH" firstAttribute="height" secondItem="Jef-mg-Mwr" secondAttribute="height" id="9FF-hz-Doo"/>
                                         <constraint firstItem="HwV-J2-PeH" firstAttribute="width" secondItem="Jef-mg-Mwr" secondAttribute="width" id="I5D-Ta-UiO"/>
                                         <constraint firstItem="HwV-J2-PeH" firstAttribute="centerY" secondItem="Jef-mg-Mwr" secondAttribute="centerY" id="lg2-hM-jiz"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="extraLight"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </visualEffectView>
+                            <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5C8-aL-vo0">
+                                <rect key="frame" x="164" y="435" width="140" height="35"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ryR-z2-OEU">
+                                    <rect key="frame" x="0.0" y="0.0" width="140" height="35"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbW-xP-wGL">
+                                            <rect key="frame" x="0.0" y="0.0" width="140" height="35"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                            <state key="normal" title="Open in Maps">
+                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="openInMaps:" destination="6B3-Wg-pbY" eventType="touchUpInside" id="S5g-Qn-Ymq"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="dbW-xP-wGL" firstAttribute="centerX" secondItem="ryR-z2-OEU" secondAttribute="centerX" id="16b-p3-D1p"/>
+                                        <constraint firstItem="dbW-xP-wGL" firstAttribute="centerY" secondItem="ryR-z2-OEU" secondAttribute="centerY" id="97H-hc-6w1"/>
+                                        <constraint firstItem="dbW-xP-wGL" firstAttribute="height" secondItem="ryR-z2-OEU" secondAttribute="height" id="V1d-jO-gvz"/>
+                                        <constraint firstItem="dbW-xP-wGL" firstAttribute="width" secondItem="ryR-z2-OEU" secondAttribute="width" id="iJ5-u6-0E2"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="extraLight"/>
@@ -170,16 +201,20 @@
                             <constraint firstItem="TnK-NL-CBQ" firstAttribute="height" secondItem="ugB-Qr-HnS" secondAttribute="height" multiplier="1/2" id="6Pk-IZ-dOk"/>
                             <constraint firstItem="ugB-Qr-HnS" firstAttribute="leading" secondItem="mUc-AM-fRN" secondAttribute="leadingMargin" id="88S-dz-Umc"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ugB-Qr-HnS" secondAttribute="trailing" id="BI7-6B-ruz"/>
+                            <constraint firstItem="5C8-aL-vo0" firstAttribute="trailing" secondItem="ugB-Qr-HnS" secondAttribute="trailing" id="Drw-Yv-nvg"/>
                             <constraint firstItem="ugB-Qr-HnS" firstAttribute="top" secondItem="TnK-NL-CBQ" secondAttribute="bottom" constant="8" symbolic="YES" id="EUe-B0-Ol1"/>
                             <constraint firstItem="snQ-RO-ola" firstAttribute="centerY" secondItem="mUc-AM-fRN" secondAttribute="centerY" id="Fz9-jV-CZ0"/>
                             <constraint firstItem="snQ-RO-ola" firstAttribute="centerX" secondItem="mUc-AM-fRN" secondAttribute="centerX" id="JMm-nF-Zx7"/>
+                            <constraint firstItem="TnK-NL-CBQ" firstAttribute="width" secondItem="5C8-aL-vo0" secondAttribute="width" id="OfH-Gq-vjS"/>
+                            <constraint firstItem="5C8-aL-vo0" firstAttribute="leading" secondItem="TnK-NL-CBQ" secondAttribute="trailing" constant="8" symbolic="YES" id="OmQ-Ql-ehp"/>
+                            <constraint firstItem="ugB-Qr-HnS" firstAttribute="top" secondItem="5C8-aL-vo0" secondAttribute="bottom" constant="8" symbolic="YES" id="P89-lH-FIA"/>
                             <constraint firstItem="snQ-RO-ola" firstAttribute="height" secondItem="mUc-AM-fRN" secondAttribute="height" id="Shg-7q-3w7"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Cj3-L8-qm7" secondAttribute="trailing" id="ZF5-Nd-xDp"/>
                             <constraint firstItem="Cj3-L8-qm7" firstAttribute="top" secondItem="ryP-MU-2Q0" secondAttribute="bottom" constant="8" id="Zzk-AG-goN"/>
                             <constraint firstItem="snQ-RO-ola" firstAttribute="width" secondItem="mUc-AM-fRN" secondAttribute="width" id="aV8-FQ-Lik"/>
                             <constraint firstItem="NZj-Hb-Zrs" firstAttribute="top" secondItem="ugB-Qr-HnS" secondAttribute="bottom" constant="20" id="dN9-Ko-SuQ"/>
                             <constraint firstItem="TnK-NL-CBQ" firstAttribute="leading" secondItem="ugB-Qr-HnS" secondAttribute="leading" id="pUl-zx-aB9"/>
-                            <constraint firstItem="TnK-NL-CBQ" firstAttribute="width" secondItem="ugB-Qr-HnS" secondAttribute="width" multiplier="1/2" id="vu8-3O-gPx"/>
+                            <constraint firstItem="TnK-NL-CBQ" firstAttribute="height" secondItem="5C8-aL-vo0" secondAttribute="height" id="wUA-Os-G8M"/>
                         </constraints>
                     </view>
                     <connections>

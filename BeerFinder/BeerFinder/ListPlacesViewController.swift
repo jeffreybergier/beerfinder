@@ -47,7 +47,7 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
     
     private func updateUIWithData() {
         guard let locations = self.locations, locations.places.isEmpty == false else {
-            self.titleLabel?.text = "No Beer Found"
+            self.titleLabel?.text = "Nothing Found"
             self.distanceLabel?.text = "0.0"
             self.currentIndex = 0
             return
@@ -93,6 +93,12 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
     @IBAction private func previous(_ sender: NSObject?) {
         self.currentIndex -= 1
         self.updateUIWithData()
+    }
+    
+    @objc private func openInMaps(_ sender: NSObject?) {
+        guard let item = self.locations?.places[self.currentIndex] as? MKMapItem
+            else { assert(false, "The Place was not an MKMapItem"); return; }
+        item.openInMaps()
     }
     
 }
