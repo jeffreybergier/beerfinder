@@ -25,7 +25,7 @@
 		50A301FC1EA562F9008876D5 /* ListPlaces.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50A301FB1EA562F9008876D5 /* ListPlaces.storyboard */; };
 		50A301FE1EA56363008876D5 /* ListPlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A301FD1EA56363008876D5 /* ListPlacesViewController.swift */; };
 		50A302001EA5671E008876D5 /* PlaceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A301FF1EA5671E008876D5 /* PlaceLocator.swift */; };
-		50A302021EA587B8008876D5 /* LilTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A302011EA587B8008876D5 /* LilTypes.swift */; };
+		50A302021EA587B8008876D5 /* FrameworkExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A302011EA587B8008876D5 /* FrameworkExtensions.swift */; };
 		50A302041EA58837008876D5 /* LocationPermitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A302031EA58837008876D5 /* LocationPermitter.swift */; };
 		50FF444B1EAEF5FE0057FADF /* MapAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FF444A1EAEF5FE0057FADF /* MapAnimator.swift */; };
 /* End PBXBuildFile section */
@@ -72,7 +72,7 @@
 		50A301FB1EA562F9008876D5 /* ListPlaces.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ListPlaces.storyboard; sourceTree = "<group>"; };
 		50A301FD1EA56363008876D5 /* ListPlacesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListPlacesViewController.swift; sourceTree = "<group>"; };
 		50A301FF1EA5671E008876D5 /* PlaceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceLocator.swift; sourceTree = "<group>"; };
-		50A302011EA587B8008876D5 /* LilTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LilTypes.swift; sourceTree = "<group>"; };
+		50A302011EA587B8008876D5 /* FrameworkExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameworkExtensions.swift; sourceTree = "<group>"; };
 		50A302031EA58837008876D5 /* LocationPermitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPermitter.swift; sourceTree = "<group>"; };
 		50FF444A1EAEF5FE0057FADF /* MapAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapAnimator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -127,7 +127,7 @@
 		50868CD41EA452CF0068E292 /* BeerFinder */ = {
 			isa = PBXGroup;
 			children = (
-				50A302011EA587B8008876D5 /* LilTypes.swift */,
+				50A302011EA587B8008876D5 /* FrameworkExtensions.swift */,
 				50868CD51EA452CF0068E292 /* AppDelegate.swift */,
 				50868D061EA454EE0068E292 /* FindLocationViewController.swift */,
 				5009BA931EAD7C6B00BC0EED /* ButtonLabelShowingViewController.swift */,
@@ -327,7 +327,7 @@
 				507D251C1EB0F8DF005C9144 /* PlaceProximityViewController.swift in Sources */,
 				50A301FE1EA56363008876D5 /* ListPlacesViewController.swift in Sources */,
 				50A302041EA58837008876D5 /* LocationPermitter.swift in Sources */,
-				50A302021EA587B8008876D5 /* LilTypes.swift in Sources */,
+				50A302021EA587B8008876D5 /* FrameworkExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
