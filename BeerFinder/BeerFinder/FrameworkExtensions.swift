@@ -16,10 +16,10 @@ import UIKit
 
 extension MKMapItem: Place {
     public var title: String? {
-        return self.placemark.title!
+        return self.name
     }
     public var subtitle: String? {
-        return self.placemark.subtitle
+        return self.phoneNumber
     }
     public var coordinate: CLLocationCoordinate2D {
         return self.placemark.coordinate
