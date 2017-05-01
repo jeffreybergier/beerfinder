@@ -152,11 +152,9 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     
     private func step6_showChooserVC(for locations: MultiPlaceUserLocatable) {
         precondition(locations.places.isEmpty == false, "Places to Choose from Must be Greater than 0")
-        self.buttonVC?.updateUI(.neither) {
-            var placesVC = ListPlacesViewController.newVC()
-            placesVC.configure(with: locations)
-            self.present(placesVC, animated: true, completion: nil)
-        }
+        var placesVC = ListPlacesViewController.newVC()
+        placesVC.configure(with: locations)
+        self.present(placesVC, animated: true, completion: nil)
     }
     
     @IBAction private func reload() {
