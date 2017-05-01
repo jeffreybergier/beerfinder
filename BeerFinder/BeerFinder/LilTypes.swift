@@ -10,6 +10,22 @@ import MapKit
 import CoreLocation
 import UIKit
 
+@objc internal protocol Place: MKAnnotation {
+    var placemark: MKPlacemark { get }
+}
+
+extension MKMapItem: Place {
+    public var title: String? {
+        return self.placemark.title!
+    }
+    public var subtitle: String? {
+        return self.placemark.subtitle
+    }
+    public var coordinate: CLLocationCoordinate2D {
+        return self.placemark.coordinate
+    }
+}
+
 internal protocol Resettable {
     func reset()
 }

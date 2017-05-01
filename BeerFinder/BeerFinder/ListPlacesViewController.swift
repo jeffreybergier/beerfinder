@@ -56,7 +56,7 @@ internal class ListPlacesViewController: UIViewController, HasMultiPlaceUserLoca
         let places = locations.places
         let place = places[self.currentIndex]
     
-        self.titleLabel?.text = place.name
+        self.titleLabel?.text = place.title!
         
         let region = MKCoordinateRegion(coordinate: place.coordinate, zoom: .close)
         self.map?.setRegion(region, animated: true)

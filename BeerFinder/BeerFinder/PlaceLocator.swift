@@ -9,7 +9,7 @@
 import MapKit
 
 internal protocol PlaceLocatable: Resettable {
-    func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<([PlaceLocator.MapItem], MKCoordinateRegion)>) -> Void)?)
+    func locatePlaces(matchingQuery: String, within: MKCoordinateRegion, completion: ((Result<([Place], MKCoordinateRegion)>) -> Void)?)
 }
 
 internal protocol HasPlaceLocatable {
@@ -25,20 +25,6 @@ internal extension HasPlaceLocatable {
 
 internal class PlaceLocator: PlaceLocatable {
     
-    internal class MapItem: NSObject, MKAnnotation {
-        let name: String
-        let placemark: MKPlacemark
-        init(name: String, placemark: MKPlacemark) {
-            self.name = name
-            self.placemark = placemark
-            super.init()
-        }
-        let subtitle: String? = nil
-        var coordinate: CLLocationCoordinate2D {
-            return self.placemark.coordinate
-        }
-    }
-    
     private var searchInProgress: MKLocalSearch?
     
     internal func reset() {
@@ -46,24 +32,23 @@ internal class PlaceLocator: PlaceLocatable {
         self.searchInProgress = nil
     }
     
-    internal func locateBeer(at region: MKCoordinateRegion, completionHandler: ((Result<([PlaceLocator.MapItem], MKCoordinateRegion)>) -> Void)?) {
+    func locatePlaces(matchingQuery query: String,
+                      within region: MKCoordinateRegion,
+                      completion: ((Result<([Place], MKCoordinateRegion)>) -> Void)?)
+    {
         self.reset()
         let request = MKLocalSearchRequest()
         request.region = region
-        request.naturalLanguageQuery = "bar"
+        request.naturalLanguageQuery = query
         let search = MKLocalSearch(request: request)
         self.searchInProgress = search
         search.start { response, error in
             if let response = response {
-                let places = response.mapItems.flatMap { mapKitItem -> MapItem? in
-                    guard let name = mapKitItem.name else { return nil }
-                    return MapItem(name: name, placemark: mapKitItem.placemark)
-                }
-                completionHandler?(.success(places, response.boundingRegion))
+                let places = response.mapItems
+                completion?(.success(places, response.boundingRegion))
             } else {
-                completionHandler?(.error(error!))
+                completion?(.error(error!))
             }
         }
     }
-    
 }

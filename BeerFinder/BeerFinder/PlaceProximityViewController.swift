@@ -50,7 +50,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
         self.map?.setRegion(region, animated: false)
         
         // configure your textfields
-        self.nameLabel?.text = place.name
+        self.nameLabel?.text = place.title!
         let distance = userLocation.distance(from: place.coordinate)
         self.distanceLabel?.text = self.distanceFormatter.localizedDistance(from: distance)
         
@@ -58,7 +58,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
         self.beginGuidingUser(to: place)
     }
     
-    private func beginGuidingUser(to place: PlaceLocator.MapItem) {
+    private func beginGuidingUser(to place: Place) {
         self.movementMonitor.updated = { [weak self] result in
             guard case .success(let location, let heading) = result else { return }
             if let distanceLabel = self?.distanceLabel {

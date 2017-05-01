@@ -10,7 +10,7 @@ import CoreLocation
 
 internal protocol MultiPlaceUserLocatable {
     var userLocation: CLLocation { get set }
-    var places: [PlaceLocator.MapItem] { get set }
+    var places: [Place] { get set }
 }
 
 internal protocol HasMultiPlaceUserLocatable {
@@ -26,12 +26,12 @@ internal extension HasMultiPlaceUserLocatable {
 
 internal struct MultiPlaceUserLocation: MultiPlaceUserLocatable {
     internal var userLocation: CLLocation
-    internal var places: [PlaceLocator.MapItem]
+    internal var places: [Place]
 }
 
 internal protocol SinglePlaceUserLocatable {
     var userLocation: CLLocation { get set }
-    var place: PlaceLocator.MapItem { get set }
+    var place: Place { get set }
 }
 
 internal protocol HasSinglePlaceUserLocatable {
@@ -47,5 +47,5 @@ internal extension HasSinglePlaceUserLocatable {
 
 internal struct SinglePlaceUserLocation: SinglePlaceUserLocatable {
     internal var userLocation: CLLocation
-    internal var place: PlaceLocator.MapItem
+    internal var place: Place
 }
