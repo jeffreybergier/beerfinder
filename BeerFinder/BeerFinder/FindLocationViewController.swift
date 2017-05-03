@@ -177,10 +177,8 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
         }
         
         // reset buttons
-        self.buttonVC?.updateUI(.neither) {
-            self.updateButtonText()
-            self.buttonVC?.updateUI(.button)
-        }
+        self.updateButtonText()
+        self.buttonVC?.updateUI(.button)
     }
     
     @IBAction private func goForward() {

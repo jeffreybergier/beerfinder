@@ -22,12 +22,12 @@ internal class LoaderAndButtonShowingViewController: UIViewController {
     }
     
     internal func setLoader(text: String) {
-        UIView.animate(withDuration: 0.0) {
-            self.label?.text = text
-        }
+        self.label?.text = text
     }
     
     internal func setButton(text: String) {
+        // UIButton is really insistent on animating its label change
+        // this stops that
         UIView.animate(withDuration: 0.0) {
             self.button?.setTitle(text, for: .normal)
         }
