@@ -15,7 +15,7 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     @IBOutlet private weak var map: MKMapView?
     
     internal var locationPermitter: LocationPermittable = LocationPermitter()
-    internal var movementMonitor: ContinuousUserMovementMonitorable = ContinuousUserMovementMonitor()
+    internal var movementMonitor: ContinuousUserMovementMonitorable = ContinuousUserMovementMonitor(allowedToDisplayHeadingCalibationUI: false)
     internal var placeLocator: PlaceLocatable = PlaceLocator()
     internal var mapAnimator: MapAnimatable = MapAnimator()
     

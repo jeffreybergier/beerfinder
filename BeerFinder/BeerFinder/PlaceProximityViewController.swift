@@ -18,7 +18,7 @@ internal class PlaceProximityViewController: UIViewController, HasContinuousUser
     
     /*@IBOutlet*/ private weak var hardModeVC: HardModeViewController?
     
-    internal var movementMonitor: ContinuousUserMovementMonitorable = ContinuousUserMovementMonitor()
+    internal var movementMonitor: ContinuousUserMovementMonitorable = ContinuousUserMovementMonitor(allowedToDisplayHeadingCalibationUI: true)
     internal var locations: SinglePlaceUserLocatable?
     internal var distanceFormatter: DistanceFormattable = DistanceFormatter()
         

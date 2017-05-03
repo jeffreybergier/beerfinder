@@ -9,6 +9,7 @@
 import CoreLocation
 
 internal protocol ContinuousUserMovementMonitorable: Resettable {
+    var allowedToDisplayHeadingCalibationUI: Bool { get set }
     var updated: ((Result<(CLLocation, CLLocationDirection)>) -> Void)? { get set }
     var latestLocation: CLLocation? { get }
     var latestHeading: CLLocationDirection? { get }
@@ -31,15 +32,21 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     
     private let manager = CLLocationManager()
     
+    var allowedToDisplayHeadingCalibationUI = true
     var updated: ((Result<(CLLocation, CLLocationDirection)>) -> Void)?
     
-    private(set) var latestLocation: CLLocation?
-    private(set) var latestHeading: CLLocationDirection?
+    var latestLocation: CLLocation? {
+        return self.manager.location
+    }
+    var latestHeading: CLLocationDirection? {
+        return self.manager.heading?.trueHeading
+    }
     private var latestError: Error?
     
     private var timer: Timer?
     
-    internal override init() {
+    internal init(allowedToDisplayHeadingCalibationUI: Bool) {
+        self.allowedToDisplayHeadingCalibationUI = allowedToDisplayHeadingCalibationUI
         super.init()
         self.manager.desiredAccuracy = kCLLocationAccuracyBest
         self.manager.delegate = self
@@ -57,8 +64,6 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
         self.timer?.invalidate()
         self.timer = nil
         self.latestError = nil
-        self.latestLocation = nil
-        self.latestHeading = nil
         self.updated = nil
         self.nextLocation = nil
     }
@@ -98,9 +103,6 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
         guard let location = locations.first else { return }
         // clear any errors that may have happened, clearly things are working now
         self.latestError = nil
-        // store the next location for the timer
-        self.latestLocation = location
-        
         // if the next location function was called and we have a completion handler for that, do this
         guard let nextLocation = self.nextLocation else { return }
         // clear out the completion handler IVAR
@@ -112,18 +114,15 @@ class ContinuousUserMovementMonitor: NSObject, ContinuousUserMovementMonitorable
     @objc internal func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         // clear any errors that may have happened, clearly things are working now
         self.latestError = nil
-        // store the next location for the timer
-        self.latestHeading = newHeading.trueHeading
     }
     
     @objc internal func locationManagerShouldDisplayHeadingCalibration(_ manager: CLLocationManager) -> Bool {
-        return true
+        return self.allowedToDisplayHeadingCalibationUI
     }
     
     @objc internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         // store the error for the timer
         self.latestError = error
-        
         // if the next location function was called and we have a completion handler for that, do this
         guard let nextLocation = self.nextLocation else { return }
         // clear out the completion handler IVAR
