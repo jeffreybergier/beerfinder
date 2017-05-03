@@ -26,10 +26,10 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsCompass="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xIM-mG-cfR">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </mapView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jad-K1-iXS">
-                                <rect key="frame" x="16" y="435" width="288" height="113"/>
+                            <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jad-K1-iXS">
+                                <rect key="frame" x="16" y="426" width="288" height="122"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="113" id="w6L-OU-qqh"/>
+                                    <constraint firstAttribute="height" constant="122" id="w6L-OU-qqh"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="CAw-ta-1mY" kind="embed" id="VXg-8E-yRR"/>
@@ -64,21 +64,21 @@
                         <viewControllerLayoutGuide type="bottom" id="BaR-Tb-FYh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Od9-FP-kDK">
-                        <rect key="frame" x="0.0" y="0.0" width="288" height="113"/>
+                        <rect key="frame" x="0.0" y="0.0" width="288" height="122"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e6j-es-MJf">
-                                <rect key="frame" x="0.0" y="-0.5" width="144" height="35"/>
+                                <rect key="frame" x="0.0" y="0.0" width="144" height="44"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="xwN-WR-ncy">
-                                    <rect key="frame" x="0.0" y="0.0" width="144" height="35"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="144" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Bz-l6-Q0i">
-                                            <rect key="frame" x="0.0" y="0.0" width="144" height="35"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="144" height="44"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                             <inset key="titleEdgeInsets" minX="0.0" minY="3" maxX="0.0" maxY="0.0"/>
                                             <state key="normal" title="Reset">
-                                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
                                                 <action selector="reload" destination="Sdg-G7-KAi" eventType="touchUpInside" id="CHo-Rg-oWM"/>
@@ -92,6 +92,9 @@
                                         <constraint firstItem="9Bz-l6-Q0i" firstAttribute="centerX" secondItem="xwN-WR-ncy" secondAttribute="centerX" id="scv-mV-oS2"/>
                                     </constraints>
                                 </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="dSD-MZ-NJo"/>
+                                </constraints>
                                 <blurEffect style="extraLight"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -100,7 +103,7 @@
                                 </userDefinedRuntimeAttributes>
                             </visualEffectView>
                             <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hNj-73-TVg">
-                                <rect key="frame" x="0.0" y="42.5" width="288" height="70"/>
+                                <rect key="frame" x="0.0" y="52" width="288" height="70"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="AzK-LM-Qu6">
                                     <rect key="frame" x="0.0" y="0.0" width="288" height="70"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -170,10 +173,9 @@
                         <constraints>
                             <constraint firstItem="hNj-73-TVg" firstAttribute="width" secondItem="Od9-FP-kDK" secondAttribute="width" id="0Zf-aS-ESC"/>
                             <constraint firstItem="e6j-es-MJf" firstAttribute="leading" secondItem="hNj-73-TVg" secondAttribute="leading" id="DNW-eZ-q4e"/>
-                            <constraint firstItem="BaR-Tb-FYh" firstAttribute="top" secondItem="hNj-73-TVg" secondAttribute="bottom" placeholder="YES" id="F9K-Tq-Ss5"/>
+                            <constraint firstItem="BaR-Tb-FYh" firstAttribute="top" secondItem="hNj-73-TVg" secondAttribute="bottom" id="F9K-Tq-Ss5"/>
                             <constraint firstItem="hNj-73-TVg" firstAttribute="centerX" secondItem="Od9-FP-kDK" secondAttribute="centerX" id="Fm7-8m-1uZ"/>
                             <constraint firstItem="hNj-73-TVg" firstAttribute="top" secondItem="e6j-es-MJf" secondAttribute="bottom" constant="8" symbolic="YES" id="Yve-ei-EFa"/>
-                            <constraint firstItem="e6j-es-MJf" firstAttribute="height" secondItem="hNj-73-TVg" secondAttribute="height" multiplier="1/2" id="qn6-qH-HzS"/>
                             <constraint firstItem="e6j-es-MJf" firstAttribute="width" secondItem="hNj-73-TVg" secondAttribute="width" multiplier="1/2" id="x4u-6G-xa7"/>
                         </constraints>
                     </view>
@@ -182,7 +184,6 @@
                         <outlet property="buttonParentView" destination="JSy-te-G0g" id="kqH-Qp-l81"/>
                         <outlet property="label" destination="XWu-20-07J" id="hzG-k3-kPU"/>
                         <outlet property="labelParentView" destination="LKS-Fg-qA2" id="4Kt-2D-iIK"/>
-                        <outlet property="movingView" destination="hNj-73-TVg" id="PKh-eh-43M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sdg-G7-KAi" userLabel="First Responder" sceneMemberID="firstResponder"/>

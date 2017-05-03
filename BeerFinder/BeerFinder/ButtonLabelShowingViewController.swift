@@ -10,60 +10,46 @@ import UIKit
 
 internal class LoaderAndButtonShowingViewController: UIViewController {
     
-    @IBOutlet private weak var movingView: UIView?
     @IBOutlet private weak var button: UIButton?
     @IBOutlet private weak var label: UILabel?
     @IBOutlet private weak var buttonParentView: UIView?
     @IBOutlet private weak var labelParentView: UIView?
     
-    private var buttonViewConstraint: NSLayoutConstraint?
-    
-    private var viewShowConstant: CGFloat = -70
-    private var viewHideConstant: CGFloat = 20
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        let superview = self.parent?.view ?? self.view!
-        let frame = self.view.convert(self.view.frame, to: superview)
-        let superviewHeight = superview.frame.height
-        let distanceFromBottom = superviewHeight - (frame.origin.y + frame.size.height)
-        let buttonHeight = self.movingView?.frame.size.height ?? 0
-        self.viewShowConstant = -1 * buttonHeight
-        self.viewHideConstant = distanceFromBottom
-    }
-    
-    internal override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
-    
-        self.buttonViewConstraint = self.movingView?.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: self.viewHideConstant)
-        self.buttonViewConstraint?.isActive = true
+        
+        self.updateUI(.button, animationDuration: 0.0, completion: nil)
     }
     
     internal func setLoader(text: String) {
-        self.label?.text = text
+        UIView.animate(withDuration: 0.0) {
+            self.label?.text = text
+        }
     }
     
     internal func setButton(text: String) {
-        self.button?.setTitle(text, for: .normal)
+        UIView.animate(withDuration: 0.0) {
+            self.button?.setTitle(text, for: .normal)
+        }
     }
     
     internal enum Show {
         case button, loader, neither
     }
     
-    internal func updateUI(_ show: Show, completion: (() -> Void)? = nil) {
-        UIView.animate(withDuration: 0.3, animations: {
+    internal func updateUI(_ show: Show, animationDuration: TimeInterval = 0.3, completion: (() -> Void)? = nil) {
+        UIView.animate(withDuration: animationDuration, animations: {
             switch show {
             case .button:
-                self.buttonViewConstraint?.constant = self.viewShowConstant
+                self.button?.isEnabled = true
                 self.buttonParentView?.alpha = 1
                 self.labelParentView?.alpha = 0
             case .loader:
-                self.buttonViewConstraint?.constant = self.viewShowConstant
+                self.button?.isEnabled = false
                 self.buttonParentView?.alpha = 0
                 self.labelParentView?.alpha = 1
             case .neither:
-                self.buttonViewConstraint?.constant = self.viewHideConstant
+                self.button?.isEnabled = false
                 self.buttonParentView?.alpha = 0
                 self.labelParentView?.alpha = 0
             }
