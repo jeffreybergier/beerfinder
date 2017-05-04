@@ -122,7 +122,7 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     private func step4_findPlaces(within region: MKCoordinateRegion, userLocation: CLLocation) {
         self.buttonVC?.setLoader(text: "Finding Beer")
         self.buttonVC?.updateUI(.loader) {
-            self.placeLocator.locatePlaces(matchingQuery: "bar", within: region) { result in
+            self.placeLocator.locatePlaces(matchingQuery: UserDefaults.standard.searchTerm, within: region) { result in
                 switch result {
                 case .success(let places, let boundingRegion):
                     self.mapAnimator.perform({ self.map?.setRegion(boundingRegion, animated: true) }) {

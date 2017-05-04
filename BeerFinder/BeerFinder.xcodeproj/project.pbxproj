@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5009BA941EAD7C6B00BC0EED /* ButtonLabelShowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5009BA931EAD7C6B00BC0EED /* ButtonLabelShowingViewController.swift */; };
+		507A61E11EBB987D00891CB6 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A61E01EBB987D00891CB6 /* UserDefaults.swift */; };
 		507D25141EB048B2005C9144 /* PlaceUserLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507D25131EB048B2005C9144 /* PlaceUserLocation.swift */; };
 		507D25161EB04E2D005C9144 /* DistanceCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507D25151EB04E2D005C9144 /* DistanceCalculator.swift */; };
 		507D25181EB0F557005C9144 /* ContinuousHeadingLocationMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507D25171EB0F557005C9144 /* ContinuousHeadingLocationMonitor.swift */; };
@@ -49,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		5009BA931EAD7C6B00BC0EED /* ButtonLabelShowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonLabelShowingViewController.swift; sourceTree = "<group>"; };
+		507A61E01EBB987D00891CB6 /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		507D25131EB048B2005C9144 /* PlaceUserLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceUserLocation.swift; sourceTree = "<group>"; };
 		507D25151EB04E2D005C9144 /* DistanceCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistanceCalculator.swift; sourceTree = "<group>"; };
 		507D25171EB0F557005C9144 /* ContinuousHeadingLocationMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContinuousHeadingLocationMonitor.swift; sourceTree = "<group>"; };
@@ -127,8 +129,9 @@
 		50868CD41EA452CF0068E292 /* BeerFinder */ = {
 			isa = PBXGroup;
 			children = (
-				50A302011EA587B8008876D5 /* FrameworkExtensions.swift */,
 				50868CD51EA452CF0068E292 /* AppDelegate.swift */,
+				507A61E01EBB987D00891CB6 /* UserDefaults.swift */,
+				50A302011EA587B8008876D5 /* FrameworkExtensions.swift */,
 				50868D061EA454EE0068E292 /* FindLocationViewController.swift */,
 				5009BA931EAD7C6B00BC0EED /* ButtonLabelShowingViewController.swift */,
 				50A301FD1EA56363008876D5 /* ListPlacesViewController.swift */,
@@ -327,6 +330,7 @@
 				507D251C1EB0F8DF005C9144 /* PlaceProximityViewController.swift in Sources */,
 				50A301FE1EA56363008876D5 /* ListPlacesViewController.swift in Sources */,
 				50A302041EA58837008876D5 /* LocationPermitter.swift in Sources */,
+				507A61E11EBB987D00891CB6 /* UserDefaults.swift in Sources */,
 				50A302021EA587B8008876D5 /* FrameworkExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
