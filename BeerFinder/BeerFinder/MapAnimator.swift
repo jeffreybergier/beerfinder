@@ -9,7 +9,8 @@
 import MapKit
 
 internal protocol MapAnimatable: Resettable {
-    func setRegion(_: MKCoordinateRegion, onMap: MKMapView?, completion: (() -> Void)?)
+    var map: MKMapView? { get set }
+    func perform(_: (() -> Void)?, whenMapFinishesAnimating: (() -> Void)?)
 }
 
 internal protocol HasMapAnimatable {
@@ -25,28 +26,27 @@ internal extension HasMapAnimatable {
 
 internal class MapAnimator: NSObject, MapAnimatable, MKMapViewDelegate {
     
-    private var map: MKMapView?
-    private var oldDelegate: MKMapViewDelegate?
-    private var animationCompletion: (() -> Void)?
+    private var mapFinishedAnimating: (() -> Void)?
     
-    internal func reset() {
-        self.map?.delegate = self.oldDelegate
-        self.map = nil
-        self.oldDelegate = nil
-        self.animationCompletion = nil
+    internal var map: MKMapView? {
+        didSet {
+            oldValue?.delegate = nil
+            self.map?.delegate = self
+            self.reset()
+        }
     }
     
-    internal func setRegion(_ region: MKCoordinateRegion, onMap map: MKMapView?, completion: (() -> Void)?) {
-        guard let map = map else { completion?(); return; }
-        self.animationCompletion = completion
-        self.oldDelegate = map.delegate
-        self.map = map
-        map.delegate = self
-        map.setRegion(region, animated: true)
+    internal func perform(_ action: (() -> Void)?, whenMapFinishesAnimating completion: (() -> Void)?) {
+        self.mapFinishedAnimating = completion
+        action?()
+    }
+    
+    internal func reset() {
+        self.mapFinishedAnimating = nil
     }
     
     @objc internal func mapView(_ map: MKMapView, regionDidChangeAnimated animated: Bool) {
-        animationCompletion?()
+        self.mapFinishedAnimating?()
         self.reset()
     }
     

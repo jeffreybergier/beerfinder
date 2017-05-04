@@ -45,6 +45,7 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     internal override func viewDidLoad() {
         super.viewDidLoad()
         self.buttonVC = self.childViewControllers.first()
+        self.mapAnimator.map = self.map
         self.updateButtonText()
     }
     
@@ -111,7 +112,7 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     
     private func step3_updateUI(with location: CLLocation) {
         let region = MKCoordinateRegion(location: self.movementMonitor.latestLocation ?? location)
-        self.mapAnimator.setRegion(region, onMap: self.map) {
+        self.mapAnimator.perform({ self.map?.setRegion(region, animated: true) }) {
             self.updateMapToShowUser(true)
             self.buttonVC?.updateUI(.neither) {
                 let newerRegion = MKCoordinateRegion(location: self.movementMonitor.latestLocation ?? location)
@@ -126,7 +127,7 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
             self.placeLocator.locatePlaces(matchingQuery: "bar", within: region) { result in
                 switch result {
                 case .success(let places, let boundingRegion):
-                    self.mapAnimator.setRegion(boundingRegion, onMap: self.map) {
+                    self.mapAnimator.perform({ self.map?.setRegion(boundingRegion, animated: true) }) {
                         let locations = MultiPlaceUserLocation(userLocation: self.movementMonitor.latestLocation ?? userLocation, places: places)
                         self.step5_updateUI(with: locations)
                     }
@@ -167,18 +168,24 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
         self.locationPermitter.reset()
         self.placeLocator.reset()
         
-        // reset map
-        self.updateMapToShowUser(false)
-        if let map = self.map {
-            let cam = MKMapCamera()
-            cam.centerCoordinate = map.camera.centerCoordinate
-            cam.altitude = 40000000
-            map.setCamera(cam, animated: true)
+        self.buttonVC?.updateUI(.neither) {
+            // temp button state
+            self.buttonVC?.setLoader(text: "Resetting")
+            self.buttonVC?.updateUI(.loader)
+            
+            // reset the map
+            self.mapAnimator.perform({
+                self.updateMapToShowUser(false)
+                let cam = MKMapCamera()
+                cam.centerCoordinate = self.map!.camera.centerCoordinate
+                cam.altitude = 20000000
+                self.map!.setCamera(cam, animated: true)
+            }, whenMapFinishesAnimating: {
+                // reset buttons
+                self.updateButtonText()
+                self.buttonVC?.updateUI(.button)
+            })
         }
-        
-        // reset buttons
-        self.updateButtonText()
-        self.buttonVC?.updateUI(.button)
     }
     
     @IBAction private func goForward() {
