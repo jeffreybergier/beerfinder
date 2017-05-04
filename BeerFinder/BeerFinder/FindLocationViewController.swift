@@ -82,11 +82,9 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     
     private func step1_showRequestLocationPermission() {
         self.updateMapToShowUser(false)
-        self.buttonVC?.updateUI(.neither) {
-            self.buttonVC?.setLoader(text: "Finding Location")
-            self.locationPermitter.requestPermission() { _ in
-                self.nextStep()
-            }
+        self.buttonVC?.setLoader(text: "Finding Location")
+        self.locationPermitter.requestPermission() { _ in
+            self.nextStep()
         }
     }
     
@@ -198,28 +196,29 @@ internal class FindLocationViewController: UIViewController, HasContinuousUserMo
     }
     
     private func errorStep_showLocationDeniedAlert() {
-        self.buttonVC?.updateUI(.neither) {
-            let vc = UIAlertController.locationDenied(settingsHandler: { _ in
-                self.updateButtonText()
-                self.buttonVC?.updateUI(.button) {
-                    UIApplication.shared.openSettings()
-                }
-            }, cancelHandler: { _ in
+        let vc = UIAlertController.locationDenied(settingsHandler: { _ in
+            self.buttonVC?.updateUI(.neither) {
                 self.updateButtonText()
                 self.buttonVC?.updateUI(.button)
-            })
-            self.present(vc, animated: true, completion: nil)
-        }
+                UIApplication.shared.openSettings()
+            }
+        }, cancelHandler: { _ in
+            self.buttonVC?.updateUI(.neither) {
+                self.updateButtonText()
+                self.buttonVC?.updateUI(.button)
+            }
+        })
+        self.present(vc, animated: true, completion: nil)
     }
     
     private func errorStep_showLocationRestrictedAlert() {
-        self.buttonVC?.updateUI(.neither) {
-            let vc = UIAlertController.locationRestricted(cancelHandler: { _ in
+        let vc = UIAlertController.locationRestricted(cancelHandler: { _ in
+            self.buttonVC?.updateUI(.neither) {
                 self.updateButtonText()
                 self.buttonVC?.updateUI(.button)
-            })
-            self.present(vc, animated: true, completion: nil)
-        }
+            }
+        })
+        self.present(vc, animated: true, completion: nil)
     }
     
     private func updateButtonText(with message: String? = nil) {
